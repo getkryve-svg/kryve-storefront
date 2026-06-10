@@ -1,17 +1,13 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { loadStripe } from '@stripe/stripe-js'
+import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { PRODUCTS } from '../data/products'
 import { validateCode, applyDiscount, calcShipping } from '../lib/discounts'
 import { trackInitiateCheckout } from '../components/Analytics'
 import type { DiscountCode } from '../types'
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
-
 export default function CartPage() {
   const { state, dispatch, subtotal, itemCount, clearCart } = useCart()
-  const navigate = useNavigate()
   const [coupon, setCoupon] = useState('')
   const [discount, setDiscount] = useState<DiscountCode | null>(null)
   const [couponError, setCouponError] = useState('')

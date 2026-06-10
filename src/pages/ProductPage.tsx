@@ -128,7 +128,7 @@ export default function ProductPage() {
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-[#E5E0D8] hover:border-[#1A1A1A] transition-colors"
                 aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"
+                <svg width="16" height="16" viewBox="0 0 24 24" strokeWidth="1.5"
                   fill={wishlisted ? '#EF4444' : 'none'}
                   stroke={wishlisted ? '#EF4444' : 'currentColor'}
                 >

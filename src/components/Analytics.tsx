@@ -27,10 +27,8 @@ declare global {
 
 function loadPixel(id: string) {
   if (window.fbq) return
-  const n = function (...args: unknown[]) {
-    // @ts-expect-error fbq queue
-    ;(n.q = n.q || []).push(args)
-  } as unknown as typeof window.fbq & { q: unknown[]; loaded: boolean; version: string; push: typeof Array.prototype.push }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const n = function (...args: unknown[]) { ((n as any).q = (n as any).q || []).push(args) } as any
   n.loaded = true
   n.version = '2.0'
   n.q = []
@@ -40,7 +38,7 @@ function loadPixel(id: string) {
   s.async = true
   s.src = 'https://connect.facebook.net/en_US/fbevents.js'
   document.head.appendChild(s)
-  window.fbq('init', id)
+  window.fbq?.('init', id)
 }
 
 // ── GA4 loader ────────────────────────────────────────────────────────────────

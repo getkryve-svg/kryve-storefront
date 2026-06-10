@@ -434,8 +434,8 @@ function GridCard({ product, onAdd, animIn, delay }: {
         {/* Image container */}
         <div
           className="relative overflow-hidden bg-[#EDE8E2] aspect-square mb-3 transition-all duration-200"
-          style={{ borderRadius: 8 }}
           style={{
+            borderRadius: 8,
             transform: hovered ? 'scale(1.02)' : 'scale(1)',
             boxShadow: hovered ? '0 12px 40px rgba(0,0,0,0.15)' : '0 2px 8px rgba(0,0,0,0.05)',
           }}
