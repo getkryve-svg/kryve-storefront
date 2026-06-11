@@ -306,7 +306,8 @@ function FeaturedDrops() {
   const { ref, inView } = useInView(0.15)
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+    <section className="bg-[#FAF8F5] max-w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <div className="max-w-7xl mx-auto">
       <div ref={ref}>
         <div
           className="text-center mb-12"
@@ -391,6 +392,7 @@ function FeaturedDrops() {
             </svg>
           </Link>
         </div>
+      </div>
       </div>
     </section>
   )
@@ -728,7 +730,7 @@ export default function HomePage() {
       <FeaturedDrops />
 
       {/* Product Grid */}
-      <section className="bg-[#F5F1ED] py-20 sm:py-28">
+      <section className="bg-[#F5F1ED] py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             ref={gridRef}
