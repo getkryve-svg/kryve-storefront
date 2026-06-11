@@ -210,7 +210,16 @@ function Hero() {
             backgroundPosition: slide.bgPos,
             backgroundSize: 'cover',
           }}
-        />
+        >
+          {/* Mobile only: <img> shows full image with no cropping */}
+          <img
+            className="kv-sl-img"
+            src={slide.bg}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+          />
+        </div>
       ))}
 
       {/* Overlay */}

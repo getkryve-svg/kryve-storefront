@@ -1514,115 +1514,140 @@ body {
 ══════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
 
-  /* ── Nav: ensure hamburger visible up to 767px ──────────────── */
+  /* ══════════════════════════════════════════════════════════
+     MOBILE CAROUSEL — NEW APPROACH
+     Image on top (full, uncropped) + text below (dark bg)
+     Zero overlap. No background-position tricks needed.
+  ══════════════════════════════════════════════════════════ */
+
+  /* Nav */
   .kv-nav-links { display: none !important; }
   .kv-hamburger { display: flex !important; }
 
-  /* ── Carousel wrapper ───────────────────────────────────────── */
+  /* Carousel wrapper: auto height, flex column */
   .kv-hw {
-    height: 100dvh !important;
-    min-height: 75vh !important;
-    max-height: 100dvh !important;
-  }
-
-  /* ── Override the desktop left-to-right overlay with
-        a bottom-to-top gradient so subjects stay visible ──────── */
-  .kv-ov {
-    background: linear-gradient(
-      to top,
-      rgba(0,0,0,0.85) 0%,
-      rgba(0,0,0,0.45) 35%,
-      transparent 65%
-    ) !important;
-  }
-
-  /* ── Remove the side gradient added by the ::before pseudo in
-        the 749px block (it conflicts with the new bottom gradient) */
-  .kv-sl::before { content: none !important; }
-
-  /* ── Text panel: sit at BOTTOM of slide ────────────────────── */
-  .kv-tx {
-    position: absolute !important;
-    inset: 0 !important;
-    right: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 6vw 72px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     display: flex !important;
     flex-direction: column !important;
-    align-items: flex-start !important;
-    justify-content: flex-end !important;
-    z-index: 5 !important;
+    overflow: visible !important;
+    position: relative !important;
+  }
+
+  /* Hide ALL slides by default */
+  .kv-sl {
+    display: none !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    opacity: 1 !important;
+    animation: none !important;
+    background-image: none !important;
+    order: 1 !important;
+  }
+  /* Show only the active slide */
+  .kv-sl.on {
+    display: block !important;
+  }
+
+  /* The <img> inside each slide: full image, no crop */
+  .kv-sl-img {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    background: #0a0a0a !important;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+  }
+
+  /* Hide the desktop gradient overlay */
+  .kv-ov { display: none !important; }
+
+  /* Hide ALL text panels by default */
+  .kv-tx {
+    display: none !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    background: #0a0a0a !important;
+    padding: 20px 24px 28px !important;
     box-sizing: border-box !important;
-  }
-
-  /* ── Slide 5 (stack bottles) — text at TOP instead of bottom ── */
-  .kv-tx.kv-tx-bottles {
+    z-index: auto !important;
+    transition: none !important;
+    order: 2 !important;
+    align-items: flex-start !important;
     justify-content: flex-start !important;
-    padding-top: 100px !important;
-    padding-bottom: 0 !important;
+  }
+  /* Show only the active text panel */
+  .kv-tx.on {
+    display: flex !important;
+    flex-direction: column !important;
   }
 
-  /* ── Typography ─────────────────────────────────────────────── */
+  /* Typography */
   .kv-hh1 {
-    font-size: clamp(1.75rem, 8vw, 2rem) !important;
+    font-size: clamp(1.6rem, 7vw, 2rem) !important;
     line-height: 1.1 !important;
     letter-spacing: -0.02em !important;
     width: auto !important;
-    max-width: 85vw !important;
-    margin-bottom: 10px !important;
+    max-width: 100% !important;
+    margin-bottom: 8px !important;
+    color: #fff !important;
   }
   .kv-hsub {
-    font-size: 0.82rem !important;
-    max-width: 80vw !important;
+    font-size: 0.85rem !important;
+    max-width: 100% !important;
     margin-bottom: 16px !important;
     line-height: 1.5 !important;
+    color: rgba(255,255,255,0.75) !important;
   }
-  .kv-hbadge { margin-bottom: 8px !important; }
-  .kv-hey    { margin: 0 0 6px !important; font-size: 0.68rem !important; }
+  .kv-hbadge { margin-bottom: 10px !important; }
+  .kv-hey { margin: 0 0 6px !important; font-size: 0.68rem !important; }
 
-  /* ── CTA button: full width, capped at 300px ────────────────── */
+  /* Button: full width, capped */
   .kv-hbtn {
     display: block !important;
     width: 100% !important;
     max-width: 300px !important;
     text-align: center !important;
     padding: 14px 20px !important;
-    font-size: 0.8rem !important;
+    font-size: 0.82rem !important;
     box-sizing: border-box !important;
     white-space: nowrap !important;
   }
 
-  /* ── Per-slide background positions ────────────────────────── */
-  /* Slide 1 — couple in kitchen: center top keeps faces visible */
-  .kv-sl:nth-child(1) {
-    background-position: center top !important;
-    background-size: cover !important;
-  }
-  /* Slide 2 — greens / woman in gym: center top keeps head visible */
-  .kv-sl:nth-child(2) {
-    background-position: center top !important;
-    background-size: cover !important;
-  }
-  /* Slide 3 — collagen / woman: right top keeps her and bottle visible */
-  .kv-sl:nth-child(3) {
-    background-position: right top !important;
-    background-size: cover !important;
-  }
-  /* Slide 4 — magnesium / man stretching: center top keeps face visible */
-  .kv-sl:nth-child(4) {
-    background-position: center top !important;
-    background-size: cover !important;
-  }
-  /* Slide 5 — stack bottles: centered/contained so all 3 bottles show */
-  .kv-sl:nth-child(5) {
-    background-position: center center !important;
-    background-size: contain !important;
-    background-color: #0A0A0A !important;
-    background-repeat: no-repeat !important;
+  /* Dots: below text panel */
+  .kv-hdots {
+    order: 3 !important;
+    position: relative !important;
+    background: #0a0a0a !important;
+    padding: 10px 0 16px !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 6px !important;
   }
 
-  /* ── Product cards: enforce equal image sizing on mobile ────── */
+  /* Arrows: positioned over image area */
+  .kv-harr {
+    position: absolute !important;
+    top: 28vw !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    z-index: 20 !important;
+  }
+  .kv-hprev { left: 10px !important; }
+  .kv-hnext { right: 10px !important; }
+
+  /* ── Desktop img hidden — mobile img hidden on desktop ──────── */
+  /* (kv-sl-img is only shown on mobile via display:block above) */
+
+  /* ── Product cards: equal sizing all 3 ─────────────────────── */
   .kv-pcard-img-wrap {
     height: 220px !important;
     display: flex !important;
@@ -1645,6 +1670,9 @@ body {
     letter-spacing: 1px !important;
   }
 }
+
+/* Mobile slide img — hidden on desktop, shown on mobile via 767px block */
+.kv-sl-img { display: none; }
 
 /* Mobile hamburger button (hidden on desktop) */
 .kv-hamburger {
