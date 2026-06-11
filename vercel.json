@@ -1,6 +1,12 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "images": {
+    "sizes": [400, 640, 800, 1200, 1920],
+    "domains": ["d2xsxph8kpxj0f.cloudfront.net"],
+    "formats": ["image/webp", "image/avif"],
+    "minimumCacheTTL": 31536000
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }

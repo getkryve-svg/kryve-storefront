@@ -71,14 +71,24 @@ const VIEW_LABELS: Record<string, string> = {
   back: 'back view', detail: 'detail close-up',
 }
 
+// Vercel image optimization — converts PNG→WebP, resizes, compresses
+// Falls back to original URL in dev (localhost) or if optimization fails
+function optimizeUrl(url: string, width = 800): string {
+  if (!url) return url
+  // Only optimize on Vercel (not localhost)
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') return url
+  return `/_vercel/image?url=${encodeURIComponent(url)}&w=${width}&q=80`
+}
+
 export default function ProductImage({ product, view, className = '', loading = 'lazy', imgStyle }: Props) {
-  const src = (() => {
+  const rawSrc = (() => {
     if (view === 'back')    return product.images?.back    ?? ''
     if (view === 'detail')  return product.images?.detail  ?? ''
     if (view === 'lifestyle' || view === 'model') return product.images?.lifestyle ?? product.imageModel ?? ''
     return product.images?.primary ?? product.imageProduct ?? ''
   })()
-  const [failed, setFailed] = useState(!src) // empty URL = instant placeholder
+  const src = optimizeUrl(rawSrc)
+  const [failed, setFailed] = useState(!rawSrc) // empty URL = instant placeholder
   const alt = `${product.title} — ${VIEW_LABELS[view] ?? view}`
 
   if (failed) {
