@@ -87,8 +87,9 @@ export default function ProductImage({ product, view, className = '', loading = 
     if (view === 'lifestyle' || view === 'model') return product.images?.lifestyle ?? product.imageModel ?? ''
     return product.images?.primary ?? product.imageProduct ?? ''
   })()
-  const src = optimizeUrl(rawSrc)
+  const src = optimizeUrl(rawSrc, 640)
   const [failed, setFailed] = useState(!rawSrc) // empty URL = instant placeholder
+  const [loaded, setLoaded] = useState(false)
   const alt = `${product.title} — ${VIEW_LABELS[view] ?? view}`
 
   if (failed) {
@@ -144,15 +145,27 @@ export default function ProductImage({ product, view, className = '', loading = 
     )
   }
 
+  const bg = PRODUCT_BG[product.id] ?? '#E8E2D8'
+
   return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      style={{ objectFit: 'cover', objectPosition: 'center', ...imgStyle }}
-      loading={loading}
-      decoding="async"
-      onError={() => setFailed(true)}
-    />
+    <div className={`relative ${className}`} style={{ backgroundColor: bg }}>
+      {/* Shimmer skeleton while loading */}
+      {!loaded && (
+        <div
+          className="absolute inset-0 animate-pulse"
+          style={{ backgroundColor: bg }}
+        />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`w-full h-full transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        style={{ objectFit: 'cover', objectPosition: 'center', ...imgStyle }}
+        loading={loading}
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        onError={() => setFailed(true)}
+      />
+    </div>
   )
 }
