@@ -347,7 +347,7 @@ function FeaturedDrops() {
                 <ProductImage
                   product={product} view="lifestyle"
                   className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                  loading="lazy"
+                  loading="eager"
                   imgStyle={{ objectPosition: drop === 'Clay' ? '50% 0%' : '50% 8%' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
