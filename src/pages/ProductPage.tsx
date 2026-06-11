@@ -1,288 +1,267 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
-import { PRODUCTS, DROP_COLORS } from '../data/products'
 import { useCart } from '../context/CartContext'
-import { getStock, isInStock } from '../lib/inventory'
-import { toggleWishlist, isWishlisted } from '../lib/wishlist'
-import Toast from '../components/Toast'
-import ProductCard from '../components/ProductCard'
-import ProductImage from '../components/ProductImage'
+import {
+  STATIC_PRODUCTS, fetchProductByHandle, formatPrice,
+  getProductAccent, getBadgeText, getProductBadgeClass,
+  type ShopifyProduct
+} from '../lib/shopify'
+import type { CartItem } from '../types'
+
+const CF = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663745291897/2HBFBRwReVdUcKECHB8taa/'
+
+// Extended product detail copy keyed by handle
+const PRODUCT_DETAIL: Record<string, {
+  tagline: string
+  bullets: string[]
+  supplement?: { servings: string; serving: string; callouts: string[] }
+  ingredients?: string
+  faqItems?: { q: string; a: string }[]
+}> = {
+  'kryve-greens-superfood-powder': {
+    tagline: 'Your daily foundation. 75+ organic superfoods, adaptogens, and probiotics in a single scoop.',
+    bullets: [
+      '75+ organic superfoods per serving',
+      'Digestive enzymes + probiotics for gut health',
+      'Adaptogenic herbs for stress resilience',
+      'No artificial flavors, sweeteners, or fillers',
+      'Third-party tested for purity and potency',
+    ],
+    supplement: {
+      servings: '30 servings',
+      serving: '1 scoop (10g)',
+      callouts: ['Organic Spirulina 2g', 'Ashwagandha 300mg', 'Lion\'s Mane 200mg', 'Probiotic Blend 5B CFU'],
+    },
+    faqItems: [
+      { q: 'When should I take KRYVE Greens?', a: 'Take one scoop in the morning — mixed into water, a smoothie, or juice — to start your day with foundational nutrition.' },
+      { q: 'Does it taste good?', a: 'We use natural flavors and a touch of organic stevia. Most customers describe it as a mild, earthy-sweet green taste.' },
+    ],
+  },
+  'kryve-hydrolyzed-collagen-peptides': {
+    tagline: 'Grass-fed hydrolyzed collagen peptides for skin elasticity, joint comfort, and connective tissue support.',
+    bullets: [
+      '20g grass-fed, pasture-raised collagen peptides per serving',
+      'Types I and III collagen for skin, hair, and nails',
+      'Unflavored — mixes into any liquid or food',
+      'Sourced from certified grass-fed bovine hide',
+      'Third-party tested for heavy metals and purity',
+    ],
+    supplement: {
+      servings: '30 servings',
+      serving: '1 scoop (22g)',
+      callouts: ['Hydrolyzed Collagen Peptides 20g', 'Type I Collagen', 'Type III Collagen'],
+    },
+    faqItems: [
+      { q: 'What\'s the best way to take it?', a: 'Mix one scoop into coffee, tea, smoothies, soups, or baked goods. It dissolves completely and is tasteless.' },
+      { q: 'How long until I see results?', a: 'Most users notice improvements in skin hydration within 4–6 weeks, joint comfort within 8–12 weeks.' },
+    ],
+  },
+  'kryve-magnesium-glycinate': {
+    tagline: 'Highly bioavailable magnesium glycinate for deep sleep, muscle recovery, and stress management.',
+    bullets: [
+      '400mg elemental magnesium glycinate per serving',
+      'Glycinate form for maximum absorption and gentleness',
+      'Supports deep, restful sleep and relaxation',
+      'Reduces muscle cramps and exercise recovery time',
+      'Formulated for long-term daily use — no laxative effect',
+    ],
+    supplement: {
+      servings: '60 servings',
+      serving: '2 capsules',
+      callouts: ['Magnesium Glycinate 400mg elemental', 'Bisgylcinate chelate for absorption'],
+    },
+    faqItems: [
+      { q: 'When should I take KRYVE Magnesium?', a: 'Take 2 capsules 30–60 minutes before bed for optimal sleep support and overnight muscle recovery.' },
+      { q: 'Is magnesium glycinate safe for daily use?', a: 'Yes. Glycinate is one of the most well-tolerated forms of magnesium and is safe for long-term daily supplementation.' },
+    ],
+  },
+  'the-kryve-stack': {
+    tagline: 'The complete KRYVE daily protocol. Morning Greens, Daytime Collagen, Evening Magnesium. One complete system.',
+    bullets: [
+      'Includes: KRYVE Greens + Collagen + Magnesium',
+      'Save $19.98 vs buying individually',
+      'Free shipping included — always',
+      'Complete morning-to-evening wellness protocol',
+      '90-day supply when used as directed',
+    ],
+    faqItems: [
+      { q: 'Is the Stack a subscription?', a: 'No — the KRYVE Stack is a one-time purchase. Subscribe & Save is optional for 15% off recurring orders.' },
+      { q: 'What if I want to try just one product first?', a: 'No problem — all three formulas are available individually. The Stack just offers the best value.' },
+    ],
+  },
+}
 
 export default function ProductPage() {
   const { handle } = useParams<{ handle: string }>()
-  const product = PRODUCTS.find(p => p.handle === handle)
   const { addItem } = useCart()
-
-  const [selectedSize, setSelectedSize] = useState<string | null>(
-    product?.sizes.length === 1 ? product.sizes[0] : null
-  )
-  type ImageView = 'primary' | 'lifestyle' | 'back' | 'detail'
-  const [activeImage, setActiveImage] = useState<ImageView>('primary')
-  const [toast, setToast] = useState<string | null>(null)
-  const [sizeError, setSizeError] = useState(false)
-  const [addedFeedback, setAddedFeedback] = useState(false)
-  const [wishlisted, setWishlisted] = useState(false)
+  const [product, setProduct] = useState<ShopifyProduct | null>(null)
+  const [imgIdx, setImgIdx] = useState(0)
+  const [added, setAdded] = useState(false)
 
   useEffect(() => {
-    if (product) setWishlisted(isWishlisted(product.id))
-  }, [product])
+    if (!handle) return
+    setImgIdx(0)
+    const staticMatch = STATIC_PRODUCTS.find(p => p.handle === handle)
+    if (staticMatch) {
+      setProduct(staticMatch as unknown as ShopifyProduct)
+    }
+    // Also try live API — will replace static if available
+    fetchProductByHandle(handle).then(p => { if (p) setProduct(p) }).catch(() => {})
+  }, [handle])
 
-  if (!product) return <Navigate to="/shop" replace />
+  if (!handle) return <Navigate to="/shop" replace />
+  if (!product) return (
+    <div className="kv-page" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <p style={{ color: '#666' }}>Loading product...</p>
+    </div>
+  )
 
-  const dropColor = DROP_COLORS[product.drop]
-  const related = PRODUCTS.filter(p => p.drop === product.drop && p.id !== product.id).slice(0, 4)
+  const detail = PRODUCT_DETAIL[product.handle]
+  const images = product.images.edges.map(e => e.node)
+  const variant = product.variants.edges[0]?.node
+  const price = variant?.price.amount || product.priceRange.minVariantPrice.amount
+  const compareAt = variant?.compareAtPrice?.amount
+  const accent = getProductAccent(product.handle)
 
   function handleAddToCart() {
-    if (!selectedSize) { setSizeError(true); return }
-    setSizeError(false)
-
-    if (!isInStock(product!.id, selectedSize)) {
-      setToast('This size is out of stock.')
-      return
-    }
-
-    addItem({
-      variantId: `${product!.id}-${selectedSize}`,
+    if (!variant) return
+    const item: CartItem = {
+      variantId: variant.id,
       productId: product!.id,
       title: product!.title,
-      variantTitle: selectedSize,
-      price: product!.price,
+      variantTitle: variant.title,
+      price: parseFloat(price),
       quantity: 1,
-      image: product!.imageProduct,
+      image: images[0]?.url || '',
       handle: product!.handle,
-    })
-
-    setAddedFeedback(true)
-    setTimeout(() => setAddedFeedback(false), 600)
-    setToast(`${product!.title} — ${selectedSize} added to cart`)
-  }
-
-  function handleWishlist() {
-    const added = toggleWishlist(product!.id)
-    setWishlisted(added)
-    setToast(added ? '♥ Added to wishlist' : 'Removed from wishlist')
+    }
+    addItem(item)
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
   }
 
   return (
-    <main className="min-h-screen pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-        {/* Breadcrumb */}
-        <nav className="mb-8 font-body text-xs text-[#AAA] flex items-center gap-2" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-[#1A1A1A] transition-colors">Home</Link>
-          <span>/</span>
-          <Link to="/shop" className="hover:text-[#1A1A1A] transition-colors">Shop</Link>
-          <span>/</span>
-          <Link to={`/shop?drop=${product.drop}`} className="hover:text-[#1A1A1A] transition-colors">{product.drop}</Link>
-          <span>/</span>
-          <span className="text-[#1A1A1A]">{product.title}</span>
-        </nav>
+    <div className="kv-pdp">
+      {/* Breadcrumb */}
+      <nav className="kv-pdp-breadcrumb">
+        <Link to="/">Home</Link>
+        <span>/</span>
+        <Link to="/shop">Shop</Link>
+        <span>/</span>
+        <span>{product.title}</span>
+      </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          {/* Images */}
-          <div>
-            <div
-              className="relative overflow-hidden rounded-sm bg-[#EDE8E2] aspect-[4/5] group cursor-zoom-in"
-              role="img"
-              aria-label={`${product.title} — ${activeImage} view`}
-            >
-              <ProductImage
-                product={product}
-                view={activeImage}
-                className="w-full h-full object-cover transition-transform duration-200 ease-out group-hover:scale-[1.04]"
-                loading="eager"
-              />
-            </div>
-
-            <div className="flex gap-2.5 mt-3">
-              {(['primary', 'lifestyle', 'back', 'detail'] as ImageView[]).map((view) => {
-                const labels = { primary: 'Product', lifestyle: 'On-model', back: 'Back', detail: 'Detail' }
-                return (
-                  <button
-                    key={view}
-                    onClick={() => setActiveImage(view)}
-                    className={`relative overflow-hidden rounded-sm bg-[#EDE8E2] w-16 h-20 flex-shrink-0 transition-all duration-160 ${
-                      activeImage === view ? 'ring-2 ring-[#1A1A1A] opacity-100' : 'opacity-50 hover:opacity-100'
-                    }`}
-                    aria-label={labels[view]}
-                    aria-pressed={activeImage === view}
-                  >
-                    <ProductImage product={product} view={view} className="w-full h-full object-cover" loading="lazy" />
-                  </button>
-                )
-              })}
-            </div>
+      <div className="kv-pdp-layout">
+        {/* Images */}
+        <div className="kv-pdp-images">
+          <div className="kv-pdp-main-img">
+            <img
+              src={images[imgIdx]?.url || ''}
+              alt={images[imgIdx]?.altText || product.title}
+            />
           </div>
-
-          {/* Product info */}
-          <div className="lg:pt-2">
-            <div className="flex items-start justify-between mb-4">
-              <span
-                className="inline-block font-body text-[10px] font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full text-[#FAF8F5]"
-                style={{ backgroundColor: dropColor }}
-              >
-                Drop — {product.drop}
-              </span>
-              {/* Wishlist */}
-              <button
-                onClick={handleWishlist}
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-[#E5E0D8] hover:border-[#1A1A1A] transition-colors"
-                aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" strokeWidth="1.5"
-                  fill={wishlisted ? '#EF4444' : 'none'}
-                  stroke={wishlisted ? '#EF4444' : 'currentColor'}
+          {images.length > 1 && (
+            <div className="kv-pdp-thumbs">
+              {images.map((img, i) => (
+                <button
+                  key={i}
+                  className={`kv-pdp-thumb${i === imgIdx ? ' active' : ''}`}
+                  style={i === imgIdx ? { borderColor: accent } : {}}
+                  onClick={() => setImgIdx(i)}
+                  aria-label={`View image ${i + 1}`}
                 >
-                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-                </svg>
-              </button>
-            </div>
-
-            <h1 className="font-display font-black text-3xl sm:text-4xl tracking-tight mb-1">{product.title}</h1>
-            <p className="font-body text-sm text-[#888] mb-4">{product.color}</p>
-            <p className="font-display font-bold text-2xl mb-6">${product.price}</p>
-            <p className="font-body text-sm text-[#555] leading-relaxed mb-8">{product.description}</p>
-
-            {/* Size selector */}
-            {product.sizes.length > 1 && (
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-3">
-                  <label className="font-body text-xs font-semibold tracking-widest uppercase">
-                    Size
-                    {selectedSize && <span className="ml-2 font-normal normal-case tracking-normal text-[#888]">— {selectedSize}</span>}
-                  </label>
-                  <Link to="/size-guide" className="font-body text-xs text-[#AAA] hover:text-[#1A1A1A] transition-colors underline underline-offset-2">
-                    Size Guide
-                  </Link>
-                </div>
-                <div className="flex gap-2 flex-wrap" role="group" aria-label="Select size">
-                  {product.sizes.map(size => {
-                    const stock = getStock(product.id, size)
-                    const outOfStock = stock === 0
-                    const lowStock = stock > 0 && stock <= 5
-                    return (
-                      <button
-                        key={size}
-                        onClick={() => { if (!outOfStock) { setSelectedSize(size); setSizeError(false) } }}
-                        disabled={outOfStock}
-                        className={`relative font-body text-sm font-medium w-12 h-12 border rounded-sm transition-all duration-160 ${
-                          outOfStock
-                            ? 'opacity-30 cursor-not-allowed border-[#D8D3CC] line-through'
-                            : selectedSize === size
-                            ? 'bg-[#1A1A1A] text-[#FAF8F5] border-[#1A1A1A]'
-                            : sizeError
-                            ? 'border-red-400 hover:border-[#1A1A1A]'
-                            : 'border-[#D8D3CC] hover:border-[#1A1A1A]'
-                        }`}
-                        aria-pressed={selectedSize === size}
-                        aria-label={`Size ${size}${outOfStock ? ' — Out of Stock' : lowStock ? ` — Only ${stock} left` : ''}`}
-                        title={outOfStock ? 'Out of stock' : lowStock ? `Only ${stock} left` : undefined}
-                      >
-                        {size}
-                        {lowStock && !outOfStock && (
-                          <span className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full" />
-                        )}
-                      </button>
-                    )
-                  })}
-                </div>
-                {sizeError && <p className="font-body text-xs text-red-500 mt-2" role="alert">Please select a size.</p>}
-                {selectedSize && getStock(product.id, selectedSize) <= 5 && getStock(product.id, selectedSize) > 0 && (
-                  <p className="font-body text-xs text-orange-500 mt-2">
-                    ⚡ Only {getStock(product.id, selectedSize)} left in {selectedSize}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Add to cart + buy now */}
-            <div className="flex gap-3">
-              <button
-                onClick={handleAddToCart}
-                className={`flex-1 font-display font-bold text-sm tracking-widest uppercase py-4 rounded-sm transition-all duration-160 ${
-                  addedFeedback
-                    ? 'bg-[#4A5E3A] text-[#FAF8F5] scale-[0.97]'
-                    : 'bg-[#1A1A1A] text-[#FAF8F5] hover:bg-[#333] active:scale-[0.97]'
-                }`}
-              >
-                {addedFeedback ? 'Added ✓' : 'Add to Cart'}
-              </button>
-            </div>
-
-            {/* Trust signals */}
-            <div className="flex flex-wrap gap-4 mt-5">
-              {[
-                { icon: '🔒', text: 'Secure checkout' },
-                { icon: '↩️', text: '30-day returns' },
-                { icon: '🚚', text: 'Free shipping $100+' },
-              ].map(t => (
-                <span key={t.text} className="flex items-center gap-1.5 font-body text-xs text-[#888]">
-                  <span>{t.icon}</span>{t.text}
-                </span>
+                  <img src={img.url} alt={img.altText || product.title} loading="lazy" />
+                </button>
               ))}
             </div>
-
-            {/* Accordion details */}
-            <div className="mt-10 border-t border-[#E5E0D8] pt-8 space-y-4">
-              {[
-                {
-                  title: 'Details',
-                  content: [
-                    'Garment-dyed for vintage character',
-                    'Embroidered hpm3® logo',
-                    'Oversized / relaxed fit',
-                    '100% heavyweight cotton (or premium fleece blend)',
-                    'Made to order — ships in 5–7 business days',
-                  ],
-                },
-                {
-                  title: 'Shipping & Returns',
-                  content: [
-                    'Free shipping on orders over $100',
-                    'Standard: 5–7 business days',
-                    '30-day returns — see our Returns page',
-                    'Items must be unworn and unwashed',
-                  ],
-                },
-                {
-                  title: 'Care Instructions',
-                  content: [
-                    'Machine wash cold, inside out',
-                    'Tumble dry low or hang dry',
-                    'Do not bleach or iron embroidery',
-                    'Wash with similar colors',
-                  ],
-                },
-              ].map(({ title, content }) => (
-                <details key={title} className="group border-t border-[#E5E0D8] pt-4 first:border-t-0 first:pt-0">
-                  <summary className="flex justify-between items-center font-body text-xs font-semibold tracking-widest uppercase cursor-pointer list-none hover:opacity-60 transition-opacity">
-                    {title}
-                    <span className="transition-transform group-open:rotate-45 text-lg leading-none">+</span>
-                  </summary>
-                  <div className="mt-4 space-y-2">
-                    {content.map(line => (
-                      <p key={line} className="font-body text-sm text-[#555] leading-relaxed">• {line}</p>
-                    ))}
-                  </div>
-                </details>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Related products */}
-        {related.length > 0 && (
-          <section className="mt-20 sm:mt-28">
-            <h2 className="font-display font-black text-2xl sm:text-3xl tracking-tight mb-8">
-              More from Drop {product.drop}
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-              {related.map(p => <ProductCard key={p.id} product={p} />)}
+        {/* Info */}
+        <div className="kv-pdp-info">
+          {detail && (
+            <span className={`kv-pcard-badge ${getProductBadgeClass(product.handle)}`} style={{ marginBottom: 12, display: 'inline-block' }}>
+              {getBadgeText(product.handle)}
+            </span>
+          )}
+          <h1 className="kv-pdp-title">{product.title}</h1>
+          {detail?.tagline && <p className="kv-pdp-tagline">{detail.tagline}</p>}
+
+          <div className="kv-pdp-price-row">
+            <span className="kv-pdp-price">{formatPrice(price)}</span>
+            {compareAt && parseFloat(compareAt) > parseFloat(price) && (
+              <span className="kv-pdp-compare">{formatPrice(compareAt)}</span>
+            )}
+          </div>
+
+          {detail?.bullets && (
+            <ul className="kv-pdp-bullets">
+              {detail.bullets.map(b => (
+                <li key={b}><span style={{ color: accent }}>✓</span> {b}</li>
+              ))}
+            </ul>
+          )}
+
+          <button
+            className="kv-pdp-atc"
+            style={added ? { backgroundColor: accent, color: '#000' } : {}}
+            onClick={handleAddToCart}
+          >
+            {added ? '✓ ADDED TO CART' : 'ADD TO CART'}
+          </button>
+
+          <p className="kv-pdp-guarantee">🔒 30-Day Money-Back Guarantee · Free shipping $75+</p>
+
+          {/* Supplement callouts */}
+          {detail?.supplement && (
+            <div className="kv-pdp-supplement">
+              <p className="kv-pdp-supplement-meta">{detail.supplement.servings} · {detail.supplement.serving}</p>
+              <div className="kv-pdp-callouts">
+                {detail.supplement.callouts.map(c => (
+                  <div key={c} className="kv-pdp-callout" style={{ borderColor: accent + '44' }}>
+                    {c}
+                  </div>
+                ))}
+              </div>
             </div>
-          </section>
-        )}
+          )}
+        </div>
       </div>
 
-      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
-    </main>
+      {/* FAQ section */}
+      {detail?.faqItems && (
+        <div className="kv-pdp-faq">
+          <h2>Common Questions</h2>
+          {detail.faqItems.map(faq => (
+            <details key={faq.q} className="kv-pdp-faq-item">
+              <summary>{faq.q}</summary>
+              <p>{faq.a}</p>
+            </details>
+          ))}
+        </div>
+      )}
+
+      {/* Related products */}
+      <div className="kv-pdp-related">
+        <h2>You May Also Like</h2>
+        <div className="kv-pdp-related-grid">
+          {(STATIC_PRODUCTS as unknown as ShopifyProduct[])
+            .filter(p => p.handle !== product.handle)
+            .slice(0, 3)
+            .map(p => (
+              <Link key={p.id} to={`/products/${p.handle}`} className="kv-pdp-related-card">
+                <img src={p.images.edges[0]?.node.url} alt={p.title} loading="lazy" />
+                <p className="kv-pdp-related-title">{p.title}</p>
+                <p className="kv-pdp-related-price">{formatPrice(p.priceRange.minVariantPrice.amount)}</p>
+              </Link>
+            ))}
+        </div>
+      </div>
+
+      {/* FDA */}
+      <div className="kv-fda" style={{ marginTop: 0 }}>
+        <p>*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.</p>
+      </div>
+    </div>
   )
 }

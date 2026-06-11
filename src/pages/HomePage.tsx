@@ -1,774 +1,721 @@
+import { useState, useEffect, useRef, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { PRODUCTS, DROP_COLORS } from '../data/products'
-import ProductImage from '../components/ProductImage'
 import { useCart } from '../context/CartContext'
-import { useState, useEffect, useRef, useCallback } from 'react'
-import Toast from '../components/Toast'
-import type { LocalProduct } from '../types'
+import { STATIC_PRODUCTS, formatPrice, type ShopifyProduct } from '../lib/shopify'
+import type { CartItem } from '../types'
 
-// ── Data ──────────────────────────────────────────────────────────────────────
+// ── Hero slides — exact match to live kryve-2.myshopify.com ─────────────────
+const CF = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663745291897/2HBFBRwReVdUcKECHB8taa/'
+const CDN_ASSETS = 'https://cdn.shopify.com/s/files/1/0824/2108/8515/t/1/assets/'
 
-// girl → guy → girl order  (Fog woman, Sand man, Clay woman)
-const DROPS = ['Fog', 'Sand', 'Clay'] as const
-type Drop = typeof DROPS[number]
-
-const DROP_HERO_PRODUCT: Record<Drop, LocalProduct> = {
-  Fog:  PRODUCTS.find(p => p.id === 'fog-hoodie')!,        // different model from carousel fog-fitted-tee woman
-  Sand: PRODUCTS.find(p => p.id === 'sand-joggers')!,      // different model from carousel sand-tee man
-  Clay: PRODUCTS.find(p => p.id === 'clay-hoodie')!,       // different model from carousel clay-fitted-tank woman
-}
-
-// Dedicated carousel hero images — decoupled from product images.
-const DROP_HERO_IMAGE: Record<Drop, string> = {
-  Fog:  PRODUCTS.find(p => p.id === 'fog-fitted-tee')!.images?.lifestyle || '',                                            // woman — fitted tee (CloudFront ✅)
-  Sand: '/images/hpm3_sand_01_tee_lifestyle.png',                                                                           // tee — front-facing man, face visible
-  Clay: PRODUCTS.find(p => p.id === 'clay-fitted-tank')!.images?.lifestyle || '',                                          // woman — fitted tank (CloudFront ✅)
-  // Clay man (camel jacket, saved for product page / about page use):
-  // 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=1920&q=80&fit=crop&auto=format'
-}
-
-const DROP_SUBTITLES: Record<Drop, string> = {
-  Sand: 'Desert warmth. Vintage silhouettes.',
-  Clay: 'Earthy tones. Elevated essentials.',
-  Fog:  'Muted hues. Minimal branding.',
-}
-
-// Mix of men's + women's across all 3 drops
-const GRID_PRODUCTS = [
-  PRODUCTS.find(p => p.id === 'sand-hoodie')!,       // Sand men's
-  PRODUCTS.find(p => p.id === 'sand-fitted-tee')!,   // Sand women's
-  PRODUCTS.find(p => p.id === 'clay-tee')!,          // Clay men's
-  PRODUCTS.find(p => p.id === 'clay-sleeveless')!,   // Clay women's
-  PRODUCTS.find(p => p.id === 'fog-tee')!,           // Fog men's
-  PRODUCTS.find(p => p.id === 'fog-sleeveless')!,    // Fog women's
+const HERO_SLIDES = [
+  {
+    bg: 'https://cdn.shopify.com/s/files/1/0824/2108/8515/t/1/assets/hero-couple-v6.png',
+    bgPos: 'center top',
+    badge: { bg: '#7A5C00', color: '#D4AF37', text: 'SAVE $19.98' },
+    eyebrow: { color: '#D4AF37', text: 'The Complete Stack' },
+    h1: ['ONE RITUAL.', 'TOTAL RESULTS.'],
+    sub: 'All 3 KRYVE formulas together - your complete daily foundation.*',
+    btn: { text: 'GET THE STACK $129.99', to: '/products/the-kryve-stack', cls: 'kv-hbtn-gd' },
+  },
+  {
+    bg: CF + 'hero-greens-v4-FpC5SLDGRGgRaFpT6mgAVm.webp',
+    bgPos: 'center top',
+    badge: { bg: '#064E3B', color: '#39FF14', text: 'BEST SELLER' },
+    eyebrow: { color: '#39FF14', text: 'Greens Superfood Powder' },
+    h1: ['Fuel Your', 'Foundation.'],
+    sub: '75+ superfoods. Clean energy, immune support, and gut health in every scoop.*',
+    btn: { text: 'SHOP GREENS $49.99', to: '/products/kryve-greens-superfood-powder', cls: 'kv-hbtn-g' },
+  },
+  {
+    bg: CF + 'hero-collagen-v10-A4n7BnVLv8sW9Dc2eJEZkZ.webp',
+    bgPos: 'center center',
+    badge: { bg: '#6B2737', color: '#F4C2C8', text: 'GRASS-FED' },
+    eyebrow: { color: '#B76E79', text: 'Collagen Peptides' },
+    h1: ['Glow From', 'Within.'],
+    sub: 'Grass-fed hydrolyzed collagen for radiant skin, strong hair, and joint support.*',
+    btn: { text: 'SHOP COLLAGEN $54.99', to: '/products/kryve-hydrolyzed-collagen-peptides', cls: 'kv-hbtn-r' },
+  },
+  {
+    bg: CF + 'hero-magnesium-v4-69X7SALdjYbiafchJLksSj.webp',
+    bgPos: 'center top',
+    badge: { bg: '#3B1F6B', color: '#C4B5FD', text: 'HIGH ABSORPTION' },
+    eyebrow: { color: '#7C3AED', text: 'Magnesium Glycinate' },
+    h1: ['Rest. Recover.', 'Rise.'],
+    sub: 'High-absorption magnesium for deep sleep, stress relief, and muscle recovery.*',
+    btn: { text: 'SHOP MAGNESIUM $39.99', to: '/products/kryve-magnesium-glycinate', cls: 'kv-hbtn-v' },
+  },
+  {
+    bg: CF + 'hero-stack-v4-AaFoRVQvMorhuG9icoJQ6w.webp',
+    bgPos: 'center top',
+    badge: { bg: '#7A5C00', color: '#D4AF37', text: 'SAVE $19.98' },
+    eyebrow: { color: '#D4AF37', text: 'The Complete Stack' },
+    h1: ['The KRYVE', 'Stack.'],
+    sub: 'All 3 formulas. One daily ritual.\nFree shipping included.',
+    btn: { text: 'GET THE STACK $129.99', to: '/products/the-kryve-stack', cls: 'kv-hbtn-gd' },
+  },
 ]
 
-// Urgency metadata — which products have which badges
-const BADGES: Record<string, 'new' | 'low-stock' | 'both'> = {
-  'sand-hoodie':       'low-stock',
-  'sand-fitted-tee':   'new',
-  'clay-tee':          'low-stock',
-  'clay-sleeveless':   'new',
-  'fog-tee':           'low-stock',
-  'fog-sleeveless':    'new',
-}
+// ── Compare table — exact match to live ──────────────────────────────────────
+const COMPARE_ROWS = [
+  {
+    feature: 'Number of formulas',
+    kryve: { text: '✓ 3 Complete Formulas', yes: true },
+    leading: { text: '✗', label: '1 Formula', yes: false },
+    womens: { text: '✗', label: '1 Formula', yes: false },
+  },
+  {
+    feature: 'Greens superfood blend',
+    kryve: { text: '✓ Included', yes: true },
+    leading: { text: '✓', label: 'Included', yes: true },
+    womens: { text: '✓', label: 'Included', yes: true },
+  },
+  {
+    feature: 'Collagen formula',
+    kryve: { text: '✓ Included', yes: true },
+    leading: { text: '✗', label: 'Not offered', yes: false },
+    womens: { text: '✗', label: 'Not offered', yes: false },
+  },
+  {
+    feature: 'Magnesium formula',
+    kryve: { text: '✓ Included', yes: true },
+    leading: { text: '✗', label: 'Not offered', yes: false },
+    womens: { text: '✗', label: 'Not offered', yes: false },
+  },
+  {
+    feature: 'Complete bundle option',
+    kryve: { text: '✓ $129.99', yes: true },
+    leading: { text: '✗', label: 'Not available', yes: false },
+    womens: { text: '✗', label: 'Not available', yes: false },
+  },
+  {
+    feature: 'GMP-Certified Facility',
+    kryve: { text: '✓ Yes', yes: true },
+    leading: { text: '✓', label: 'Yes', yes: true },
+    womens: { text: '✓', label: 'Yes', yes: true },
+    last: true,
+  },
+]
 
-// ── Hooks ─────────────────────────────────────────────────────────────────────
+// ── Why KRYVE stats ───────────────────────────────────────────────────────────
+const WHY_STATS = [
+  { target: 47, suffix: '+', label: 'Superfoods & Nutrients', custom: null },
+  { target: 0, suffix: '', label: 'Artificial Fillers', custom: '✓ Zero' },
+  { target: 3, suffix: '', label: 'Targeted Formulas', custom: null },
+  { target: 1, suffix: '', label: 'Daily Ritual', custom: null },
+]
 
-function useInView(threshold = 0.3) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [inView, setInView] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
-      { threshold }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [threshold])
-  return { ref, inView }
-}
+// ── Why KRYVE benefits ────────────────────────────────────────────────────────
+const WHY_BENEFITS = [
+  {
+    title: 'Science-Backed Formulas',
+    body: 'Every ingredient chosen for efficacy, not filler. Backed by research, built for results.',
+  },
+  {
+    title: 'Third-Party Tested',
+    body: 'Every batch tested for purity and potency. What is on the label is in the bottle.',
+  },
+  {
+    title: 'Manufactured in a GMP-Certified Facility',
+    body: 'Made in USA-based facilities meeting strict GMP quality standards.',
+  },
+]
 
-// Counts up from 0 → target over `duration` ms when triggered
-function useCounter(target: number, duration: number, active: boolean) {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    if (!active) return
-    const start = performance.now()
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1)
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.round(eased * target))
-      if (progress < 1) requestAnimationFrame(tick)
-    }
-    requestAnimationFrame(tick)
-  }, [active, target, duration])
-  return count
-}
+// ── Gallery images ────────────────────────────────────────────────────────────
+const GALLERY_IMGS = [
+  {
+    url: CF + 'lifestyle-greens-v3-KfcLMaiaeyYpSLVdVWffMR.png',
+    alt: 'KRYVE Greens Superfood Powder lifestyle',
+    large: true,
+  },
+  {
+    url: CF + 'lifestyle-magnesium-v5-hVvzLiSqemDZuhQKSsuqqr.webp',
+    alt: 'KRYVE Magnesium Glycinate lifestyle',
+    large: false,
+  },
+  {
+    url: CF + 'lifestyle-collagen-v4-Q9JwTfxrYCUtVv3dWchrir.webp',
+    alt: 'KRYVE Collagen Peptides lifestyle',
+    large: false,
+  },
+]
 
-// ── Sticky CTA ────────────────────────────────────────────────────────────────
+// ── HIW icons (SVG paths matching live site) ──────────────────────────────────
+const HIW_STEPS = [
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="1.5">
+        <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 3H8l-2 4h12l-2-4z"/>
+      </svg>
+    ),
+    step: 'Step 01',
+    title: 'Choose Your Formula',
+    body: 'Select the supplement that fits your goals, or get all three in The Stack.',
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="1.5">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    ),
+    step: 'Step 02',
+    title: 'Make It a Ritual',
+    body: 'One scoop or capsule daily. Simple. Consistent. Powerful.',
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="1.5">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    ),
+    step: 'Step 03',
+    title: 'Feel the Difference',
+    body: 'Experience the results within weeks.*',
+  },
+]
 
-function StickyCTA() {
-  const [visible, setVisible] = useState(false)
+// ── Hero component ────────────────────────────────────────────────────────────
+function Hero() {
+  const [current, setCurrent] = useState(0)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Show after scrolling past ~90vh (past hero)
-      setVisible(window.scrollY > window.innerHeight * 0.9)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  return (
-    <div
-      className="fixed bottom-6 right-4 sm:right-6 z-50 transition-all duration-300"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(16px)',
-        pointerEvents: visible ? 'auto' : 'none',
-      }}
-    >
-      <Link
-        to="/shop"
-        className="flex items-center gap-2 font-display font-bold text-sm tracking-widest uppercase px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-2xl transition-all duration-150 active:scale-[0.97] hover:scale-[1.04]"
-        style={{ backgroundColor: '#1A1A1A', color: '#FAF8F5', boxShadow: '0 8px 32px rgba(0,0,0,0.35)' }}
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M2 2h2l2.5 7h5l1.5-4.5H5.5"/>
-          <circle cx="7" cy="13" r="1" fill="currentColor" stroke="none"/>
-          <circle cx="12" cy="13" r="1" fill="currentColor" stroke="none"/>
-        </svg>
-        Shop Now
-      </Link>
-    </div>
-  )
-}
-
-// ── Hero Carousel ─────────────────────────────────────────────────────────────
-
-function HeroCarousel() {
-  const [active, setActive]   = useState(0)
-  const [leaving, setLeaving] = useState<number | null>(null)
-  const [imgLoaded, setImgLoaded] = useState(false)
-  const timerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const activeRef  = useRef(0)   // always mirrors `active` without closure staleness
-
-  const changeTo = useCallback((next: number) => {
-    const curr = activeRef.current
-    if (next === curr) return
-    setLeaving(curr)
-    setActive(next)
-    activeRef.current = next
-    // Remove the leaving slide overlay once CSS fade-out finishes (700ms)
-    setTimeout(() => setLeaving(null), 700)
-  }, [])
-
-  const goTo    = useCallback((idx: number) => changeTo(idx), [changeTo])
-  const advance = useCallback((dir: 1 | -1) => {
-    changeTo((activeRef.current + dir + DROPS.length) % DROPS.length)
-  }, [changeTo])
-
-  useEffect(() => {
-    timerRef.current = setTimeout(() => advance(1), 6000)
-    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
-  }, [active, advance])
-
-  const drop = DROPS[active]
-  const product = DROP_HERO_PRODUCT[drop]
-  const dropColor = DROP_COLORS[drop]
-
-  return (
-    <section
-      className="relative w-full overflow-hidden bg-[#111]"
-      style={{
-        // 56.25% = 16:9 on desktop, cap at 780px, floor at 480px on mobile
-        height: 'clamp(480px, 56.25vw, 780px)',
-      }}
-    >
-      {/* Loading skeleton — pulses until first image loads */}
-      <div
-        className="absolute inset-0 bg-[#222] transition-opacity duration-500"
-        style={{ opacity: imgLoaded ? 0 : 1, pointerEvents: 'none' }}
-        aria-hidden="true"
-      >
-        {/* Subtle animated shimmer */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)',
-            animation: 'shimmer 1.8s ease-in-out infinite',
-          }}
-        />
-      </div>
-
-      {/* Slides — all pre-rendered; CSS handles crossfade + Ken Burns scale */}
-      {DROPS.map((d, i) => {
-        const isActive  = i === active
-        const isLeaving = i === leaving
-        return (
-          <div
-            key={d}
-            className="absolute inset-0 overflow-hidden"
-            style={{
-              opacity: isActive ? 1 : isLeaving ? 0 : 0,
-              transition: isActive ? 'opacity 700ms ease-in-out' : isLeaving ? 'opacity 700ms ease-in-out' : 'none',
-              zIndex: isActive ? 2 : isLeaving ? 1 : 0,
-            }}
-            aria-hidden={!isActive}
-          >
-            <img
-              src={DROP_HERO_IMAGE[d]}
-              alt={`${d} drop lifestyle`}
-              className="w-full h-full"
-              style={{
-                objectFit: d === 'Sand' ? 'contain' : 'cover',
-                objectPosition: d === 'Fog' ? '50% 0%' : d === 'Sand' ? '50% 50%' : '50% 12%',
-                backgroundColor: d === 'Sand' ? '#111' : 'transparent',
-                // Ken Burns: active slides slowly zoom in, leaving slides freeze
-                transform: isActive ? 'scale(1.04)' : 'scale(1.0)',
-                transition: isActive ? 'transform 7s ease-out' : 'transform 700ms ease-in-out',
-                transformOrigin: '55% 30%',
-              }}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              decoding="async"
-              onLoad={() => { if (isActive) setImgLoaded(true) }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
-          </div>
-        )
-      })}
-
-      {/* Slide content — re-mounts on each slide change to replay the fade-up animation */}
-      {[active].map(a => (
-      <div
-        key={a}
-        className="absolute inset-0 flex flex-col justify-end pl-16 pr-16 sm:pl-20 sm:pr-20 lg:pl-24 lg:pr-24 pb-16 sm:pb-20 z-10"
-        style={{ animation: 'slideContentIn 600ms ease-out both' }}
-      >
-        <div className="flex items-center gap-3 mb-3 sm:mb-4">
-          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: dropColor }} />
-          <span className="font-body text-[11px] tracking-[0.3em] uppercase text-white/60">Drop {active + 1} of 3</span>
-        </div>
-        <h1 className="font-display font-black text-[clamp(40px,9vw,112px)] leading-none tracking-tight text-white mb-2 sm:mb-3">
-          {drop}
-        </h1>
-        <p className="font-body text-sm sm:text-base text-white/55 mb-6 sm:mb-8 tracking-wide max-w-xs">
-          {DROP_SUBTITLES[drop]}
-        </p>
-        <Link
-          to={`/shop?drop=${drop}`}
-          className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-widest uppercase px-7 py-3.5 sm:px-8 sm:py-4 rounded-sm transition-all duration-150 active:scale-[0.97] hover:brightness-110 w-fit min-h-[48px]"
-          style={{ backgroundColor: dropColor, color: '#FAF8F5' }}
-        >
-          Shop {drop}
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M2 7h10M8 3l4 4-4 4"/>
-          </svg>
-        </Link>
-      </div>
-      ))}
-
-      {/* Arrow buttons — vertically centered, clear of content area */}
-      <button
-        onClick={() => advance(-1)}
-        className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white transition-all duration-150 hover:scale-110 active:scale-95"
-        style={{ backgroundColor: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 12px rgba(0,0,0,0.3)' }}
-        aria-label="Previous slide"
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <path d="M10 3L5 8l5 5"/>
-        </svg>
-      </button>
-      <button
-        onClick={() => advance(1)}
-        className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white transition-all duration-150 hover:scale-110 active:scale-95"
-        style={{ backgroundColor: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 12px rgba(0,0,0,0.3)' }}
-        aria-label="Next slide"
-      >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <path d="M6 3l5 5-5 5"/>
-        </svg>
-      </button>
-
-      {/* Dot indicators — left-aligned with content so they never overlap the shirt logo */}
-      <div className="absolute bottom-5 sm:bottom-7 left-16 sm:left-20 lg:left-24 flex gap-2 items-center z-20">
-        {DROPS.map((d, i) => (
-          <button
-            key={d}
-            onClick={() => goTo(i)}
-            aria-label={`Go to slide ${i + 1}`}
-            className="p-1" // larger touch target
-          >
-            <span
-              className="block rounded-full transition-all duration-300"
-              style={{
-                width: i === active ? 22 : 7,
-                height: 7,
-                backgroundColor: i === active ? DROP_COLORS[d] : 'rgba(255,255,255,0.35)',
-              }}
-            />
-          </button>
-        ))}
-      </div>
-
-    </section>
-  )
-}
-
-// ── Featured Drops ────────────────────────────────────────────────────────────
-
-function FeaturedDrops() {
-  return (
-    <section className="bg-[#FAF8F5] w-full px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10">
-          <p className="font-body text-[11px] tracking-[0.3em] uppercase text-[#8B6F47] mb-3">The Collection</p>
-          <h2 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-[#1A1A1A]">
-            Three Drops. One Vision.
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-          {DROPS.map((drop, i) => {
-            const product = DROP_HERO_PRODUCT[drop]
-            const dropColor = DROP_COLORS[drop]
-            return (
-              <Link
-                key={drop}
-                to={`/shop?drop=${drop}`}
-                className="group relative block overflow-hidden bg-[#EDE8E2] aspect-[3/4] md:aspect-square"
-                style={{
-                  borderRadius: 8,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 16px 48px rgba(0,0,0,0.2)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)' }}
-                aria-label={`Shop Drop ${i + 1} — ${drop}`}
-              >
-                <ProductImage
-                  product={product} view="lifestyle"
-                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                  loading="eager"
-                  imgStyle={{ objectPosition: drop === 'Clay' ? '50% 0%' : '50% 8%' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <span
-                    className="inline-block font-body text-[10px] tracking-[0.22em] uppercase px-2.5 py-1 rounded-full text-white mb-3"
-                    style={{ backgroundColor: dropColor }}
-                  >
-                    Drop {i + 1}
-                  </span>
-                  <p className="font-display font-black text-3xl sm:text-4xl tracking-tight text-white mb-1">{drop}</p>
-                  <p className="font-body text-xs text-white/55 mb-5 tracking-wide">{DROP_SUBTITLES[drop]}</p>
-                  <span className="inline-flex items-center gap-2 font-display font-bold text-xs tracking-widest uppercase text-white border border-white/30 px-4 py-2.5 rounded-sm group-hover:bg-white group-hover:text-[#1A1A1A] group-hover:border-white transition-all duration-200">
-                    Shop {drop}
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M2 6h8M6 2l4 4-4 4"/>
-                    </svg>
-                  </span>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-
-        {/* See All Products CTA */}
-        <div className="text-center mt-10">
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-widest uppercase px-10 py-4 border-2 border-[#1A1A1A] text-[#1A1A1A] rounded-sm hover:bg-[#1A1A1A] hover:text-[#FAF8F5] active:scale-[0.97] transition-all duration-200"
-          >
-            See All Products
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M2 7h10M8 3l4 4-4 4"/>
-            </svg>
-          </Link>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ── Grid Card ─────────────────────────────────────────────────────────────────
-
-function GridCard({ product, onAdd, animIn, delay }: {
-  product: LocalProduct
-  onAdd: (p: LocalProduct) => void
-  animIn: boolean
-  delay: number
-}) {
-  const [hovered, setHovered] = useState(false)
-  const [adding, setAdding] = useState(false)
-  const hasBack = !!product.images?.back
-  const badge = BADGES[product.id]
-
-  function handleAdd(e: React.MouseEvent) {
-    e.preventDefault()
-    e.stopPropagation()
-    setAdding(true)
-    onAdd(product)
-    setTimeout(() => setAdding(false), 900)
+  function go(n: number) {
+    setCurrent((n + HERO_SLIDES.length) % HERO_SLIDES.length)
   }
 
+  function startTimer() {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    intervalRef.current = setInterval(() => {
+      setCurrent(c => (c + 1) % HERO_SLIDES.length)
+    }, 5500)
+  }
+
+  useEffect(() => {
+    startTimer()
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
+  }, [])
+
   return (
-    <div
-      style={{
-        opacity: animIn ? 1 : 0,
-        transform: animIn ? 'translateY(0)' : 'translateY(32px)',
-        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
-      }}
-    >
-      <Link
-        to={`/products/${product.handle}`}
-        className="group block"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        {/* Image container */}
+    <section className="kv-hw">
+      {/* Slides */}
+      {HERO_SLIDES.map((slide, i) => (
         <div
-          className="relative overflow-hidden bg-[#EDE8E2] aspect-square mb-3 transition-all duration-200"
+          key={i}
+          className={`kv-sl${i === current ? ' on' : ''}`}
           style={{
-            borderRadius: 8,
-            transform: hovered ? 'scale(1.02)' : 'scale(1)',
-            boxShadow: hovered ? '0 12px 40px rgba(0,0,0,0.15)' : '0 2px 8px rgba(0,0,0,0.05)',
+            backgroundImage: `url(${slide.bg})`,
+            backgroundPosition: slide.bgPos,
+            backgroundSize: 'cover',
           }}
-        >
-          {/* Primary */}
-          <div className={`absolute inset-0 transition-opacity duration-200 ${hovered && hasBack ? 'opacity-0' : 'opacity-100'}`}>
-            <ProductImage product={product} view="primary" className="w-full h-full object-cover" loading="lazy" imgStyle={{ objectPosition: '50% 8%' }} />
-          </div>
-          {/* Back on hover */}
-          {hasBack && (
-            <div className={`absolute inset-0 transition-opacity duration-200 ${hovered ? 'opacity-100' : 'opacity-0'}`}>
-              <ProductImage product={product} view="back" className="w-full h-full object-cover" loading="lazy" />
-            </div>
-          )}
+        />
+      ))}
 
-          {/* Badges row */}
-          <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-            {/* Drop badge */}
-            <span
-              className="font-body text-[9px] font-bold tracking-[0.2em] uppercase px-2 py-1 rounded-full text-white w-fit"
-              style={{ backgroundColor: DROP_COLORS[product.drop] }}
-            >
-              {product.drop}
-            </span>
-            {/* New badge */}
-            {(badge === 'new' || badge === 'both') && (
-              <span className="font-body text-[9px] font-bold tracking-[0.15em] uppercase px-2 py-1 rounded-full text-white w-fit bg-[#1A1A1A] animate-pulse">
-                New
-              </span>
-            )}
-            {/* Low stock badge */}
-            {(badge === 'low-stock' || badge === 'both') && (
-              <span className="font-body text-[9px] font-bold tracking-[0.12em] uppercase px-2 py-1 rounded-full w-fit bg-[#FEF3C7] text-[#92400E]">
-                Low Stock
-              </span>
-            )}
-          </div>
+      {/* Overlay */}
+      <div className="kv-ov" />
 
-          {/* Quick add overlay */}
-          <div
-            className="absolute bottom-0 left-0 right-0 p-3 transition-all duration-200"
-            style={{
-              opacity: hovered ? 1 : 0,
-              transform: hovered ? 'translateY(0)' : 'translateY(8px)',
-            }}
-          >
-            <button
-              onClick={handleAdd}
-              className={`w-full font-display font-bold text-xs tracking-widest uppercase py-3 rounded-sm transition-all duration-150 active:scale-[0.97] min-h-[48px] ${
-                adding
-                  ? 'bg-[#10B981] text-white'
-                  : 'bg-[#1A1A1A]/90 backdrop-blur-sm text-white hover:bg-[#1A1A1A]'
-              }`}
-            >
-              {adding ? 'Added ✓' : 'Quick Add'}
-            </button>
+      {/* Per-slide text panels */}
+      {HERO_SLIDES.map((slide, i) => (
+        <div key={i} className={`kv-tx${i === current ? ' on' : ''}${i === 4 ? ' kv-tx-bottles' : ''}`}>
+          <div className="kv-hbadge" style={{ background: slide.badge.bg, color: slide.badge.color }}>
+            {slide.badge.text}
           </div>
+          <p className="kv-hey" style={{ color: slide.eyebrow.color }}>
+            {slide.eyebrow.text}
+          </p>
+          <h1 className="kv-hh1">
+            {slide.h1[0]}<br />{slide.h1[1]}
+          </h1>
+          <p className="kv-hsub">{slide.sub}</p>
+          <Link to={slide.btn.to} className={`kv-hbtn ${slide.btn.cls}`}>
+            {slide.btn.text}
+          </Link>
         </div>
+      ))}
 
-        {/* Info */}
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <p className="font-display font-bold text-sm tracking-tight text-[#1A1A1A] group-hover:opacity-60 transition-opacity duration-200">
-              {product.title}
-            </p>
-            <p className="font-body text-xs text-[#8B6F47] mt-0.5">{product.color}</p>
-          </div>
-          <p className="font-display font-bold text-sm text-[#1A1A1A] flex-shrink-0">${product.price}</p>
-        </div>
-      </Link>
-    </div>
+      {/* Arrows */}
+      <button
+        className="kv-harr kv-hprev"
+        onClick={() => { go(current - 1); startTimer() }}
+        aria-label="Previous slide"
+      >
+        ←
+      </button>
+      <button
+        className="kv-harr kv-hnext"
+        onClick={() => { go(current + 1); startTimer() }}
+        aria-label="Next slide"
+      >
+        →
+      </button>
+
+      {/* Dots */}
+      <div className="kv-hdots">
+        {HERO_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            className={`kv-hdot${i === current ? ' on' : ''}`}
+            onClick={() => { go(i); startTimer() }}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </section>
   )
 }
 
-// ── Social Proof ──────────────────────────────────────────────────────────────
+// ── Why counter ───────────────────────────────────────────────────────────────
+function CounterStat({ target, suffix, label, custom }: typeof WHY_STATS[number]) {
+  const [count, setCount] = useState(0)
+  const ref = useRef<HTMLDivElement>(null)
+  const animated = useRef(false)
 
-function SocialProof() {
-  const { ref, inView } = useInView(0.3)
-  const count = useCounter(1000, 2000, inView)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || animated.current || target === 0) return
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !animated.current) {
+        animated.current = true
+        const duration = 1500
+        const start = performance.now()
+        const step = (now: number) => {
+          const progress = Math.min((now - start) / duration, 1)
+          setCount(Math.round(progress * target))
+          if (progress < 1) requestAnimationFrame(step)
+        }
+        requestAnimationFrame(step)
+        obs.disconnect()
+      }
+    }, { threshold: 0.3 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [target])
 
   return (
-    <div
-      ref={ref}
-      className="flex items-center justify-center gap-2 py-6"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.5s ease, transform 0.5s ease',
-      }}
-    >
-      {/* Avatar stack */}
-      <div className="flex -space-x-2">
-        {['#C8B89A', '#C1694F', '#9A9590', '#8A9E8A', '#B8AFA6'].map((color, i) => (
-          <div
-            key={i}
-            className="w-7 h-7 rounded-full border-2 border-[#F5F1ED] flex items-center justify-center"
-            style={{ backgroundColor: color, zIndex: 5 - i }}
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="white" opacity={0.6}>
-              <circle cx="6" cy="4" r="2.5"/>
-              <path d="M1 11c0-2.76 2.24-5 5-5s5 2.24 5 5"/>
-            </svg>
-          </div>
-        ))}
-      </div>
-      <p className="font-body text-sm text-[#555]">
-        Join <span className="font-bold text-[#1A1A1A]">{count.toLocaleString()}+</span> hpm3® Members
+    <div ref={ref} className="kv-fade" style={{ textAlign: 'center', padding: '48px 24px', background: '#111', transitionDelay: '0s' }}>
+      {custom ? (
+        <>
+          <span style={{ color: '#39FF14', fontSize: '3.5rem', fontWeight: 900, display: 'block', fontFamily: 'Montserrat,sans-serif' }}>0</span>
+          <span style={{ color: '#39FF14', fontSize: '1.2rem', fontWeight: 700, display: 'block', marginTop: 4 }}>{custom}</span>
+        </>
+      ) : (
+        <span className="counter-number" style={{ color: '#39FF14', fontSize: '3.5rem', fontWeight: 900, display: 'block', fontFamily: 'Montserrat,sans-serif' }}>
+          {count}{suffix}
+        </span>
+      )}
+      <p style={{ color: '#fff', fontWeight: 700, margin: '12px 0 0', fontSize: '0.9rem', letterSpacing: '0.05em', textTransform: 'uppercase', fontFamily: 'Montserrat,sans-serif' }}>
+        {label}
       </p>
     </div>
   )
 }
 
-// ── Brand Story ───────────────────────────────────────────────────────────────
-
-function BrandStory() {
-  const { ref, inView } = useInView(0.15)
-  const storyProduct = PRODUCTS.find(p => p.id === 'clay-cropped-hoodie')!
-
-  return (
-    <section className="bg-[#F5F1ED] py-20 sm:py-32 overflow-hidden">
-      <div ref={ref} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Image */}
-          <div
-            className="relative aspect-[3/4] rounded-sm overflow-hidden bg-[#EDE8E2]"
-            style={{
-              opacity: inView ? 1 : 0,
-              transform: inView ? 'translateX(0)' : 'translateX(-32px)',
-              transition: 'opacity 0.7s ease, transform 0.7s ease',
-            }}
-          >
-            <ProductImage product={storyProduct} view="lifestyle" className="w-full h-full object-cover" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-          </div>
-
-          {/* Text */}
-          <div
-            style={{
-              opacity: inView ? 1 : 0,
-              transform: inView ? 'translateX(0)' : 'translateX(32px)',
-              transition: 'opacity 0.7s ease 200ms, transform 0.7s ease 200ms',
-            }}
-          >
-            <p className="font-body text-[11px] tracking-[0.3em] uppercase text-[#8B6F47] mb-5">Our Story</p>
-            <h2 className="font-display font-black text-4xl sm:text-5xl lg:text-[56px] tracking-tight leading-[1.05] text-[#1A1A1A] mb-6">
-              hpm3® —<br />
-              <span style={{ color: '#8B6F47' }}>Happy People</span><br />
-              Make More Money
-            </h2>
-            <p className="font-body text-base text-[#555] leading-relaxed mb-5">
-              Premium vintage-inspired streetwear designed for culture creators. Each drop is limited, intentional, and crafted for those who make moves.
-            </p>
-            <p className="font-body text-sm text-[#888] leading-relaxed mb-10">
-              Three seasonal drops. Twenty-three pieces. Zero compromise on quality or intention. When you wear hpm3®, you're not just wearing a brand — you're wearing a mindset.
-            </p>
-
-            <div className="grid grid-cols-3 gap-6 border-t border-[#DDD8D0] pt-8">
-              {[
-                { value: '3', label: 'Seasonal Drops' },
-                { value: '23', label: 'Pieces Total' },
-                { value: '100%', label: 'Premium Cotton' },
-              ].map(({ value, label }) => (
-                <div key={label}>
-                  <p className="font-display font-black text-3xl text-[#1A1A1A]">{value}</p>
-                  <p className="font-body text-xs text-[#888] mt-1 tracking-wide">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ── Footer CTA ────────────────────────────────────────────────────────────────
-
-function FooterCTA() {
+// ── Newsletter ────────────────────────────────────────────────────────────────
+function Newsletter() {
   const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const { ref, inView } = useInView(0.2)
+  const [done, setDone] = useState(false)
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (!email.trim()) return
-    setSubmitted(true)
+    if (!email) return
+    setDone(true)
   }
 
   return (
-    <section className="bg-[#1A1A1A] py-20 sm:py-28 px-4">
-      <div
-        ref={ref}
-        className="max-w-xl mx-auto text-center"
-        style={{
-          opacity: inView ? 1 : 0,
-          transform: inView ? 'translateY(0)' : 'translateY(24px)',
-          transition: 'opacity 0.7s ease, transform 0.7s ease',
-        }}
-      >
-        <p className="font-body text-[11px] tracking-[0.3em] uppercase text-[#8B6F47] mb-4">Stay Close</p>
-        <h2 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-white mb-4">
-          Join the Movement
-        </h2>
-        <p className="font-body text-sm text-white/45 mb-10 leading-relaxed">
-          Early access to new drops. No spam. Just culture.
+    <section style={{ background: '#0A0A0A', padding: 'clamp(50px,7vw,100px) clamp(16px,4vw,40px)', borderTop: '1px solid #222' }}>
+      <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center' }} className="kv-fade">
+        <p style={{ color: '#39FF14', letterSpacing: '0.3em', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: 12, fontWeight: 700, fontFamily: 'Montserrat,sans-serif' }}>
+          Stay in the Loop
         </p>
-
-        {submitted ? (
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#10B981]/20 flex items-center justify-center">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#10B981" strokeWidth="2.5">
-                <path d="M4 11l5 5 9-9"/>
-              </svg>
-            </div>
-            <p className="font-display font-bold text-white text-lg">You're in.</p>
-            <p className="font-body text-sm text-white/45">First drop access coming soon.</p>
-          </div>
+        <h2 style={{ color: '#fff', fontSize: 'clamp(2rem,4vw,2.8rem)', fontWeight: 900, marginBottom: 16, fontFamily: 'Montserrat,sans-serif' }}>
+          Join the KRYVE Movement
+        </h2>
+        <p style={{ color: '#888', fontSize: '1rem', marginBottom: 40 }}>
+          Get exclusive offers, wellness tips, and early access to new products.
+        </p>
+        {done ? (
+          <p style={{ color: '#39FF14', fontSize: '1rem', padding: '20px 0' }}>
+            ✓ You're in! Check your inbox.
+          </p>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <form
+            className="kv-nl-form"
+            onSubmit={handleSubmit}
+            style={{ display: 'flex', maxWidth: 480, margin: '0 auto 16px' }}
+          >
             <input
               type="email"
+              placeholder="Your email address"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="your@email.com"
               required
-              className="flex-1 font-body text-sm px-5 py-4 rounded-sm bg-white/10 border border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-[#8B6F47] transition-colors min-h-[48px]"
+              style={{
+                flex: 1,
+                background: '#111',
+                border: '1px solid #333',
+                borderRight: 'none',
+                color: '#fff',
+                padding: '16px 20px',
+                fontSize: '16px',
+                outline: 'none',
+                borderRadius: '2px 0 0 2px',
+                fontFamily: 'Montserrat,sans-serif',
+              }}
             />
             <button
               type="submit"
-              className="font-display font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-sm bg-[#10B981] text-white hover:bg-[#0ea572] hover:scale-[1.03] active:scale-[0.97] transition-all duration-150 min-h-[48px] whitespace-nowrap"
+              style={{
+                background: '#39FF14',
+                color: '#0A0A0A',
+                border: 'none',
+                padding: '16px 24px',
+                fontWeight: 800,
+                fontSize: '0.875rem',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                borderRadius: '0 2px 2px 0',
+                whiteSpace: 'nowrap',
+                fontFamily: 'Montserrat,sans-serif',
+              }}
             >
-              Get Early Access
+              SUBSCRIBE
             </button>
           </form>
         )}
+        <p style={{ color: '#555', fontSize: '0.8rem' }}>No spam. Unsubscribe anytime.</p>
       </div>
     </section>
   )
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
-
+// ── Main HomePage ─────────────────────────────────────────────────────────────
 export default function HomePage() {
   const { addItem } = useCart()
-  const [toast, setToast] = useState<string | null>(null)
-  const gridRef = useRef<HTMLDivElement>(null)
-  const [gridInView, setGridInView] = useState(false)
 
+  // Activate .kv-fade elements on scroll (matches live site IntersectionObserver pattern)
   useEffect(() => {
-    const el = gridRef.current
-    if (!el) return
+    const els = document.querySelectorAll<HTMLElement>('.kv-fade')
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setGridInView(true); obs.disconnect() } },
-      { threshold: 0.05 }
+      (entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target) } })
+      },
+      { threshold: 0.15 }
     )
-    obs.observe(el)
+    els.forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [])
 
-  function handleQuickAdd(product: LocalProduct) {
-    const size = product.sizes.length === 1 ? product.sizes[0] : product.sizes[2] ?? product.sizes[0]
-    addItem({
-      variantId: `${product.id}-${size}`,
+  function handleAddToCart(product: typeof STATIC_PRODUCTS[number]) {
+    const variant = product.variants.edges[0]?.node
+    if (!variant) return
+    const item: CartItem = {
+      variantId: variant.id,
       productId: product.id,
       title: product.title,
-      variantTitle: size,
-      price: product.price,
+      variantTitle: variant.title,
+      price: parseFloat(variant.price.amount),
       quantity: 1,
-      image: product.imageProduct,
+      image: product.images.edges[0]?.node.url || '',
       handle: product.handle,
-    })
-    setToast(`${product.title} added to cart`)
+    }
+    addItem(item)
   }
+
+  const products3 = (STATIC_PRODUCTS as unknown as ShopifyProduct[]).filter(p => !p.handle.includes('stack'))
 
   return (
     <main>
-      <HeroCarousel />
+      {/* ── HERO ── */}
+      <Hero />
 
-      {/* Marquee strip */}
-      <div className="bg-[#1A1A1A] py-3 overflow-hidden select-none" aria-hidden="true">
-        <div className="marquee-track">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <span key={i} className="font-display font-black text-sm tracking-widest uppercase text-white/20 mr-10 whitespace-nowrap">
-              Happy People Make More Money &nbsp;&nbsp;&nbsp;
-            </span>
+      {/* ── TRUST BAR ── */}
+      <section style={{ background: '#111', borderTop: '1px solid #222', padding: '28px clamp(16px,4vw,40px)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 24 }} className="kv-fade kv-trust-grid">
+          {[
+            {
+              svg: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>,
+              title: 'Science-Backed',
+              sub: 'Research-Supported Formulas',
+            },
+            {
+              svg: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>,
+              title: 'GMP-Certified Facility',
+              sub: 'Manufactured to GMP Standards',
+            },
+            {
+              svg: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+              title: 'Made in USA',
+              sub: 'USA-Based Manufacturing',
+            },
+            {
+              svg: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>,
+              title: 'No Fillers',
+              sub: 'Premium Ingredients Only',
+            },
+          ].map(item => (
+            <div key={item.title} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+              {item.svg}
+              <div>
+                <div style={{ color: '#fff', fontWeight: 700, fontSize: '0.9rem', fontFamily: 'Montserrat,sans-serif' }}>{item.title}</div>
+                <div style={{ color: '#888', fontSize: '0.8rem' }}>{item.sub}</div>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <FeaturedDrops />
+      {/* ── PRODUCTS ── */}
+      <section className="kv-products">
+        <h2 className="kv-products-title">Premium Supplements. Real Results.</h2>
+        <p className="kv-products-sub">Science-backed formulas crafted for high performers</p>
+        <div className="kv-pcards">
+          {products3.map(product => {
+            const img = product.images.edges[0]?.node.url || ''
+            const price = product.variants.edges[0]?.node.price.amount || product.priceRange.minVariantPrice.amount
+            const compareAt = product.variants.edges[0]?.node.compareAtPrice?.amount
+            const handle = product.handle
+            const cardCls = handle.includes('greens') ? 'kv-pcard-greens' : handle.includes('collagen') ? 'kv-pcard-collagen' : 'kv-pcard-magnesium'
+            const badgeCls = handle.includes('greens') ? 'badge-greens' : handle.includes('collagen') ? 'badge-collagen' : 'badge-magnesium'
+            const ctaCls = handle.includes('greens') ? 'cta-greens' : handle.includes('collagen') ? 'cta-collagen' : 'cta-magnesium'
+            const badgeTxt = handle.includes('greens') ? 'BEST SELLER' : handle.includes('collagen') ? 'GRASS-FED' : 'HIGH ABSORPTION'
+            const ctaTxt = handle.includes('greens') ? 'Shop Greens →' : handle.includes('collagen') ? 'Shop Collagen →' : 'Shop Magnesium →'
+            // Exact badge positions from live site inline styles
+            const badgeStyle: React.CSSProperties = handle.includes('collagen')
+              ? { position: 'absolute', top: 25, left: 43, zIndex: 10, pointerEvents: 'none', padding: '3px 8px' }
+              : { position: 'absolute', top: 23, left: 46, zIndex: 10, pointerEvents: 'none' }
 
-      {/* Product Grid */}
-      <section className="bg-[#F5F1ED] py-16 sm:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={gridRef}
-            className="text-center mb-12"
-            style={{
-              opacity: gridInView ? 1 : 0,
-              transform: gridInView ? 'translateY(0)' : 'translateY(24px)',
-              transition: 'opacity 0.7s ease, transform 0.7s ease',
-            }}
-          >
-            <p className="font-body text-[11px] tracking-[0.3em] uppercase text-[#8B6F47] mb-3">Fan Favorites</p>
-            <h2 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-[#1A1A1A] mb-3">
-              Shop the Drops
-            </h2>
-            <p className="font-body text-sm text-[#888] max-w-sm mx-auto">
-              Hover to see the back view. Tap to explore the full product.
-            </p>
+            return (
+              <div key={product.id} className={`kv-pcard ${cardCls}`}>
+                <span className={`kv-pcard-badge ${badgeCls}`} style={badgeStyle}>{badgeTxt}</span>
+                <div className="kv-pcard-img-wrap" style={{ position: 'relative' }}>
+                  <img src={img} alt={product.title} loading={handle.includes('greens') ? 'eager' : 'lazy'} />
+                </div>
+                <div className="kv-pcard-body">
+                  <div className="kv-pcard-name">{product.title}</div>
+                  <div className="kv-pcard-desc">{product.description}</div>
+                  <div className="kv-pcard-price">
+                    <span className="kv-price-current">{formatPrice(price)}</span>
+                    {compareAt && parseFloat(compareAt) > parseFloat(price) && (
+                      <span className="kv-price-compare">{formatPrice(compareAt)}</span>
+                    )}
+                  </div>
+                  <Link to={`/products/${handle}`} className={`kv-pcard-cta ${ctaCls}`}>
+                    {ctaTxt}
+                  </Link>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* ── COMPARE ── */}
+      <section className="kv-cmp-wrap">
+        <div className="kv-cmp-inner">
+          <div className="kv-cmp-head">
+            <p className="kv-cmp-eyebrow">The Difference</p>
+            <h2 className="kv-cmp-title">How We Stack Up</h2>
+            <p className="kv-cmp-sub">KRYVE is the only brand built for your complete daily stack.</p>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {GRID_PRODUCTS.map((product, i) => (
-              <GridCard
-                key={product.id}
-                product={product}
-                onAdd={handleQuickAdd}
-                animIn={gridInView}
-                delay={i * 100}
-              />
-            ))}
+          <div className="kv-cmp-table-wrap">
+            <div className="kv-cmp-table-outer">
+              <table className="kv-cmp-table">
+                <thead>
+                  <tr>
+                    <th className="kv-cmp-th-feat">Feature</th>
+                    <th className="kv-cmp-th-kryve">
+                      <span className="kv-cmp-best">★ BEST VALUE</span><br />KRYVE
+                    </th>
+                    <th className="kv-cmp-th-other">Leading Greens Brand</th>
+                    <th className="kv-cmp-th-other">Popular Women's Brand</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARE_ROWS.map((row, i) => (
+                    <tr
+                      key={row.feature}
+                      className={`${i % 2 === 0 ? 'kv-cmp-tr-a' : 'kv-cmp-tr-b'}${row.last ? ' kv-cmp-last' : ''}`}
+                    >
+                      <td className="kv-cmp-feat">{row.feature}</td>
+                      <td className="kv-cmp-kryve-cell">
+                        <span className="kv-cmp-yes">✓</span> {row.kryve.text.replace('✓ ', '')}
+                      </td>
+                      <td>
+                        <span className={row.leading.yes ? 'kv-cmp-yes' : 'kv-cmp-no'}>
+                          {row.leading.yes ? '✓' : '✗'}
+                        </span>{' '}
+                        <span style={{ color: row.leading.yes ? '#39FF14' : '#FF4444' }}>
+                          {row.leading.label}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={row.womens.yes ? 'kv-cmp-yes' : 'kv-cmp-no'}>
+                          {row.womens.yes ? '✓' : '✗'}
+                        </span>{' '}
+                        <span style={{ color: row.womens.yes ? '#39FF14' : '#FF4444' }}>
+                          {row.womens.label}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
+          <p className="kv-cmp-disclaimer">*Based on publicly available product information as of 2025. Individual results may vary.</p>
+        </div>
+      </section>
 
-          {/* Social proof + CTA */}
-          <SocialProof />
-
-          <div
-            className="text-center mt-4"
-            style={{
-              opacity: gridInView ? 1 : 0,
-              transition: 'opacity 0.7s ease 700ms',
-            }}
-          >
-            <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-widest uppercase px-10 py-4 bg-[#1A1A1A] text-[#FAF8F5] rounded-sm hover:bg-[#333] hover:scale-[1.03] active:scale-[0.97] transition-all duration-150"
-            >
-              View All 23 Products
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M2 7h10M8 3l4 4-4 4"/>
-              </svg>
-            </Link>
+      {/* ── BUILT TO STACK ── */}
+      <section className="kv-stack">
+        <div className="kv-stack-inner">
+          {/* Left: text */}
+          <div className="kv-stack-left">
+            <div className="kv-stack-eyebrow">The Complete System</div>
+            <h2 className="kv-stack-title">Built to <span>Stack.</span><br />Designed to Perform.</h2>
+            <p className="kv-stack-sub">All 3 formulas. One daily ritual.<br />Free shipping included.</p>
+            <div className="kv-stack-cta-row">
+              <Link to="/products/the-kryve-stack" className="kv-stack-cta">
+                Shop The Stack — Save 20%
+              </Link>
+              <span className="kv-stack-note">Free shipping on orders $75+</span>
+            </div>
+          </div>
+          {/* Right: bottles */}
+          <div className="kv-stack-right">
+            <div className="kv-stack-row">
+              <div className="kv-stack-col kv-stack-col-left">
+                <div className="kv-stack-spot">
+                  <div className="kv-stack-img-box">
+                    <img src={CDN_ASSETS + 'kryve-greens-real.jpg'} alt="KRYVE Greens" />
+                  </div>
+                </div>
+              </div>
+              <div className="kv-stack-col kv-stack-col-center">
+                <div className="kv-stack-spot">
+                  <div className="kv-stack-img-box">
+                    <img src={CDN_ASSETS + 'kryve-collagen-real.jpg'} alt="KRYVE Collagen" />
+                  </div>
+                </div>
+              </div>
+              <div className="kv-stack-col kv-stack-col-right">
+                <div className="kv-stack-spot">
+                  <div className="kv-stack-img-box">
+                    <img src={CDN_ASSETS + 'kryve-magnesium-real.jpg'} alt="KRYVE Magnesium" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <BrandStory />
-      <FooterCTA />
+      {/* ── WHY KRYVE ── */}
+      <section style={{ background: '#111', padding: 'clamp(50px,7vw,100px) clamp(16px,4vw,40px)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          {/* Header */}
+          <div className="kv-fade" style={{ textAlign: 'center', marginBottom: 64 }}>
+            <p style={{ color: '#39FF14', letterSpacing: '0.3em', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: 12, fontWeight: 700, fontFamily: 'Montserrat,sans-serif' }}>
+              The Difference
+            </p>
+            <h2 style={{ color: '#fff', fontSize: 'clamp(2rem,4vw,3.2rem)', fontWeight: 900, letterSpacing: '0.05em', textTransform: 'uppercase', fontFamily: 'Montserrat,sans-serif' }}>
+              Why KRYVE?
+            </h2>
+          </div>
 
-      {/* Sticky CTA */}
-      <StickyCTA />
+          {/* Stats grid */}
+          <div className="kv-4col kv-why-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2, marginBottom: 72, background: '#222', borderRadius: 12, overflow: 'hidden' }}>
+            {WHY_STATS.map((s, i) => (
+              <CounterStat key={i} {...s} />
+            ))}
+          </div>
 
-      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
+          {/* 2-col benefits */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="kv-2col">
+            <div className="kv-fade">
+              {WHY_BENEFITS.map((b, i) => (
+                <div key={i} style={{ marginBottom: 28, paddingBottom: 28, borderBottom: i < WHY_BENEFITS.length - 1 ? '1px solid #222' : 'none' }}>
+                  <strong style={{ color: '#39FF14', fontSize: '0.9rem', letterSpacing: '0.05em', textTransform: 'uppercase', fontFamily: 'Montserrat,sans-serif' }}>
+                    {b.title}
+                  </strong>
+                  <p style={{ color: '#aaa', marginTop: 10, lineHeight: 1.75, fontSize: '0.95rem' }}>{b.body}</p>
+                </div>
+              ))}
+              <Link to="/science" style={{ color: '#39FF14', fontSize: '0.9rem', fontWeight: 700, textDecoration: 'none' }}>
+                Our Science →
+              </Link>
+            </div>
+            <div className="kv-fade" style={{ transitionDelay: '0.15s' }}>
+              <img
+                src={CF + 'hero-stack-v4-AaFoRVQvMorhuG9icoJQ6w.webp'}
+                alt="KRYVE Science"
+                loading="lazy"
+                style={{ width: '100%', borderRadius: 12, display: 'block' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── GALLERY ── */}
+      <section className="kv-gallery">
+        <div className="kv-gallery-inner">
+          <div className="kv-gallery-header">
+            <p className="kv-gallery-eyebrow">Real People. Real Results.</p>
+            <h2 className="kv-gallery-title">The KRYVE Lifestyle</h2>
+          </div>
+          <div className="kv-gal-grid">
+            {GALLERY_IMGS.map((img, i) => (
+              <div key={i} className={`kv-gal-item${img.large ? ' kv-gal-large' : ''}`}>
+                <img src={img.url} alt={img.alt} loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ── */}
+      <section style={{ background: '#111', padding: 'clamp(50px,7vw,100px) clamp(16px,4vw,40px)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div className="kv-fade" style={{ textAlign: 'center', marginBottom: 72 }}>
+            <p style={{ color: '#39FF14', letterSpacing: '0.3em', fontSize: '0.75rem', textTransform: 'uppercase', marginBottom: 12, fontWeight: 700, fontFamily: 'Montserrat,sans-serif' }}>
+              Simple by Design
+            </p>
+            <h2 style={{ color: '#fff', fontSize: 'clamp(2rem,4vw,3rem)', fontWeight: 900, letterSpacing: '0.05em', textTransform: 'uppercase', fontFamily: 'Montserrat,sans-serif' }}>
+              How It Works
+            </h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0 }} className="kv-3col">
+            {HIW_STEPS.map((step, i) => (
+              <div key={i} className="kv-fade" style={{ textAlign: 'center', padding: '0 32px' }}>
+                <div style={{ width: 72, height: 72, borderRadius: '50%', border: '2px solid #39FF14', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', background: '#0A0A0A' }}>
+                  {step.icon}
+                </div>
+                <div style={{ color: '#39FF14', fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 10, fontFamily: 'Montserrat,sans-serif' }}>
+                  {step.step}
+                </div>
+                <h3 style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700, marginBottom: 10, fontFamily: 'Montserrat,sans-serif' }}>
+                  {step.title}
+                </h3>
+                <p style={{ color: '#888', fontSize: '0.9rem', lineHeight: 1.7 }}>{step.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEWSLETTER ── */}
+      <Newsletter />
+
+      {/* ── FDA ── */}
+      <section style={{ background: '#0A0A0A', padding: '20px clamp(16px,4vw,40px)', borderTop: '1px solid #111' }}>
+        <p style={{ color: '#444', fontSize: 11, textAlign: 'center', maxWidth: 900, margin: '0 auto', lineHeight: 1.6 }}>
+          *These statements have not been evaluated by the Food and Drug Administration. These products are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary.
+        </p>
+      </section>
     </main>
   )
 }

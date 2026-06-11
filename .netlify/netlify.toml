@@ -1,0 +1,27 @@
+plugins = []
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\jerem\\OneDrive\\Desktop\\hpm3-store\\dist"
+publishOrigin = "ui"
+commandOrigin = "ui"
+command = "npm run build"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
