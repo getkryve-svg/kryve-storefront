@@ -303,20 +303,10 @@ function HeroCarousel() {
 // ── Featured Drops ────────────────────────────────────────────────────────────
 
 function FeaturedDrops() {
-  const { ref, inView } = useInView(0.15)
-
   return (
-    <section className="bg-[#FAF8F5] max-w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+    <section className="bg-[#FAF8F5] w-full px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
       <div className="max-w-7xl mx-auto">
-      <div ref={ref}>
-        <div
-          className="text-center mb-12"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? 'translateY(0)' : 'translateY(24px)',
-            transition: 'opacity 0.6s ease, transform 0.6s ease',
-          }}
-        >
+        <div className="text-center mb-10">
           <p className="font-body text-[11px] tracking-[0.3em] uppercase text-[#8B6F47] mb-3">The Collection</p>
           <h2 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-[#1A1A1A]">
             Three Drops. One Vision.
@@ -327,8 +317,6 @@ function FeaturedDrops() {
           {DROPS.map((drop, i) => {
             const product = DROP_HERO_PRODUCT[drop]
             const dropColor = DROP_COLORS[drop]
-            // Alternate: odd cards slide from left, even from right
-            const xOffset = i % 2 === 0 ? '-20px' : '20px'
             return (
               <Link
                 key={drop}
@@ -336,9 +324,6 @@ function FeaturedDrops() {
                 className="group relative block overflow-hidden bg-[#EDE8E2] aspect-[3/4] md:aspect-square"
                 style={{
                   borderRadius: 8,
-                  opacity: inView ? 1 : 0,
-                  transform: inView ? 'translate(0,0)' : `translate(${xOffset}, 28px)`,
-                  transition: `opacity 0.65s ease ${i * 100}ms, transform 0.65s ease ${i * 100}ms`,
                   boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 16px 48px rgba(0,0,0,0.2)' }}
@@ -374,14 +359,7 @@ function FeaturedDrops() {
         </div>
 
         {/* See All Products CTA */}
-        <div
-          className="text-center mt-10"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? 'translateY(0)' : 'translateY(16px)',
-            transition: 'opacity 0.6s ease 400ms, transform 0.6s ease 400ms',
-          }}
-        >
+        <div className="text-center mt-10">
           <Link
             to="/shop"
             className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-widest uppercase px-10 py-4 border-2 border-[#1A1A1A] text-[#1A1A1A] rounded-sm hover:bg-[#1A1A1A] hover:text-[#FAF8F5] active:scale-[0.97] transition-all duration-200"
@@ -392,7 +370,6 @@ function FeaturedDrops() {
             </svg>
           </Link>
         </div>
-      </div>
       </div>
     </section>
   )
