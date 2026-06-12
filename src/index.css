@@ -1620,11 +1620,11 @@ body {
   .kv-why-stat-label { font-size: 0.72rem; margin-top: 8px; line-height: 1.4; }
   .kv-why-benefits { grid-template-columns: 1fr; gap: 32px; }
 
-  /* Gallery — show full product bottle, cover with right-shifted position */
+  /* Gallery — anchor to top so subject heads are never cropped on portrait images */
   .kv-gal-grid { grid-template-columns: 1fr !important; height: auto !important; gap: 16px !important; }
   .kv-gal-large { grid-row: auto !important; }
   .kv-gal-item { height: 260px !important; border-radius: 4px; overflow: hidden; }
-  .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: 70% center !important; display: block !important; }
+  .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center top !important; display: block !important; }
   .kv-gallery { padding: 60px 16px; }
 
   /* HIW + 2col/3col — !important overrides inline grid-template-columns */
