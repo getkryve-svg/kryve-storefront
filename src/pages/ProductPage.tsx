@@ -57,9 +57,14 @@ const PRODUCT_DETAIL: Record<string, {
       'Third-party tested for heavy metals and purity',
     ],
     supplement: {
-      servings: '30 servings',
-      serving: '1 scoop (22g)',
-      callouts: ['Hydrolyzed Collagen Peptides 20g', 'Type I Collagen', 'Type III Collagen'],
+      servings: '30 servings per container',
+      serving: '1 scoop (22g) · Unflavored — mix into any hot or cold liquid, smoothie, or food',
+      keyIngredients: [
+        { name: 'Hydrolyzed Collagen Peptides', dose: '20g',      purpose: 'Bioavailable collagen to support skin elasticity, hair, and nails*' },
+        { name: 'Type I Collagen',              dose: 'Included', purpose: 'Most abundant collagen in skin and connective tissue*' },
+        { name: 'Type III Collagen',            dose: 'Included', purpose: 'Supports skin firmness and vascular structure*' },
+        { name: 'Vitamin C',                    dose: 'Included', purpose: 'Supports natural collagen synthesis*' },
+      ],
     },
     faqItems: [
       { q: 'What\'s the best way to take it?', a: 'Mix one scoop into coffee, tea, smoothies, soups, or baked goods. It dissolves completely and is tasteless.' },
