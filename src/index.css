@@ -358,120 +358,44 @@ body {
 /* ── Hero section wrapper ───────────────────────────────────────────────────── */
 .kv-hero-section { position: relative; }
 
-/* Mobile hero — hidden on desktop */
-.kv-hero-mobile { display: none; }
+/* .kv-hero-mobile unused — desktop carousel used on all sizes */
+.kv-hero-mobile { display: none !important; }
 
 @media (max-width: 767px) {
-  /* Hide desktop carousel on mobile */
-  .kv-hero-section .kv-hw { display: none !important; }
+  /* Hero: full viewport height */
+  .kv-hero-section { height: 100svh !important; min-height: 600px !important; }
+  .kv-hw { height: 100% !important; }
 
-  /* Show mobile layout */
-  .kv-hero-mobile {
-    display: flex;
-    flex-direction: column;
-    background: #0a0a0a;
-  }
+  /* Shift background-position right so people/products on right are visible */
+  .kv-sl { background-position: 70% center !important; background-size: cover !important; }
+  /* Slide 5 (Stack bottles) — centered lower */
+  .kv-sl:nth-child(5) { background-position: 65% bottom !important; }
 
-  .kv-hero-mobile-img {
-    position: relative;
-    width: 100%;
-    background: #0a0a0a;
-    line-height: 0;
-  }
+  /* Hide global overlay — text panel has its own gradient */
+  .kv-ov { display: none !important; }
 
-  .kv-hero-mobile-img img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 70vw;
-    object-fit: contain;
-    background: #0a0a0a;
-  }
-
-  .kv-hero-mobile-prev,
-  .kv-hero-mobile-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    border: none;
-    color: #fff;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  }
-  .kv-hero-mobile-prev { left: 10px; }
-  .kv-hero-mobile-next { right: 10px; }
-
-  .kv-hero-mobile-text {
-    background: #0a0a0a;
-    padding: 18px 20px 24px;
-    font-family: Montserrat, sans-serif;
+  /* Text panel: gradient covers left side so text is readable, right side shows photo */
+  .kv-tx {
+    inset: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 80px 20px 40px !important;
+    background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 55%, transparent 100%) !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    z-index: 10 !important;
   }
 
-  .kv-hero-mobile-text .kv-hbadge {
-    position: static;
-    display: inline-block;
-    margin-bottom: 8px;
-    font-size: 0.65rem;
-    padding: 4px 10px;
-    border-radius: 4px;
-  }
-  .kv-hero-mobile-text .kv-hey {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin: 0 0 6px;
-    opacity: 1;
-  }
-  .kv-hero-mobile-text .kv-hh1 {
-    font-size: clamp(1.6rem, 7vw, 2rem);
-    font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 8px;
-    color: #fff;
-    text-transform: uppercase;
-  }
-  .kv-hero-mobile-text .kv-hsub {
-    color: rgba(255,255,255,0.75);
-    font-size: 0.85rem;
-    line-height: 1.5;
-    margin: 0 0 16px;
-    white-space: pre-line;
-    opacity: 1;
-  }
-  .kv-hero-mobile-text .kv-hbtn {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-    box-sizing: border-box;
-    opacity: 1;
-  }
+  /* Typography */
+  .kv-hh1 { font-size: 32px !important; line-height: 1.1 !important; }
+  .kv-hey { font-size: 14px !important; }
+  .kv-hsub { font-size: 14px !important; max-width: 240px !important; }
+  .kv-hbtn { font-size: 14px !important; padding: 14px 28px !important; max-width: 280px !important; }
 
-  .kv-hero-mobile-dots {
-    background: #0a0a0a;
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    padding: 8px 0 16px;
-  }
-  .kv-hero-mobile-dots .kv-hdot {
-    width: 8px;
-    height: 8px;
-  }
-  .kv-hero-mobile-dots .kv-hdot.on {
-    width: 20px;
-    border-radius: 4px;
-  }
+  /* Badge: left-aligned with text, not floating */
+  .kv-hbadge { margin-left: 0 !important; align-self: flex-start !important; }
 }
 
 .kv-dot {
@@ -1634,135 +1558,11 @@ body {
    ALL rules in this block are mobile-only. Desktop untouched.
 ══════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-
-  /* ══════════════════════════════════════════════════════════
-     MOBILE CAROUSEL — NEW APPROACH
-     Image on top (full, uncropped) + text below (dark bg)
-     Zero overlap. No background-position tricks needed.
-  ══════════════════════════════════════════════════════════ */
-
   /* Nav */
   .kv-nav-links { display: none !important; }
   .kv-hamburger { display: flex !important; }
 
-  /* Carousel wrapper: hidden on mobile — replaced by .kv-hero-mobile */
-  .kv-hw {
-    display: none !important;
-  }
-
-  /* Hide ALL slides by default */
-  .kv-sl {
-    display: none !important;
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    opacity: 1 !important;
-    animation: none !important;
-    background-image: none !important;
-    order: 1 !important;
-  }
-  /* Show only the active slide */
-  .kv-sl.on {
-    display: block !important;
-  }
-
-  /* The <img> inside each slide: full image, no crop */
-  .kv-sl-img {
-    display: block !important;
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    background: #0a0a0a !important;
-    user-select: none !important;
-    -webkit-user-drag: none !important;
-  }
-
-  /* Hide the desktop gradient overlay */
-  .kv-ov { display: none !important; }
-
-  /* Hide ALL text panels by default */
-  .kv-tx {
-    display: none !important;
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    background: #0a0a0a !important;
-    padding: 20px 24px 28px !important;
-    box-sizing: border-box !important;
-    z-index: auto !important;
-    transition: none !important;
-    order: 2 !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-  }
-  /* Show only the active text panel */
-  .kv-tx.on {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  /* Typography */
-  .kv-hh1 {
-    font-size: clamp(1.6rem, 7vw, 2rem) !important;
-    line-height: 1.1 !important;
-    letter-spacing: -0.02em !important;
-    width: auto !important;
-    max-width: 100% !important;
-    margin-bottom: 8px !important;
-    color: #fff !important;
-  }
-  .kv-hsub {
-    font-size: 0.85rem !important;
-    max-width: 100% !important;
-    margin-bottom: 16px !important;
-    line-height: 1.5 !important;
-    color: rgba(255,255,255,0.75) !important;
-  }
-  .kv-hbadge { margin-bottom: 10px !important; }
-  .kv-hey { margin: 0 0 6px !important; font-size: 0.68rem !important; }
-
-  /* Button: full width, capped */
-  .kv-hbtn {
-    display: block !important;
-    width: 100% !important;
-    max-width: 300px !important;
-    text-align: center !important;
-    padding: 14px 20px !important;
-    font-size: 0.82rem !important;
-    box-sizing: border-box !important;
-    white-space: nowrap !important;
-  }
-
-  /* Dots: below text panel */
-  .kv-hdots {
-    order: 3 !important;
-    position: relative !important;
-    background: #0a0a0a !important;
-    padding: 10px 0 16px !important;
-    display: flex !important;
-    justify-content: center !important;
-    gap: 6px !important;
-  }
-
-  /* Arrows: positioned over image area */
-  .kv-harr {
-    position: absolute !important;
-    top: 28vw !important;
-    bottom: auto !important;
-    transform: translateY(-50%) !important;
-    z-index: 20 !important;
-  }
-  .kv-hprev { left: 10px !important; }
-  .kv-hnext { right: 10px !important; }
-
-  /* ── Desktop img hidden — mobile img hidden on desktop ──────── */
-  /* (kv-sl-img is only shown on mobile via display:block above) */
-
-  /* ── Product cards: equal sizing all 3 ─────────────────────── */
+  /* Product cards */
   .kv-pcard-img-wrap {
     height: 220px !important;
     display: flex !important;
