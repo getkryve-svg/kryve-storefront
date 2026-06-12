@@ -14,7 +14,12 @@ const CF = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663745291897/2HBFBRwReVd
 const PRODUCT_DETAIL: Record<string, {
   tagline: string
   bullets: string[]
-  supplement?: { servings: string; serving: string; callouts: string[] }
+  supplement?: {
+    servings: string
+    serving: string
+    callouts?: string[]
+    keyIngredients?: { name: string; dose: string; purpose: string }[]
+  }
   ingredients?: string
   faqItems?: { q: string; a: string }[]
 }> = {
@@ -28,9 +33,14 @@ const PRODUCT_DETAIL: Record<string, {
       'Third-party tested for purity and potency',
     ],
     supplement: {
-      servings: '30 servings',
-      serving: '1 scoop (10g)',
-      callouts: ['Organic Spirulina 2g', 'Ashwagandha 300mg', 'Lion\'s Mane 200mg', 'Probiotic Blend 5B CFU'],
+      servings: '30 servings per container',
+      serving: '1 scoop (10g) · Mix with 8–10 oz of water or your favorite beverage',
+      keyIngredients: [
+        { name: 'Organic Spirulina', dose: '2g',     purpose: 'Nutrient-dense algae for energy and antioxidant support*' },
+        { name: 'Ashwagandha (KSM-66®)', dose: '300mg', purpose: 'Adaptogenic herb to support stress resilience*' },
+        { name: 'Lion\'s Mane Mushroom',  dose: '200mg', purpose: 'Cognitive support and mental clarity*' },
+        { name: 'Probiotic Blend',        dose: '5B CFU', purpose: 'Gut health and digestive balance*' },
+      ],
     },
     faqItems: [
       { q: 'When should I take KRYVE Greens?', a: 'Take one scoop in the morning — mixed into water, a smoothie, or juice — to start your day with foundational nutrition.' },
@@ -310,17 +320,60 @@ export default function ProductPage() {
 
           <p className="kv-pdp-guarantee">🔒 30-Day Money-Back Guarantee · Free shipping $75+</p>
 
-          {/* Supplement callouts */}
+          {/* Supplement section */}
           {detail?.supplement && (
             <div className="kv-pdp-supplement">
               <p className="kv-pdp-supplement-meta">{detail.supplement.servings} · {detail.supplement.serving}</p>
-              <div className="kv-pdp-callouts">
-                {detail.supplement.callouts.map(c => (
-                  <div key={c} className="kv-pdp-callout" style={{ borderColor: accent + '44' }}>
-                    {c}
-                  </div>
-                ))}
-              </div>
+
+              {/* Key Ingredients table (structured) */}
+              {detail.supplement.keyIngredients ? (
+                <div style={{ marginTop: 14 }}>
+                  <p style={{
+                    fontFamily: 'Montserrat,sans-serif', fontWeight: 700,
+                    fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase',
+                    color: '#888', marginBottom: 8,
+                  }}>
+                    Key Ingredients
+                  </p>
+                  <table style={{
+                    width: '100%', borderCollapse: 'collapse',
+                    fontFamily: 'Montserrat,sans-serif', fontSize: '0.8rem',
+                    border: '1px solid #E5E0D8', borderRadius: 8, overflow: 'hidden',
+                  }}>
+                    <thead>
+                      <tr style={{ background: '#F5F1ED' }}>
+                        <th style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 700, fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#555', borderBottom: '1px solid #E5E0D8' }}>Ingredient</th>
+                        <th style={{ textAlign: 'left', padding: '8px 10px', fontWeight: 700, fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#555', borderBottom: '1px solid #E5E0D8', whiteSpace: 'nowrap' }}>Dose</th>
+                        <th style={{ textAlign: 'left', padding: '8px 10px', fontWeight: 700, fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#555', borderBottom: '1px solid #E5E0D8' }}>Purpose</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {detail.supplement.keyIngredients.map((ing, i) => (
+                        <tr key={ing.name} style={{ background: i % 2 === 0 ? '#fff' : '#FAF8F5' }}>
+                          <td style={{ padding: '9px 12px', fontWeight: 600, color: '#1A1A1A', borderBottom: '1px solid #F0EBE3', verticalAlign: 'top' }}>{ing.name}</td>
+                          <td style={{ padding: '9px 10px', color: '#555', borderBottom: '1px solid #F0EBE3', whiteSpace: 'nowrap', verticalAlign: 'top' }}>{ing.dose}</td>
+                          <td style={{ padding: '9px 10px', color: '#666', borderBottom: '1px solid #F0EBE3', lineHeight: 1.45, verticalAlign: 'top' }}>{ing.purpose}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p style={{
+                    fontFamily: 'Montserrat,sans-serif', fontSize: '0.68rem',
+                    color: '#AAA', marginTop: 8, lineHeight: 1.5,
+                  }}>
+                    *These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
+                  </p>
+                </div>
+              ) : detail.supplement.callouts ? (
+                /* Legacy floating tags for other products */
+                <div className="kv-pdp-callouts">
+                  {detail.supplement.callouts.map(c => (
+                    <div key={c} className="kv-pdp-callout" style={{ borderColor: accent + '44' }}>
+                      {c}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           )}
         </div>
