@@ -2,17 +2,22 @@ import { useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
-const FREE_SHIPPING_AT = 75
+/** Single source of truth for free-shipping threshold.
+ *  MUST match Shopify Admin › Settings › Shipping and delivery free-shipping rate.  */
+const FREE_SHIPPING_THRESHOLD = 75   // dollars
 
 export default function CartDrawer() {
   const { state, dispatch, subtotal, itemCount } = useCart()
   const drawerRef = useRef<HTMLDivElement>(null)
   const navigate  = useNavigate()
 
-  // Free-shipping progress
-  const shippingPct      = Math.min((subtotal / FREE_SHIPPING_AT) * 100, 100)
-  const remaining        = Math.max(FREE_SHIPPING_AT - subtotal, 0)
-  const shippingUnlocked = subtotal >= FREE_SHIPPING_AT
+  // Free-shipping progress — integer cents math eliminates floating-point artifacts
+  const THRESHOLD_CENTS  = FREE_SHIPPING_THRESHOLD * 100      // 7500
+  const subtotalCents    = Math.round(subtotal * 100)
+  const remainingCents   = Math.max(THRESHOLD_CENTS - subtotalCents, 0)
+  const shippingPct      = Math.min((subtotalCents / THRESHOLD_CENTS) * 100, 100)
+  const shippingUnlocked = subtotalCents >= THRESHOLD_CENTS
+  const remaining        = remainingCents / 100                // display dollars
 
   useEffect(() => {
     document.body.style.overflow = state.isOpen ? 'hidden' : ''
