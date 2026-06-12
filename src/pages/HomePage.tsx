@@ -177,10 +177,24 @@ const HIW_STEPS = [
   },
 ]
 
+// ── Mobile detection hook ─────────────────────────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth <= 767 : false
+  )
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth <= 767)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
+  return isMobile
+}
+
 // ── Hero component ────────────────────────────────────────────────────────────
 function Hero() {
   const [current, setCurrent] = useState(0)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const isMobile = useIsMobile()
 
   function go(n: number) {
     setCurrent((n + HERO_SLIDES.length) % HERO_SLIDES.length)
@@ -198,6 +212,90 @@ function Hero() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
   }, [])
 
+  const slide = HERO_SLIDES[current]
+
+  // ── MOBILE layout: image on top, text below, zero overlap ─────────────────
+  if (isMobile) {
+    return (
+      <section style={{ background: '#0a0a0a', position: 'relative' }}>
+        {/* Full image — no cropping, no background tricks */}
+        <div style={{ position: 'relative', width: '100%', background: '#0a0a0a', lineHeight: 0 }}>
+          <img
+            src={slide.bg}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'contain', background: '#0a0a0a' }}
+          />
+          {/* Prev / Next arrows over the image */}
+          <button
+            onClick={() => { go(current - 1); startTimer() }}
+            aria-label="Previous slide"
+            style={{
+              position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)',
+              background: 'rgba(0,0,0,0.5)', border: 'none', color: '#fff',
+              width: 36, height: 36, borderRadius: '50%', fontSize: '1rem',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10,
+            }}
+          >←</button>
+          <button
+            onClick={() => { go(current + 1); startTimer() }}
+            aria-label="Next slide"
+            style={{
+              position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
+              background: 'rgba(0,0,0,0.5)', border: 'none', color: '#fff',
+              width: 36, height: 36, borderRadius: '50%', fontSize: '1rem',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10,
+            }}
+          >→</button>
+        </div>
+
+        {/* Text — below image, dark background, no overlap */}
+        <div style={{ background: '#0a0a0a', padding: '18px 20px 24px', fontFamily: 'Montserrat, sans-serif' }}>
+          <div style={{
+            display: 'inline-block', background: slide.badge.bg, color: slide.badge.color,
+            fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.12em',
+            textTransform: 'uppercase', padding: '4px 10px', borderRadius: 4, marginBottom: 8,
+          }}>{slide.badge.text}</div>
+          <p style={{ color: slide.eyebrow.color, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', margin: '0 0 6px' }}>
+            {slide.eyebrow.text}
+          </p>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.6rem,7vw,2rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.02em', margin: '0 0 8px', textTransform: 'uppercase' }}>
+            {slide.h1[0]}<br />{slide.h1[1]}
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', lineHeight: 1.5, margin: '0 0 16px', whiteSpace: 'pre-line' }}>
+            {slide.sub}
+          </p>
+          <Link
+            to={slide.btn.to}
+            className={`kv-hbtn ${slide.btn.cls}`}
+            style={{ display: 'block', width: '100%', maxWidth: 300, textAlign: 'center', boxSizing: 'border-box' }}
+          >
+            {slide.btn.text}
+          </Link>
+        </div>
+
+        {/* Dots */}
+        <div style={{ background: '#0a0a0a', display: 'flex', justifyContent: 'center', gap: 6, padding: '8px 0 16px' }}>
+          {HERO_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { go(i); startTimer() }}
+              aria-label={`Go to slide ${i + 1}`}
+              style={{
+                width: i === current ? 20 : 8, height: 8,
+                borderRadius: 4, border: 'none', cursor: 'pointer',
+                background: i === current ? '#fff' : 'rgba(255,255,255,0.3)',
+                transition: 'all 0.3s', padding: 0,
+              }}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  // ── DESKTOP layout: unchanged ──────────────────────────────────────────────
   return (
     <section className="kv-hw">
       {/* Slides */}
@@ -210,16 +308,7 @@ function Hero() {
             backgroundPosition: slide.bgPos,
             backgroundSize: 'cover',
           }}
-        >
-          {/* Mobile only: <img> shows full image with no cropping */}
-          <img
-            className="kv-sl-img"
-            src={slide.bg}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-          />
-        </div>
+        />
       ))}
 
       {/* Overlay */}
@@ -227,7 +316,7 @@ function Hero() {
 
       {/* Per-slide text panels */}
       {HERO_SLIDES.map((slide, i) => (
-        <div key={i} className={`kv-tx${i === current ? ' on' : ''}${i === 4 ? ' kv-tx-bottles' : ''}`}>
+        <div key={i} className={`kv-tx${i === current ? ' on' : ''}`}>
           <div className="kv-hbadge" style={{ background: slide.badge.bg, color: slide.badge.color }}>
             {slide.badge.text}
           </div>
@@ -245,30 +334,13 @@ function Hero() {
       ))}
 
       {/* Arrows */}
-      <button
-        className="kv-harr kv-hprev"
-        onClick={() => { go(current - 1); startTimer() }}
-        aria-label="Previous slide"
-      >
-        ←
-      </button>
-      <button
-        className="kv-harr kv-hnext"
-        onClick={() => { go(current + 1); startTimer() }}
-        aria-label="Next slide"
-      >
-        →
-      </button>
+      <button className="kv-harr kv-hprev" onClick={() => { go(current - 1); startTimer() }} aria-label="Previous slide">←</button>
+      <button className="kv-harr kv-hnext" onClick={() => { go(current + 1); startTimer() }} aria-label="Next slide">→</button>
 
       {/* Dots */}
       <div className="kv-hdots">
         {HERO_SLIDES.map((_, i) => (
-          <button
-            key={i}
-            className={`kv-hdot${i === current ? ' on' : ''}`}
-            onClick={() => { go(i); startTimer() }}
-            aria-label={`Go to slide ${i + 1}`}
-          />
+          <button key={i} className={`kv-hdot${i === current ? ' on' : ''}`} onClick={() => { go(i); startTimer() }} aria-label={`Go to slide ${i + 1}`} />
         ))}
       </div>
     </section>
