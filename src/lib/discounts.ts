@@ -29,7 +29,7 @@ export function applyDiscount(subtotal: number, discount: DiscountCode | null): 
 
 export function calcShipping(subtotal: number, discountAmount: number): number {
   const afterDiscount = subtotal - discountAmount
-  return afterDiscount >= 100 ? 0 : 8
+  return afterDiscount >= 75 ? 0 : 8
 }
 
 const SUB_KEY = 'kryve_subscribers'
