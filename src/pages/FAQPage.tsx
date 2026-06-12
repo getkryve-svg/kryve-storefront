@@ -7,7 +7,7 @@ const FAQS = [
     items: [
       {
         q: 'How long does delivery take?',
-        a: 'Standard shipping takes 3–5 business days after dispatch. Orders are processed in 1–2 business days. Free shipping on all orders over $100.',
+        a: 'Standard shipping takes 3–5 business days after dispatch. Orders are processed in 1–2 business days. Free shipping on all orders over $75.',
       },
       {
         q: 'Do you ship internationally?',
@@ -15,66 +15,87 @@ const FAQS = [
       },
       {
         q: 'How much does shipping cost?',
-        a: 'Flat rate $8 on orders under $100. Free shipping on orders $100+. Use code FREESHIP to get free shipping on any order.',
+        a: 'Flat rate $8 on orders under $75. Free shipping on orders $75+. Use code WELCOME10 for 10% off your first order.',
       },
       {
         q: 'Can I change my shipping address after ordering?',
-        a: 'Email support@hpm3.com within 2 hours of placing your order and we\'ll do our best to update it before it ships.',
+        a: 'Email getkryve@gmail.com within 2 hours of placing your order and we\'ll do our best to update it before it ships.',
       },
     ],
   },
   {
-    category: 'Returns & Exchanges',
+    category: 'Returns & Refunds',
     items: [
       {
         q: 'What is your return policy?',
-        a: 'We accept returns within 30 days of delivery. Items must be unworn, unwashed, and in original condition with tags attached. See our Returns page for full details.',
+        a: 'We offer a 30-day money-back guarantee. If you\'re not satisfied with your KRYVE product for any reason, contact us within 30 days of delivery for a full refund — no questions asked.',
       },
       {
         q: 'How do I start a return?',
-        a: 'Email support@hpm3.com with your order number and reason for return. We\'ll send you a prepaid return label within 24 hours.',
+        a: 'Email getkryve@gmail.com with your order number and reason for return. We\'ll process your refund within 24 hours — no need to ship the product back.',
       },
       {
         q: 'How long do refunds take?',
-        a: 'Once we receive your return, refunds are processed within 3–5 business days. You\'ll receive an email confirmation when your refund is issued.',
+        a: 'Refunds are processed within 3–5 business days. You\'ll receive an email confirmation when your refund is issued.',
       },
       {
-        q: 'Can I exchange for a different size?',
-        a: 'Yes. Mention the size you\'d like in your return request email. We\'ll ship the exchange within 2 business days of receiving your return.',
-      },
-    ],
-  },
-  {
-    category: 'Sizing',
-    items: [
-      {
-        q: 'How do hpm3® pieces fit?',
-        a: 'All our garments are designed with an intentional oversized silhouette. If you prefer a closer fit, size down one. Check our Size Guide for exact measurements.',
-      },
-      {
-        q: 'Do items run true to size?',
-        a: 'Our tees and hoodies run about one size large by design. Bottoms run true to size. See the Size Guide for detailed measurements.',
-      },
-      {
-        q: 'Is there a size guide?',
-        a: 'Yes — check out our full Size Guide with measurements for every category.',
+        q: 'Do I need to return the product?',
+        a: 'No. Our 30-day guarantee is hassle-free — we issue your refund without requiring you to ship the product back.',
       },
     ],
   },
   {
-    category: 'Products & Care',
+    category: 'Products & Supplements',
     items: [
       {
-        q: 'What materials are hpm3® products made from?',
-        a: 'We use 100% heavyweight cotton for tees and tanks, premium fleece blends for hoodies and joggers. All fabrics are garment-dyed for a vintage feel.',
+        q: 'Are KRYVE supplements third-party tested?',
+        a: 'Yes. Every batch of KRYVE Greens, Collagen, and Magnesium is third-party tested for purity and potency. Certificates of analysis are available on request.',
       },
       {
-        q: 'How do I care for my hpm3® pieces?',
-        a: 'Machine wash cold, inside out, with similar colors. Tumble dry low or hang dry. Do not bleach. Iron inside out on low if needed. Avoid the dryer for best longevity.',
+        q: 'Where are KRYVE supplements manufactured?',
+        a: 'All KRYVE formulas are manufactured in the USA in a GMP-certified (Good Manufacturing Practice) facility, meeting the highest standards for quality and safety.',
       },
       {
-        q: 'Will colors fade over time?',
-        a: 'Garment-dyed pieces develop a beautiful vintage character with washes — that\'s intentional. Cold washing inside out preserves the color best.',
+        q: 'Are KRYVE products safe to take together?',
+        a: 'Yes — KRYVE Greens, Collagen, and Magnesium are designed to complement each other as a complete daily protocol. The KRYVE Stack combines all three for maximum benefit.',
+      },
+      {
+        q: 'Do KRYVE products contain allergens?',
+        a: 'KRYVE Greens and Magnesium are gluten-free. KRYVE Collagen is derived from grass-fed bovine. Please review the full ingredient list on each product page, and consult your doctor if you have specific allergies or medical conditions.',
+      },
+    ],
+  },
+  {
+    category: 'Dosage & Usage',
+    items: [
+      {
+        q: 'When should I take KRYVE Greens?',
+        a: 'Take one scoop of KRYVE Greens each morning — mixed into water, a smoothie, or juice — to start your day with foundational nutrition and clean energy.',
+      },
+      {
+        q: 'When should I take KRYVE Collagen?',
+        a: 'Mix one scoop of KRYVE Collagen into coffee, tea, a smoothie, or any liquid at any time of day. It\'s unflavored and dissolves completely in hot or cold liquids.',
+      },
+      {
+        q: 'When should I take KRYVE Magnesium?',
+        a: 'Take 2 capsules of KRYVE Magnesium Glycinate 30–60 minutes before bed for optimal sleep support and overnight muscle recovery.',
+      },
+      {
+        q: 'How long until I see results?',
+        a: 'Most customers notice improved energy and digestion within 1–2 weeks of KRYVE Greens. Collagen benefits are typically felt within 4–8 weeks. Magnesium sleep support is often noticed within the first few nights.',
+      },
+    ],
+  },
+  {
+    category: 'Subscribe & Save',
+    items: [
+      {
+        q: 'What is the Subscribe & Save option?',
+        a: 'Subscribe & Save lets you receive your KRYVE supplements automatically every month and save 15% on every order. You can cancel, pause, or modify your subscription at any time.',
+      },
+      {
+        q: 'How do I manage my subscription?',
+        a: 'Log into your KRYVE account to pause, skip, change frequency, or cancel your subscription at any time — no fees, no commitments.',
       },
     ],
   },
@@ -91,11 +112,11 @@ const FAQS = [
       },
       {
         q: 'I haven\'t received my order confirmation email.',
-        a: 'Check your spam folder first. If it\'s not there, email support@hpm3.com with your name and order details and we\'ll resend it immediately.',
+        a: 'Check your spam folder first. If it\'s not there, email getkryve@gmail.com with your name and order details and we\'ll resend it immediately.',
       },
       {
         q: 'Can I cancel my order?',
-        a: 'Orders can be cancelled within 2 hours of placement. Email support@hpm3.com immediately with your order number.',
+        a: 'Orders can be cancelled within 2 hours of placement. Email getkryve@gmail.com immediately with your order number.',
       },
     ],
   },

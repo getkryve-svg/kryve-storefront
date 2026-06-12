@@ -31,7 +31,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Desert Sand',
     category: 'Tee',
-    description: 'Premium heavyweight cotton, oversized silhouette with embroidered hpm3® logo.',
+    description: 'Premium heavyweight cotton, oversized silhouette with embroidered KRYVE logo.',
   },
   {
     id: 'sand-hoodie',
@@ -50,7 +50,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Mocha',
     category: 'Hoodie',
-    description: 'Garment-dyed fleece hoodie with tonal embroidered hpm3® logo.',
+    description: 'Garment-dyed fleece hoodie with tonal embroidered KRYVE logo.',
   },
   {
     id: 'sand-joggers',
@@ -69,7 +69,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Desert Sand',
     category: 'Bottoms',
-    description: 'Relaxed-fit fleece joggers with embroidered hpm3® logo, tapered cuff.',
+    description: 'Relaxed-fit fleece joggers with embroidered KRYVE logo, tapered cuff.',
   },
   {
     id: 'sand-cap',
@@ -88,7 +88,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Mocha',
     category: 'Accessories',
-    description: 'Unstructured 6-panel cap, embroidered hpm3® arc logo, adjustable strap.',
+    description: 'Unstructured 6-panel cap, embroidered KRYVE arc logo, adjustable strap.',
   },
   {
     id: 'sand-tank',
@@ -107,7 +107,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Desert Sand',
     category: 'Tank',
-    description: 'Heavyweight cotton tank, dropped armhole, embroidered hpm3® logo.',
+    description: 'Heavyweight cotton tank, dropped armhole, embroidered KRYVE logo.',
   },
   {
     id: 'sand-sleeveless',
@@ -147,7 +147,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Desert Sand',
     category: 'Tee',
-    description: 'Cropped-fit heavyweight cotton tee with embroidered hpm3® logo. Designed for a flattering, fitted silhouette.',
+    description: 'Cropped-fit heavyweight cotton tee with embroidered KRYVE logo. Designed for a flattering, fitted silhouette.',
     badge: 'New',
   },
   {
@@ -167,7 +167,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Desert Sand',
     category: 'Bottoms',
-    description: 'High-waisted fleece joggers with fitted silhouette, embroidered hpm3® logo, tapered cuff.',
+    description: 'High-waisted fleece joggers with fitted silhouette, embroidered KRYVE logo, tapered cuff.',
     badge: 'New',
   },
 
@@ -192,7 +192,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Terracotta',
     category: 'Tee',
-    description: 'Premium heavyweight cotton, oversized silhouette with embroidered hpm3® logo.',
+    description: 'Premium heavyweight cotton, oversized silhouette with embroidered KRYVE logo.',
   },
   {
     id: 'clay-hoodie',
@@ -211,7 +211,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Bone',
     category: 'Hoodie',
-    description: 'Garment-dyed fleece hoodie with tonal embroidered hpm3® logo.',
+    description: 'Garment-dyed fleece hoodie with tonal embroidered KRYVE logo.',
   },
   {
     id: 'clay-joggers',
@@ -230,7 +230,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Espresso Brown',
     category: 'Bottoms',
-    description: 'Relaxed-fit fleece joggers with embroidered hpm3® logo, tapered cuff.',
+    description: 'Relaxed-fit fleece joggers with embroidered KRYVE logo, tapered cuff.',
   },
   {
     id: 'clay-cap',
@@ -249,7 +249,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Terracotta',
     category: 'Accessories',
-    description: 'Unstructured 6-panel cap, embroidered hpm3® arc logo, adjustable strap.',
+    description: 'Unstructured 6-panel cap, embroidered KRYVE arc logo, adjustable strap.',
   },
   {
     id: 'clay-tank',
@@ -268,7 +268,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Bone',
     category: 'Tank',
-    description: 'Heavyweight cotton tank, dropped armhole, embroidered hpm3® logo.',
+    description: 'Heavyweight cotton tank, dropped armhole, embroidered KRYVE logo.',
   },
   {
     id: 'clay-sleeveless',
@@ -308,7 +308,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Terracotta',
     category: 'Hoodie',
-    description: 'Cropped garment-dyed fleece hoodie with tonal embroidered hpm3® logo. Premium fitted silhouette.',
+    description: 'Cropped garment-dyed fleece hoodie with tonal embroidered KRYVE logo. Premium fitted silhouette.',
     badge: 'New',
   },
   {
@@ -328,7 +328,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Bone',
     category: 'Tank',
-    description: 'Fitted heavyweight cotton tank with dropped armhole and embroidered hpm3® logo.',
+    description: 'Fitted heavyweight cotton tank with dropped armhole and embroidered KRYVE logo.',
     badge: 'New',
   },
 
@@ -353,7 +353,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Greige',
     category: 'Tee',
-    description: 'Premium heavyweight cotton, oversized silhouette with embroidered hpm3® logo.',
+    description: 'Premium heavyweight cotton, oversized silhouette with embroidered KRYVE logo.',
   },
   {
     id: 'fog-hoodie',
@@ -372,7 +372,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Washed Stone',
     category: 'Hoodie',
-    description: 'Garment-dyed fleece hoodie with tonal embroidered hpm3® logo.',
+    description: 'Garment-dyed fleece hoodie with tonal embroidered KRYVE logo.',
   },
   {
     id: 'fog-joggers',
@@ -391,7 +391,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Sage',
     category: 'Bottoms',
-    description: 'Relaxed-fit fleece joggers with embroidered hpm3® logo, tapered cuff.',
+    description: 'Relaxed-fit fleece joggers with embroidered KRYVE logo, tapered cuff.',
   },
   {
     id: 'fog-cap',
@@ -410,7 +410,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Washed Stone',
     category: 'Accessories',
-    description: 'Unstructured 6-panel cap, embroidered hpm3® arc logo, adjustable strap.',
+    description: 'Unstructured 6-panel cap, embroidered KRYVE arc logo, adjustable strap.',
   },
   {
     id: 'fog-tank',
@@ -429,7 +429,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Greige',
     category: 'Tank',
-    description: 'Heavyweight cotton tank, dropped armhole, embroidered hpm3® logo.',
+    description: 'Heavyweight cotton tank, dropped armhole, embroidered KRYVE logo.',
   },
   {
     id: 'fog-sleeveless',
@@ -469,7 +469,7 @@ export const PRODUCTS: LocalProduct[] = [
     get imageModel()   { return this.images.lifestyle },
     color: 'Greige',
     category: 'Tee',
-    description: 'Cropped-fit heavyweight cotton tee with embroidered hpm3® logo. Premium fitted silhouette.',
+    description: 'Cropped-fit heavyweight cotton tee with embroidered KRYVE logo. Premium fitted silhouette.',
     badge: 'New',
   },
 

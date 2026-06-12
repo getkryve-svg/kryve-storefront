@@ -32,7 +32,7 @@ export function calcShipping(subtotal: number, discountAmount: number): number {
   return afterDiscount >= 100 ? 0 : 8
 }
 
-const SUB_KEY = 'hpm3_subscribers'
+const SUB_KEY = 'kryve_subscribers'
 
 export function saveSubscriber(email: string): string {
   // Generate one-time discount code for new subscribers

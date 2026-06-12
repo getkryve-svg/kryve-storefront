@@ -71,10 +71,10 @@ function RevenueChart({ orders }: { orders: Order[] }) {
 }
 
 function loadOrders(): Order[] {
-  try { return JSON.parse(localStorage.getItem('hpm3_orders') || '[]') } catch { return [] }
+  try { return JSON.parse(localStorage.getItem('kryve_orders') || '[]') } catch { return [] }
 }
 function saveOrders(orders: Order[]) {
-  try { localStorage.setItem('hpm3_orders', JSON.stringify(orders)) } catch { /* ignore */ }
+  try { localStorage.setItem('kryve_orders', JSON.stringify(orders)) } catch { /* ignore */ }
 }
 
 const STATUS_OPTIONS = ['pending', 'processing', 'shipped', 'delivered'] as const
@@ -137,7 +137,7 @@ export default function AdminPage() {
   const users = getAllUsers()
   const dropNotifyList = getNotifyList()
   const subscribers: string[] = (() => {
-    try { return JSON.parse(localStorage.getItem('hpm3_subscribers') || '[]') } catch { return [] }
+    try { return JSON.parse(localStorage.getItem('kryve_subscribers') || '[]') } catch { return [] }
   })()
 
   const TABS: { key: Tab; label: string }[] = [
@@ -155,7 +155,7 @@ export default function AdminPage() {
         <div className="flex items-center justify-between py-6 border-b border-[#E5E0D8] mb-6">
           <div>
             <h1 className="font-display font-black text-2xl">Admin Dashboard</h1>
-            <p className="font-body text-xs text-[#888]">hpm3® operations</p>
+            <p className="font-body text-xs text-[#888]">KRYVE operations</p>
           </div>
           <span className="font-body text-xs px-2.5 py-1 bg-[#1A1A1A] text-white rounded-full">Admin</span>
         </div>

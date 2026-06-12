@@ -6,7 +6,7 @@ import { PRODUCTS } from '../data/products'
 import type { Order } from '../types'
 
 function loadOrders(): Order[] {
-  try { return JSON.parse(localStorage.getItem('hpm3_orders') || '[]') } catch { return [] }
+  try { return JSON.parse(localStorage.getItem('kryve_orders') || '[]') } catch { return [] }
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -182,7 +182,7 @@ export default function AccountPage() {
               <p className="font-body text-xs font-semibold tracking-widest uppercase text-[#888]">How it works</p>
               {[
                 'Share your unique referral link with friends',
-                'Friend clicks link and shops hpm3®',
+                'Friend clicks link and shops KRYVE',
                 'Friend gets 10% off their first order automatically',
                 'You receive $10 store credit after their purchase',
               ].map((step, i) => (

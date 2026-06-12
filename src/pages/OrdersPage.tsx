@@ -14,7 +14,7 @@ export default function OrdersPage() {
 
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem('hpm3_orders') || '[]') as Order[]
+      const saved = JSON.parse(localStorage.getItem('kryve_orders') || '[]') as Order[]
       setOrders(saved)
     } catch { setOrders([]) }
   }, [])
@@ -92,7 +92,7 @@ export default function OrdersPage() {
                   </Link>
                   <span className="text-[#D8D3CC]">·</span>
                   <a
-                    href={`mailto:support@hpm3.com?subject=Order ${order.id}`}
+                    href={`mailto:getkryve@gmail.com?subject=Order ${order.id}`}
                     className="font-body text-xs font-medium text-[#888] hover:text-[#1A1A1A] transition-colors"
                   >
                     Get help

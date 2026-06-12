@@ -116,7 +116,7 @@ export default function CartPage() {
                         <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <span className="font-display font-black text-[#CCC] text-xs">hpm3®</span>
+                          <span className="font-display font-black text-[#CCC] text-xs">KRYVE</span>
                         </div>
                       )}
                     </div>
@@ -222,9 +222,9 @@ export default function CartPage() {
                   <span className="text-[#555]">Shipping</span>
                   <span>{shipping === 0 ? <span className="text-[#10B981]">Free</span> : `$${shipping.toFixed(2)}`}</span>
                 </div>
-                {shipping > 0 && subtotal < 100 && (
+                {shipping > 0 && subtotal < 75 && (
                   <p className="font-body text-[11px] text-[#888]">
-                    Add ${(100 - subtotal + discountAmount).toFixed(2)} more for free shipping
+                    Add ${(75 - subtotal + discountAmount).toFixed(2)} more for free shipping
                   </p>
                 )}
                 <div className="flex justify-between font-display font-bold text-base border-t border-[#E5E0D8] pt-3 mt-3">
@@ -256,7 +256,7 @@ export default function CartPage() {
                 {[
                   { icon: '🔒', text: 'Secure checkout powered by Stripe' },
                   { icon: '↩️', text: '30-day returns, no questions asked' },
-                  { icon: '🚚', text: 'Free shipping on orders over $100' },
+                  { icon: '🚚', text: 'Free shipping on orders over $75' },
                 ].map(({ icon, text }) => (
                   <div key={text} className="flex items-center gap-2">
                     <span className="text-sm">{icon}</span>

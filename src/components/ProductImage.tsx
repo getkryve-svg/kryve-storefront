@@ -139,7 +139,7 @@ export default function ProductImage({ product, view, className = '', loading = 
           className="absolute bottom-4 right-4 font-display font-black text-[11px] tracking-tight"
           style={{ color: fg, opacity: 0.25 }}
         >
-          hpm3®
+          KRYVE
         </span>
       </div>
     )

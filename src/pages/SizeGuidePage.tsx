@@ -23,7 +23,7 @@ export default function SizeGuidePage() {
           <p className="font-body text-xs tracking-[0.3em] uppercase text-[#8B6F47] mb-3">Fit Guide</p>
           <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight mb-4">Size Guide</h1>
           <p className="font-body text-sm text-[#888] max-w-sm mx-auto">
-            hpm3® is designed with an intentional oversized fit. Measurements below are body measurements — not garment dimensions.
+            KRYVE is designed with an intentional oversized fit. Measurements below are body measurements — not garment dimensions.
           </p>
         </div>
 
@@ -114,7 +114,7 @@ export default function SizeGuidePage() {
 
         <p className="font-body text-xs text-[#AAA] text-center">
           Not sure about your size?{' '}
-          <a href="mailto:support@hpm3.com" className="underline hover:text-[#1A1A1A] transition-colors">
+          <a href="mailto:getkryve@gmail.com" className="underline hover:text-[#1A1A1A] transition-colors">
             Email us
           </a>{' '}
           and we'll help you find the right fit.

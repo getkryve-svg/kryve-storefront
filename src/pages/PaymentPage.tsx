@@ -23,13 +23,13 @@ const STRIPE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string | undef
 const DEMO_MODE  = !STRIPE_KEY
 
 function generateOrderId() {
-  return 'HPM3-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase()
+  return 'KRYVE-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase()
 }
 
 function saveOrder(order: Order) {
   try {
-    const prev = JSON.parse(localStorage.getItem('hpm3_orders') || '[]') as Order[]
-    localStorage.setItem('hpm3_orders', JSON.stringify([order, ...prev]))
+    const prev = JSON.parse(localStorage.getItem('kryve_orders') || '[]') as Order[]
+    localStorage.setItem('kryve_orders', JSON.stringify([order, ...prev]))
   } catch { /* ignore */ }
 }
 

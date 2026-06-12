@@ -91,12 +91,20 @@ const PRODUCT_DETAIL: Record<string, {
   },
 }
 
+const SUPPLEMENT_HANDLES = new Set([
+  'kryve-greens-superfood-powder',
+  'kryve-hydrolyzed-collagen-peptides',
+  'kryve-magnesium-glycinate',
+  'the-kryve-stack',
+])
+
 export default function ProductPage() {
   const { handle } = useParams<{ handle: string }>()
   const { addItem } = useCart()
   const [product, setProduct] = useState<ShopifyProduct | null>(null)
   const [imgIdx, setImgIdx] = useState(0)
   const [added, setAdded] = useState(false)
+  const [purchaseType, setPurchaseType] = useState<'one-time' | 'subscribe'>('one-time')
 
   useEffect(() => {
     if (!handle) return
@@ -117,11 +125,18 @@ export default function ProductPage() {
   )
 
   const detail = PRODUCT_DETAIL[product.handle]
-  const images = product.images.edges.map(e => e.node)
+  const isSupplementProduct = SUPPLEMENT_HANDLES.has(product.handle)
+  // Build image list — add supplement facts placeholder slot for supplement products
+  const baseImages = product.images.edges.map(e => e.node)
+  const images = isSupplementProduct
+    ? [...baseImages, { url: '__supplement_facts__', altText: 'Supplement Facts' }]
+    : baseImages
   const variant = product.variants.edges[0]?.node
   const price = variant?.price.amount || product.priceRange.minVariantPrice.amount
   const compareAt = variant?.compareAtPrice?.amount
   const accent = getProductAccent(product.handle)
+  const discountedPrice = (parseFloat(price) * 0.85).toFixed(2)
+  const displayPrice = purchaseType === 'subscribe' ? discountedPrice : price
 
   function handleAddToCart() {
     if (!variant) return
@@ -155,10 +170,28 @@ export default function ProductPage() {
         {/* Images */}
         <div className="kv-pdp-images">
           <div className="kv-pdp-main-img">
-            <img
-              src={images[imgIdx]?.url || ''}
-              alt={images[imgIdx]?.altText || product.title}
-            />
+            {images[imgIdx]?.url === '__supplement_facts__' ? (
+              // Supplement facts placeholder
+              <div style={{
+                width: '100%', height: '100%', minHeight: 360,
+                background: '#F5F1ED', border: '2px dashed #C8BFB4',
+                borderRadius: 12, display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center', gap: 12,
+              }}>
+                <span style={{ fontSize: '2.5rem' }}>📋</span>
+                <p style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888' }}>
+                  Supplement Facts
+                </p>
+                <p style={{ fontFamily: 'Montserrat,sans-serif', fontSize: '0.75rem', color: '#AAA' }}>
+                  Label image coming soon
+                </p>
+              </div>
+            ) : (
+              <img
+                src={images[imgIdx]?.url || ''}
+                alt={images[imgIdx]?.altText || product.title}
+              />
+            )}
           </div>
           {images.length > 1 && (
             <div className="kv-pdp-thumbs">
@@ -168,9 +201,13 @@ export default function ProductPage() {
                   className={`kv-pdp-thumb${i === imgIdx ? ' active' : ''}`}
                   style={i === imgIdx ? { borderColor: accent } : {}}
                   onClick={() => setImgIdx(i)}
-                  aria-label={`View image ${i + 1}`}
+                  aria-label={img.url === '__supplement_facts__' ? 'Supplement Facts' : `View image ${i + 1}`}
                 >
-                  <img src={img.url} alt={img.altText || product.title} loading="lazy" />
+                  {img.url === '__supplement_facts__' ? (
+                    <div style={{ width: '100%', height: '100%', background: '#F5F1ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>📋</div>
+                  ) : (
+                    <img src={img.url} alt={img.altText || product.title} loading="lazy" />
+                  )}
                 </button>
               ))}
             </div>
@@ -188,10 +225,12 @@ export default function ProductPage() {
           {detail?.tagline && <p className="kv-pdp-tagline">{detail.tagline}</p>}
 
           <div className="kv-pdp-price-row">
-            <span className="kv-pdp-price">{formatPrice(price)}</span>
-            {compareAt && parseFloat(compareAt) > parseFloat(price) && (
+            <span className="kv-pdp-price">{formatPrice(displayPrice)}</span>
+            {purchaseType === 'subscribe' ? (
+              <span className="kv-pdp-compare">{formatPrice(price)}</span>
+            ) : compareAt && parseFloat(compareAt) > parseFloat(price) ? (
               <span className="kv-pdp-compare">{formatPrice(compareAt)}</span>
-            )}
+            ) : null}
           </div>
 
           {detail?.bullets && (
@@ -202,12 +241,71 @@ export default function ProductPage() {
             </ul>
           )}
 
+          {/* Subscribe & Save toggle */}
+          <div style={{ margin: '18px 0', border: '1px solid #E5E0D8', borderRadius: 10, overflow: 'hidden' }}>
+            <label
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '12px 16px', cursor: 'pointer', gap: 12,
+                background: purchaseType === 'one-time' ? '#fff' : 'transparent',
+                borderBottom: '1px solid #E5E0D8',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input
+                  type="radio" name="purchase-type" value="one-time"
+                  checked={purchaseType === 'one-time'}
+                  onChange={() => setPurchaseType('one-time')}
+                  style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
+                />
+                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem' }}>
+                  One-time purchase
+                </span>
+              </div>
+              <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem' }}>
+                {formatPrice(price)}
+              </span>
+            </label>
+            <label
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '12px 16px', cursor: 'pointer', gap: 12,
+                background: purchaseType === 'subscribe' ? '#F0FDF4' : 'transparent',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input
+                  type="radio" name="purchase-type" value="subscribe"
+                  checked={purchaseType === 'subscribe'}
+                  onChange={() => setPurchaseType('subscribe')}
+                  style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
+                />
+                <div>
+                  <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem' }}>
+                    Subscribe &amp; Save 15%
+                  </span>
+                  <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.72rem', color: '#16A34A', fontWeight: 600 }}>
+                    Delivered monthly · Cancel anytime
+                  </span>
+                </div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#16A34A' }}>
+                  {formatPrice(discountedPrice)}
+                </span>
+                <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.7rem', color: '#AAA', textDecoration: 'line-through' }}>
+                  {formatPrice(price)}
+                </span>
+              </div>
+            </label>
+          </div>
+
           <button
             className="kv-pdp-atc"
             style={added ? { backgroundColor: accent, color: '#000' } : {}}
             onClick={handleAddToCart}
           >
-            {added ? '✓ ADDED TO CART' : 'ADD TO CART'}
+            {added ? '✓ ADDED TO CART' : purchaseType === 'subscribe' ? 'SUBSCRIBE & SAVE 15%' : 'ADD TO CART'}
           </button>
 
           <p className="kv-pdp-guarantee">🔒 30-Day Money-Back Guarantee · Free shipping $75+</p>

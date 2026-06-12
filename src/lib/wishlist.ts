@@ -1,4 +1,4 @@
-const KEY = 'hpm3_wishlist'
+const KEY = 'kryve_wishlist'
 
 export function getWishlist(): string[] {
   try { return JSON.parse(localStorage.getItem(KEY) || '[]') } catch { return [] }

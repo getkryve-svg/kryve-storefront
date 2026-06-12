@@ -99,8 +99,8 @@ const COMPARE_ROWS = [
 
 // ── Why KRYVE stats ───────────────────────────────────────────────────────────
 const WHY_STATS = [
-  { target: 47, suffix: '+', label: 'Superfoods & Nutrients', custom: null },
-  { target: 0, suffix: '', label: 'Artificial Fillers', custom: '✓ Zero' },
+  { target: 75, suffix: '+', label: 'Superfoods & Nutrients', custom: null },
+  { target: 0, suffix: '', label: 'Artificial Fillers', custom: 'Zero' },
   { target: 3, suffix: '', label: 'Targeted Formulas', custom: null },
   { target: 1, suffix: '', label: 'Daily Ritual', custom: null },
 ]
@@ -335,17 +335,22 @@ function CounterStat({ target, suffix, label, custom }: typeof WHY_STATS[number]
   const animated = useRef(false)
 
   useEffect(() => {
+    // custom stats (target=0) don't need animation — they display static text
     const el = ref.current
-    if (!el || animated.current || target === 0) return
+    if (!el || animated.current || custom !== null) return
     const obs = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !animated.current) {
         animated.current = true
-        const duration = 1500
+        const duration = 1400
         const start = performance.now()
         const step = (now: number) => {
-          const progress = Math.min((now - start) / duration, 1)
-          setCount(Math.round(progress * target))
+          const elapsed = now - start
+          const progress = Math.min(elapsed / duration, 1)
+          // easeOutCubic so it lands cleanly on the final value
+          const ease = 1 - Math.pow(1 - progress, 3)
+          setCount(Math.round(ease * target))
           if (progress < 1) requestAnimationFrame(step)
+          else setCount(target) // guarantee exact final value
         }
         requestAnimationFrame(step)
         obs.disconnect()
@@ -353,15 +358,15 @@ function CounterStat({ target, suffix, label, custom }: typeof WHY_STATS[number]
     }, { threshold: 0.3 })
     obs.observe(el)
     return () => obs.disconnect()
-  }, [target])
+  }, [target, custom])
 
   return (
     <div ref={ref} className="kv-fade" style={{ textAlign: 'center', padding: '48px 24px', background: '#111', transitionDelay: '0s' }}>
-      {custom ? (
-        <>
-          <span style={{ color: '#39FF14', fontSize: '3.5rem', fontWeight: 900, display: 'block', fontFamily: 'Montserrat,sans-serif' }}>0</span>
-          <span style={{ color: '#39FF14', fontSize: '1.2rem', fontWeight: 700, display: 'block', marginTop: 4 }}>{custom}</span>
-        </>
+      {custom !== null ? (
+        // Static display for "Zero Artificial Fillers" — no animated number
+        <span style={{ color: '#39FF14', fontSize: '3.5rem', fontWeight: 900, display: 'block', fontFamily: 'Montserrat,sans-serif' }}>
+          {custom}
+        </span>
       ) : (
         <span className="counter-number" style={{ color: '#39FF14', fontSize: '3.5rem', fontWeight: 900, display: 'block', fontFamily: 'Montserrat,sans-serif' }}>
           {count}{suffix}

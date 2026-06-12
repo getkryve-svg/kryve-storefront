@@ -139,8 +139,8 @@ export default function Analytics() {
     const handler = (e: Event) => {
       trackAddToCart((e as CustomEvent<CartItem>).detail)
     }
-    window.addEventListener('hpm3:add_to_cart', handler)
-    return () => window.removeEventListener('hpm3:add_to_cart', handler)
+    window.addEventListener('kryve:add_to_cart', handler)
+    return () => window.removeEventListener('kryve:add_to_cart', handler)
   }, [])
 
   return null // no UI

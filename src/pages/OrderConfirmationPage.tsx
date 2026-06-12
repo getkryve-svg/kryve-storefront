@@ -127,8 +127,8 @@ export default function OrderConfirmationPage() {
         {/* Support */}
         <p className="font-body text-xs text-[#AAA] text-center mt-8">
           Questions? Email{' '}
-          <a href="mailto:support@hpm3.com" className="underline hover:text-[#1A1A1A] transition-colors">
-            support@hpm3.com
+          <a href="mailto:getkryve@gmail.com" className="underline hover:text-[#1A1A1A] transition-colors">
+            getkryve@gmail.com
           </a>{' '}
           — we reply within 24 hours.
         </p>

@@ -172,9 +172,9 @@ export default function CartDrawer() {
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              {subtotal < 100 && (
+              {subtotal < 75 && (
                 <p className="font-body text-[11px] text-[#8B6F47] text-center">
-                  Add ${(100 - subtotal).toFixed(2)} more for free shipping
+                  Add ${(75 - subtotal).toFixed(2)} more for free shipping
                 </p>
               )}
             </div>

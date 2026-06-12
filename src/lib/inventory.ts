@@ -4,7 +4,7 @@
  */
 import { PRODUCTS } from '../data/products'
 
-const KEY = 'hpm3_inventory'
+const KEY = 'kryve_inventory'
 
 function buildDefaults(): Record<string, number> {
   const defaults: Record<string, number> = {}

@@ -10,11 +10,11 @@ export default function PrivacyPage() {
           <p className="font-body text-sm text-[#888] mt-3">Last updated: January 1, 2026</p>
         </div>
 
-        <div className="prose-hpm3 space-y-10 font-body text-[#555] text-sm leading-relaxed">
+        <div className="space-y-10 font-body text-[#555] text-sm leading-relaxed">
 
           <section>
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">1. Information We Collect</h2>
-            <p className="mb-3">When you shop at hpm3®, we collect information you provide directly:</p>
+            <p className="mb-3">When you shop at KRYVE, we collect information you provide directly:</p>
             <ul className="space-y-2 ml-4">
               <li>• <strong>Account information:</strong> Name, email address, and password when you create an account.</li>
               <li>• <strong>Order information:</strong> Shipping address, billing address, and payment details (processed securely by Stripe — we never store your card number).</li>
@@ -79,7 +79,7 @@ export default function PrivacyPage() {
               <li>• Opt out of marketing communications</li>
               <li>• Data portability (receive your data in a machine-readable format)</li>
             </ul>
-            <p className="mt-3">To exercise these rights, contact us at <a href="mailto:privacy@hpm3.com" className="text-[#8B6F47] underline">privacy@hpm3.com</a>.</p>
+            <p className="mt-3">To exercise these rights, contact us at <a href="mailto:getkryve@gmail.com" className="text-[#8B6F47] underline">getkryve@gmail.com</a>.</p>
           </section>
 
           <section>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">8. Children's Privacy</h2>
-            <p>hpm3® is not directed to children under 13. We do not knowingly collect personal information from children under 13.</p>
+            <p>KRYVE is not directed to children under 13. We do not knowingly collect personal information from children under 13.</p>
           </section>
 
           <section>
@@ -101,8 +101,8 @@ export default function PrivacyPage() {
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">10. Contact Us</h2>
             <p>Questions about this Privacy Policy? Contact us:</p>
             <div className="mt-3 p-4 bg-white border border-[#E5E0D8] rounded-sm">
-              <p><strong>hpm3® Brand</strong></p>
-              <p>Email: <a href="mailto:privacy@hpm3.com" className="text-[#8B6F47] underline">privacy@hpm3.com</a></p>
+              <p><strong>KRYVE Supplements</strong></p>
+              <p>Email: <a href="mailto:getkryve@gmail.com" className="text-[#8B6F47] underline">getkryve@gmail.com</a></p>
               <p className="mt-2">
                 <Link to="/contact" className="font-display font-bold text-sm text-[#1A1A1A] underline">Contact Form →</Link>
               </p>

@@ -7,7 +7,7 @@ export default function ReturnsPage() {
         <div className="text-center mb-12">
           <p className="font-body text-xs tracking-[0.3em] uppercase text-[#8B6F47] mb-3">Policies</p>
           <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight mb-4">Returns & Refunds</h1>
-          <p className="font-body text-sm text-[#888]">We want you to love every piece. If something isn't right, we'll make it right.</p>
+          <p className="font-body text-sm text-[#888]">We stand behind every formula. If you're not fully satisfied, we'll make it right.</p>
         </div>
 
         <div className="space-y-8">
@@ -20,12 +20,12 @@ export default function ReturnsPage() {
               <h2 className="font-display font-bold text-xl tracking-tight">30-Day Returns</h2>
             </div>
             <p className="font-body text-sm text-[#555] leading-relaxed mb-3">
-              Return any item within <strong>30 days of delivery</strong> for a full refund or exchange. No questions asked.
+              Return any KRYVE product within <strong>30 days of delivery</strong> for a full refund. No questions asked — your satisfaction is 100% guaranteed.
             </p>
             <div className="bg-[#F5F1ED] rounded-md p-4">
-              <p className="font-body text-xs font-semibold text-[#888] uppercase tracking-wider mb-2">Items must be:</p>
+              <p className="font-body text-xs font-semibold text-[#888] uppercase tracking-wider mb-2">Eligible returns:</p>
               <ul className="space-y-1">
-                {['Unworn and unwashed', 'In original condition', 'With all tags attached', 'In original or comparable packaging'].map(item => (
+                {['Unopened / factory-sealed products', 'Opened products within 30 days', 'Any reason — no questions asked', 'No return shipment required'].map(item => (
                   <li key={item} className="flex items-center gap-2 font-body text-sm text-[#555]">
                     <span className="text-[#10B981] font-bold">✓</span> {item}
                   </li>
@@ -39,10 +39,10 @@ export default function ReturnsPage() {
             <h2 className="font-display font-bold text-xl tracking-tight mb-5">How to Start a Return</h2>
             <div className="space-y-4">
               {[
-                { step: '1', title: 'Email us', body: 'Send your order number and reason to support@hpm3.com. We\'ll respond within 24 hours.' },
-                { step: '2', title: 'Get your label', body: 'We\'ll email you a prepaid return shipping label. Free return shipping on all orders.' },
-                { step: '3', title: 'Ship it back', body: 'Pack your item, attach the label, and drop it off at any UPS location.' },
-                { step: '4', title: 'Refund issued', body: 'Once received and inspected, your refund is processed within 3–5 business days.' },
+                { step: '1', title: 'Email us', body: 'Send your order number and reason to getkryve@gmail.com. We\'ll respond within 24 hours.' },
+                { step: '2', title: 'We confirm', body: 'We\'ll reply within 24 hours to confirm your refund. No need to ship the product back.' },
+                { step: '3', title: 'Refund processed', body: 'Your refund is issued to your original payment method within 3–5 business days.' },
+                { step: '4', title: 'Done', body: 'You\'ll receive an email confirmation once your refund is on its way.' },
               ].map(({ step, title, body }) => (
                 <div key={step} className="flex gap-4">
                   <div className="w-7 h-7 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center flex-shrink-0 font-display font-bold text-xs mt-0.5">
@@ -81,7 +81,7 @@ export default function ReturnsPage() {
           <div className="border border-amber-200 bg-amber-50 rounded-lg p-5">
             <h3 className="font-display font-bold text-base mb-2 text-amber-800">Non-Returnable Items</h3>
             <ul className="space-y-1">
-              {['Items returned after 30 days', 'Items that show signs of wear or washing', 'Final sale items (marked at checkout)'].map(item => (
+              {['Items returned after 30 days', 'Products purchased from unauthorized third-party sellers', 'Final sale items (marked at checkout)'].map(item => (
                 <li key={item} className="flex items-center gap-2 font-body text-sm text-amber-700">
                   <span>·</span> {item}
                 </li>

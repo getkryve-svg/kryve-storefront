@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, useEffect, type ReactNode } from 'react'
 import type { CartItem, CartState, CartAction } from '../types'
 
-const CART_KEY = 'hpm3_cart'
+const CART_KEY = 'kryve_cart'
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -82,7 +82,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'ADD_ITEM', payload: item })
     dispatch({ type: 'OPEN_CART' })
     // Fire analytics events (picked up by Analytics component listeners)
-    window.dispatchEvent(new CustomEvent('hpm3:add_to_cart', { detail: item }))
+    window.dispatchEvent(new CustomEvent('kryve:add_to_cart', { detail: item }))
   }
 
   function clearCart() {

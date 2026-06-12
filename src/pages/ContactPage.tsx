@@ -117,7 +117,7 @@ export default function ContactPage() {
               <h3 className="font-display font-bold text-base mb-4">Contact Info</h3>
               <div className="space-y-3">
                 {[
-                  { icon: '✉️', label: 'Email', value: 'support@hpm3.com', href: 'mailto:support@hpm3.com' },
+                  { icon: '✉️', label: 'Email', value: 'getkryve@gmail.com', href: 'mailto:getkryve@gmail.com' },
                   { icon: '⏱️', label: 'Response time', value: 'Within 24 hours' },
                   { icon: '📍', label: 'Location', value: 'United States' },
                 ].map(({ icon, label, value, href }) => (
@@ -140,9 +140,8 @@ export default function ContactPage() {
               <h3 className="font-display font-bold text-base mb-4">Follow Us</h3>
               <div className="space-y-2">
                 {[
-                  { platform: 'Instagram', handle: '@hpm3official', href: 'https://instagram.com/hpm3official' },
-                  { platform: 'TikTok',    handle: '@hpm3',          href: 'https://tiktok.com/@hpm3' },
-                  { platform: 'Twitter/X', handle: '@hpm3',          href: 'https://x.com/hpm3' },
+                  { platform: 'Instagram', handle: '@getkryve', href: 'https://instagram.com/getkryve' },
+                  { platform: 'TikTok',    handle: '@getkryve', href: 'https://tiktok.com/@getkryve' },
                 ].map(({ platform, handle, href }) => (
                   <a key={platform} href={href} target="_blank" rel="noopener noreferrer"
                     className="flex items-center justify-between group hover:bg-[#F5F1ED] rounded-md px-2 py-1.5 -mx-2 transition-colors">
@@ -158,8 +157,8 @@ export default function ContactPage() {
               {[
                 { label: 'Track my order', href: '/orders' },
                 { label: 'Start a return', href: '/returns' },
-                { label: 'Size guide', href: '/size-guide' },
                 { label: 'FAQs', href: '/faq' },
+                { label: 'Shop supplements', href: '/shop' },
               ].map(({ label, href }) => (
                 <a key={label} href={href}
                   className="block font-body text-sm text-white/80 hover:text-white py-1.5 hover:translate-x-1 transition-all">

@@ -1,4 +1,4 @@
-const KEY = 'hpm3_drop_notify'
+const KEY = 'kryve_drop_notify'
 
 export interface DropNotifyEntry {
   email: string

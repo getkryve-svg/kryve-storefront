@@ -43,7 +43,7 @@ export default function AuthPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/" className="font-display font-black text-3xl tracking-tight text-[#1A1A1A]" style={{ WebkitFontSmoothing: 'antialiased' }}>
-            hpm3<span style={{ fontSize: '0.55em', verticalAlign: 'middle', lineHeight: 1, position: 'relative', top: '-0.05em', letterSpacing: 0 }}>®</span>
+            KRYVE
           </Link>
           <p className="font-body text-sm text-[#888] mt-2">
             {mode === 'login' ? 'Welcome back' : 'Create your account'}

@@ -14,7 +14,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">1. Agreement to Terms</h2>
-            <p>By accessing or using hpm3® ("the Store," "we," "us," or "our"), you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access the Store.</p>
+            <p>By accessing or using KRYVE ("the Store," "we," "us," or "our"), you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access the Store.</p>
           </section>
 
           <section>
@@ -42,7 +42,7 @@ export default function TermsPage() {
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">4. Shipping</h2>
             <ul className="space-y-2 ml-4">
               <li>• Standard shipping takes 5–7 business days within the United States.</li>
-              <li>• Free shipping on orders over $100 (after discounts).</li>
+              <li>• Free shipping on orders over $75 (after discounts).</li>
               <li>• We are not responsible for delays caused by shipping carriers or customs.</li>
               <li>• Risk of loss passes to you upon delivery to the carrier.</li>
             </ul>
@@ -53,14 +53,14 @@ export default function TermsPage() {
             <p className="mb-3">Please see our <Link to="/returns" className="text-[#8B6F47] underline">Returns Policy</Link> for full details. In summary:</p>
             <ul className="space-y-2 ml-4">
               <li>• We accept returns within 30 days of delivery.</li>
-              <li>• Items must be unworn, unwashed, and in original condition.</li>
+              <li>• Items must be unopened, unused, and in original condition.</li>
               <li>• Refunds are processed within 5–10 business days of receiving the return.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">6. Intellectual Property</h2>
-            <p>All content on hpm3®, including but not limited to text, graphics, logos, images, product designs, and software, is the property of hpm3® and protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.</p>
+            <p>All content on KRYVE, including but not limited to text, graphics, logos, images, product designs, and software, is the property of KRYVE and protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.</p>
           </section>
 
           <section>
@@ -83,7 +83,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">9. Limitation of Liability</h2>
-            <p>To the maximum extent permitted by law, hpm3® shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Store or products purchased through the Store. Our liability is limited to the amount you paid for the specific product in question.</p>
+            <p>To the maximum extent permitted by law, KRYVE shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Store or products purchased through the Store. Our liability is limited to the amount you paid for the specific product in question.</p>
           </section>
 
           <section>
@@ -99,7 +99,7 @@ export default function TermsPage() {
           <section>
             <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">12. Contact</h2>
             <div className="p-4 bg-white border border-[#E5E0D8] rounded-sm">
-              <p>Questions? Contact us at <a href="mailto:support@hpm3.com" className="text-[#8B6F47] underline">support@hpm3.com</a></p>
+              <p>Questions? Contact us at <a href="mailto:getkryve@gmail.com" className="text-[#8B6F47] underline">getkryve@gmail.com</a></p>
               <p className="mt-2"><Link to="/contact" className="font-display font-bold text-sm text-[#1A1A1A] underline">Contact Form →</Link></p>
             </div>
           </section>

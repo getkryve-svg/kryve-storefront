@@ -14,12 +14,12 @@ export interface User {
   referralCredits: number
 }
 
-const USERS_KEY   = 'hpm3_users'
-const SESSION_KEY = 'hpm3_session'
+const USERS_KEY   = 'kryve_users'
+const SESSION_KEY = 'kryve_session'
 
 // Simple hash — not cryptographically secure, demo only
 async function hashPassword(pw: string): Promise<string> {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw + 'hpm3_salt'))
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw + 'kryve_salt'))
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
@@ -32,11 +32,11 @@ function saveUsers(users: User[]) {
 }
 
 function loadPasswords(): Record<string, string> {
-  try { return JSON.parse(localStorage.getItem('hpm3_pw') || '{}') } catch { return {} }
+  try { return JSON.parse(localStorage.getItem('kryve_pw') || '{}') } catch { return {} }
 }
 
 function savePasswords(pws: Record<string, string>) {
-  try { localStorage.setItem('hpm3_pw', JSON.stringify(pws)) } catch { /* ignore */ }
+  try { localStorage.setItem('kryve_pw', JSON.stringify(pws)) } catch { /* ignore */ }
 }
 
 function genReferral(): string {
@@ -109,9 +109,9 @@ export function getAllUsers(): User[] {
 export async function ensureAdmin() {
   const users = loadUsers()
   if (!users.find(u => u.role === 'admin')) {
-    await register('admin@hpm3.com', 'Admin', 'hpm3admin2024')
+    await register('admin@getkryve.com', 'Admin', 'kryveadmin2024')
     const u = loadUsers()
-    const adm = u.find(x => x.email === 'admin@hpm3.com')
+    const adm = u.find(x => x.email === 'admin@getkryve.com')
     if (adm) {
       adm.role = 'admin'
       saveUsers(u)
