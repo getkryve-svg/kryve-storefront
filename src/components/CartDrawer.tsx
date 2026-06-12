@@ -46,7 +46,7 @@ export default function CartDrawer() {
         role="dialog"
         aria-modal="true"
         aria-label="Shopping cart"
-        className={`fixed right-0 top-0 bottom-0 z-50 w-full max-w-sm bg-[#FAF8F5] flex flex-col shadow-2xl transition-transform duration-250 ease-out ${
+        className={`fixed right-0 top-0 bottom-0 z-50 w-full max-w-sm bg-[#111111] flex flex-col shadow-2xl transition-transform duration-250 ease-out ${
           state.isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -55,7 +55,7 @@ export default function CartDrawer() {
           <div className="flex items-center gap-2">
             <span className="font-display font-bold text-base tracking-tight">Cart</span>
             {itemCount > 0 && (
-              <span className="font-body text-xs bg-[#1A1A1A] text-white rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="font-body text-xs bg-[#39FF14] text-[#0A0A0A] rounded-full w-5 h-5 flex items-center justify-center">
                 {itemCount}
               </span>
             )}
@@ -96,7 +96,7 @@ export default function CartDrawer() {
                   <Link
                     to={`/products/${item.handle}`}
                     onClick={() => dispatch({ type: 'CLOSE_CART' })}
-                    className="flex-shrink-0 w-18 h-18 w-[72px] h-[72px] rounded-sm overflow-hidden bg-[#EDE8E2]"
+                    className="flex-shrink-0 w-18 h-18 w-[72px] h-[72px] rounded-sm overflow-hidden bg-[#1A1A1A]"
                   >
                     {item.image ? (
                       <img
@@ -106,7 +106,7 @@ export default function CartDrawer() {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full bg-[#EDE8E2]" />
+                      <div className="w-full h-full bg-[#1A1A1A]" />
                     )}
                   </Link>
 
@@ -134,15 +134,15 @@ export default function CartDrawer() {
 
                     <div className="flex items-center justify-between mt-2">
                       {/* Qty stepper */}
-                      <div className="flex items-center border border-[#D8D3CC] rounded-sm">
+                      <div className="flex items-center border border-[#333] rounded-sm">
                         <button
-                          className="px-2 py-1 text-sm hover:bg-[#EDE8E2] transition-colors leading-none"
+                          className="px-2 py-1 text-sm hover:bg-[#2A2A2A] transition-colors leading-none"
                           onClick={() => dispatch({ type: 'UPDATE_QUANTITY', payload: { variantId: item.variantId, quantity: item.quantity - 1 } })}
                           aria-label="Decrease quantity"
                         >−</button>
                         <span className="px-2 text-xs font-medium w-6 text-center tabular-nums">{item.quantity}</span>
                         <button
-                          className="px-2 py-1 text-sm hover:bg-[#EDE8E2] transition-colors leading-none"
+                          className="px-2 py-1 text-sm hover:bg-[#2A2A2A] transition-colors leading-none"
                           onClick={() => dispatch({ type: 'UPDATE_QUANTITY', payload: { variantId: item.variantId, quantity: item.quantity + 1 } })}
                           aria-label="Increase quantity"
                         >+</button>
@@ -168,12 +168,12 @@ export default function CartDrawer() {
                 <span>Shipping</span>
                 <span>{shipping === 0 ? <span className="text-[#10B981]">Free</span> : `$${shipping.toFixed(2)}`}</span>
               </div>
-              <div className="flex justify-between font-display font-bold text-base border-t border-[#E5E0D8] pt-2 mt-2">
+              <div className="flex justify-between font-display font-bold text-base border-t border-[#2A2A2A] pt-2 mt-2">
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
               {subtotal < 75 && (
-                <p className="font-body text-[11px] text-[#8B6F47] text-center">
+                <p className="font-body text-[11px] text-[#39FF14] text-center">
                   Add ${(75 - subtotal).toFixed(2)} more for free shipping
                 </p>
               )}
@@ -181,7 +181,7 @@ export default function CartDrawer() {
 
             <button
               onClick={goToCart}
-              className="w-full bg-[#1A1A1A] text-[#FAF8F5] font-display font-bold text-sm tracking-widest uppercase py-4 rounded-sm hover:bg-[#333] active:scale-[0.97] transition-all duration-160"
+              className="w-full bg-[#39FF14] text-[#0A0A0A] font-display font-bold text-sm tracking-widest uppercase py-4 rounded-sm hover:bg-[#2EE010] active:scale-[0.97] transition-all duration-160"
             >
               View Cart & Checkout
             </button>
