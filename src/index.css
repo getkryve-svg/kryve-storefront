@@ -1517,8 +1517,8 @@ body {
   .kv-pcard { flex: 0 0 260px !important; width: 260px !important; scroll-snap-align: start; }
   .kv-pcard-img-wrap { height: 228px !important; }
   .kv-pcard-img-wrap img { height: 212px !important; width: 212px !important; }
-  /* Per-badge mobile positions (live site exact) */
-  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; letter-spacing: 0.8px !important; top: 12px !important; left: 12px !important; }
+  /* Badge — match desktop positioning exactly */
+  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; letter-spacing: 0.8px !important; }
   .kv-pcards-end { flex: 0 0 16px; display: block; }
 
   /* Compare — live site exact mobile */
@@ -1778,8 +1778,6 @@ body {
   }
   .kv-pcard-badge {
     position: absolute !important;
-    top: 14px !important;
-    left: 14px !important;
     font-size: 9px !important;
     padding: 4px 8px !important;
     letter-spacing: 1px !important;
