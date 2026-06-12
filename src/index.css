@@ -569,8 +569,12 @@ body {
 
 /* ── Product card image container — absolute fill, no flex centering ──────────
    All image children (homepage single img AND shop primary/hover) are absolute.
-   This ensures badge at top:12px/left:12px is always on the image, not in a margin. */
+   This ensures badge at top:12px/left:12px is always on the image, not in a margin.
+   display:block is required: ShopPage renders this as <Link>→<a> which is inline
+   by default. Without block, Safari ignores height:280px and overflow:hidden,
+   causing absolute-positioned badge children to float outside the image bounds. */
 .kv-pcard-img-wrap {
+  display: block;
   position: relative;
   overflow: hidden;
   height: 280px;
@@ -1531,8 +1535,8 @@ body {
     align-items: stretch !important;
   }
   .kv-pcard { flex: 0 0 auto !important; width: 100% !important; scroll-snap-align: none !important; }
-  /* img-wrap: fixed height, no flex centering — image uses absolute fill from base rule */
-  .kv-pcard-img-wrap { height: 228px !important; }
+  /* img-wrap: block + fixed height — display:block reinforces Safari containing-block fix */
+  .kv-pcard-img-wrap { display: block !important; height: 228px !important; }
   /* Homepage single img: already absolute-fill from base rule; ensure correct padding */
   .kv-pcard-img-wrap img { padding: 16px !important; }
   /* On mobile: hide hover image; keep primary absolute (absolute fill still applies) */
