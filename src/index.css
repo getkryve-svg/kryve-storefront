@@ -1056,6 +1056,12 @@ body {
 .kv-gal-grid .kv-gal-item:nth-child(2) img {
   filter: brightness(1.4);
 }
+/* Greens tile (1st item, large) — woman's crown sits tight to top at default
+   object-position: center 20%. Shift to 50% 10% for comfortable headroom.
+   Authorized per-tile desktop exception; no other gallery item is touched. */
+.kv-gal-grid .kv-gal-item:nth-child(1) img {
+  object-position: 50% 10%;
+}
 .kv-gal-large {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -1637,6 +1643,11 @@ body {
   .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center top !important; display: block !important; }
   /* Carry brightness lift to mobile — same dark scene needs same fix */
   .kv-gal-grid .kv-gal-item:nth-child(2) img { filter: brightness(1.4) !important; }
+  /* Greens tile — taller container so the woman's crown has comfortable headroom.
+     Image is landscape (3:2) so cover scales by height; 360px gives ~38% more
+     rendered pixels above the crown vs 260px. object-position reset to top. */
+  .kv-gal-grid .kv-gal-item:nth-child(1) { height: 360px !important; }
+  .kv-gal-grid .kv-gal-item:nth-child(1) img { object-position: center top !important; }
   .kv-gallery { padding: 60px 16px; }
 
   /* HIW + 2col/3col — !important overrides inline grid-template-columns */
