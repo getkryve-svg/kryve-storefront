@@ -10,8 +10,8 @@ export default function CartDrawer() {
   const navigate  = useNavigate()
 
   // Free-shipping progress
-  const shippingPct     = Math.min((subtotal / FREE_SHIPPING_AT) * 100, 100)
-  const remaining       = Math.max(FREE_SHIPPING_AT - subtotal, 0)
+  const shippingPct      = Math.min((subtotal / FREE_SHIPPING_AT) * 100, 100)
+  const remaining        = Math.max(FREE_SHIPPING_AT - subtotal, 0)
   const shippingUnlocked = subtotal >= FREE_SHIPPING_AT
 
   useEffect(() => {
@@ -44,17 +44,33 @@ export default function CartDrawer() {
         aria-hidden="true"
       />
 
-      {/* Drawer panel */}
+      {/* ── Drawer panel ──
+          Mobile  (<sm): bottom-sheet slides up from bottom, full-width, max-h-[92vh], rounded-t-xl
+          Desktop (sm+): right-side panel slides in from right, max-w-[400px], full-height         */}
       <div
         ref={drawerRef}
         role="dialog"
         aria-modal="true"
         aria-label="Shopping cart"
-        className={`fixed right-0 top-0 bottom-0 z-50 w-full max-w-[400px] flex flex-col shadow-2xl transition-transform duration-300 ease-out ${
-          state.isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`
+          fixed z-50 flex flex-col shadow-2xl
+          transition-transform duration-300 ease-out
+          bottom-0 left-0 right-0 max-h-[92vh] rounded-t-xl
+          sm:top-0 sm:bottom-0 sm:left-auto sm:right-0 sm:w-full sm:max-w-[400px] sm:max-h-full sm:rounded-none
+          ${state.isOpen
+            ? 'translate-y-0 sm:translate-x-0'
+            : 'translate-y-full sm:translate-y-0 sm:translate-x-full'
+          }
+        `}
         style={{ background: '#0D0D0D' }}
       >
+        {/* ── Drag handle (mobile only) ── */}
+        <div
+          className="sm:hidden flex justify-center pt-3 pb-1 flex-shrink-0"
+          aria-hidden="true"
+        >
+          <div className="w-9 h-1 rounded-full" style={{ background: '#333' }} />
+        </div>
 
         {/* ── Header ── */}
         <div
@@ -91,12 +107,12 @@ export default function CartDrawer() {
           </button>
         </div>
 
-        {/* ── Free-shipping progress bar (always visible when items present) ── */}
+        {/* ── Free-shipping progress bar (only when items present) ── */}
         {state.items.length > 0 && (
           <div className="px-5 pt-3 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #1A1A1A' }}>
             {shippingUnlocked ? (
               <p
-                className="font-body text-xs font-semibold text-center"
+                className="font-body text-xs font-semibold text-center mb-2"
                 style={{ color: '#39FF14' }}
               >
                 ✓ Free shipping unlocked!
@@ -125,7 +141,7 @@ export default function CartDrawer() {
                   width: `${shippingPct}%`,
                   background: shippingUnlocked
                     ? '#39FF14'
-                    : `linear-gradient(90deg, #1EAA00 0%, #39FF14 100%)`,
+                    : 'linear-gradient(90deg, #1EAA00 0%, #39FF14 100%)',
                   boxShadow: shippingUnlocked ? '0 0 6px #39FF1466' : 'none',
                 }}
               />
@@ -192,7 +208,9 @@ export default function CartDrawer() {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full" style={{ background: '#1A1A1A' }} />
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="font-display font-black text-[10px]" style={{ color: '#333' }}>KRYVE</span>
+                      </div>
                     )}
                   </Link>
 
@@ -239,7 +257,10 @@ export default function CartDrawer() {
                           style={{ width: 32, height: 32, color: '#888' }}
                           onMouseEnter={e => (e.currentTarget.style.background = '#1A1A1A')}
                           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                          onClick={() => dispatch({ type: 'UPDATE_QUANTITY', payload: { variantId: item.variantId, quantity: item.quantity - 1 } })}
+                          onClick={() => dispatch({
+                            type: 'UPDATE_QUANTITY',
+                            payload: { variantId: item.variantId, quantity: item.quantity - 1 },
+                          })}
                           aria-label="Decrease quantity"
                         >
                           −
@@ -255,17 +276,30 @@ export default function CartDrawer() {
                           style={{ width: 32, height: 32, color: '#888' }}
                           onMouseEnter={e => (e.currentTarget.style.background = '#1A1A1A')}
                           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                          onClick={() => dispatch({ type: 'UPDATE_QUANTITY', payload: { variantId: item.variantId, quantity: item.quantity + 1 } })}
+                          onClick={() => dispatch({
+                            type: 'UPDATE_QUANTITY',
+                            payload: { variantId: item.variantId, quantity: item.quantity + 1 },
+                          })}
                           aria-label="Increase quantity"
                         >
                           +
                         </button>
                       </div>
 
-                      {/* Line price */}
-                      <span className="font-display font-bold text-sm" style={{ color: '#FFF' }}>
-                        ${(item.price * item.quantity).toFixed(2)}
-                      </span>
+                      {/* Line price — show slashed compare-at when available */}
+                      <div className="flex items-baseline gap-1.5">
+                        {item.compareAt && item.compareAt > item.price && (
+                          <span
+                            className="font-body text-xs line-through"
+                            style={{ color: '#555' }}
+                          >
+                            ${(item.compareAt * item.quantity).toFixed(2)}
+                          </span>
+                        )}
+                        <span className="font-display font-bold text-sm" style={{ color: '#FFF' }}>
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </li>
@@ -297,7 +331,6 @@ export default function CartDrawer() {
                 color: '#0A0A0A',
                 height: 52,
                 minHeight: 52,
-                letterSpacing: '0.12em',
               }}
               onMouseEnter={e => (e.currentTarget.style.background = '#2EE010')}
               onMouseLeave={e => (e.currentTarget.style.background = '#39FF14')}
@@ -326,7 +359,7 @@ export default function CartDrawer() {
             >
               {[
                 { icon: '🔒', label: 'Secure Checkout' },
-                { icon: '✓', label: 'GMP Certified' },
+                { icon: '✓',  label: 'GMP Certified' },
                 { icon: '🇺🇸', label: 'Made in USA' },
               ].map(({ icon, label }) => (
                 <div key={label} className="flex flex-col items-center gap-1">

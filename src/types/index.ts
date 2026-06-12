@@ -30,6 +30,7 @@ export interface CartItem {
   title: string
   variantTitle: string
   price: number
+  compareAt?: number
   quantity: number
   image: string
   handle: string

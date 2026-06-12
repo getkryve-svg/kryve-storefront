@@ -163,6 +163,9 @@ export default function ProductPage() {
       title: product!.title,
       variantTitle: variant.title,
       price: parseFloat(price),
+      ...(compareAt && parseFloat(compareAt) > parseFloat(price)
+        ? { compareAt: parseFloat(compareAt) }
+        : {}),
       quantity: 1,
       image: images[0]?.url || '',
       handle: product!.handle,
