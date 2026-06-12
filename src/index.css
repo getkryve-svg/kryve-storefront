@@ -561,22 +561,24 @@ body {
 .kv-pcard-magnesium:hover { box-shadow: 0 16px 60px rgba(124,58,237,0.28); }
 .kv-pcard-stack:hover { box-shadow: 0 16px 60px rgba(212,175,55,0.28); }
 
+/* ── Product card image container — absolute fill, no flex centering ──────────
+   All image children (homepage single img AND shop primary/hover) are absolute.
+   This ensures badge at top:12px/left:12px is always on the image, not in a margin. */
 .kv-pcard-img-wrap {
   position: relative;
   overflow: hidden;
   height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: #0a0a0a;
   border-radius: 16px 16px 0 0;
 }
+/* Homepage single <img> (no .kv-pcard-img-primary class) — absolute fill */
 .kv-pcard-img-wrap img {
-  height: 260px;
-  width: 260px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  display: block;
-  padding: 12px;
+  padding: 16px;
   box-sizing: border-box;
   background: #0a0a0a;
 }
@@ -588,6 +590,10 @@ body {
   top: 12px;
   left: 12px;
   z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  /* Never overflow the image container regardless of label length */
+  max-width: calc(100% - 24px);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -1519,13 +1525,22 @@ body {
     align-items: stretch !important;
   }
   .kv-pcard { flex: 0 0 auto !important; width: 100% !important; scroll-snap-align: none !important; }
+  /* img-wrap: fixed height, no flex centering — image uses absolute fill from base rule */
   .kv-pcard-img-wrap { height: 228px !important; }
-  .kv-pcard-img-wrap img { height: 212px !important; width: 212px !important; }
-  /* On mobile: hide hover image, reset primary to static flow */
+  /* Homepage single img: already absolute-fill from base rule; ensure correct padding */
+  .kv-pcard-img-wrap img { padding: 16px !important; }
+  /* On mobile: hide hover image; keep primary absolute (absolute fill still applies) */
   .kv-pcard-img-hover { display: none !important; }
-  .kv-pcard-img-primary { position: static !important; opacity: 1 !important; }
-  /* Badge — consistent anchor inside img-wrap */
-  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; letter-spacing: 0.8px !important; top: 12px !important; left: 12px !important; }
+  .kv-pcard-img-primary { position: absolute !important; opacity: 1 !important; }
+  /* Badge — anchored to image corner, fits all label lengths including HIGH ABSORPTION */
+  .kv-pcard-badge {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    letter-spacing: 0.8px !important;
+    top: 12px !important;
+    left: 12px !important;
+    max-width: calc(100% - 24px) !important;
+  }
   .kv-pcards-end { display: none; }
 
   /* Compare — live site exact mobile */
@@ -1649,31 +1664,11 @@ body {
    ALL rules in this block are mobile-only. Desktop untouched.
 ══════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Nav */
+  /* Nav — hamburger shown, links hidden (covers 750-767px gap above 749px block) */
   .kv-nav-links { display: none !important; }
   .kv-hamburger { display: flex !important; }
-
-  /* Product cards */
-  .kv-pcard { position: relative !important; }
-  .kv-pcard-img-wrap {
-    height: 220px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
-  }
-  .kv-pcard-img-wrap img {
-    height: 200px !important;
-    width: 200px !important;
-    object-fit: contain !important;
-    padding: 12px !important;
-    box-sizing: border-box !important;
-  }
-  /* On mobile: hide hover image, reset primary to static flow */
-  .kv-pcard-img-hover { display: none !important; }
-  .kv-pcard-img-primary { position: static !important; opacity: 1 !important; }
-  /* Product card badges — consistent anchor inside img-wrap */
-  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; top: 12px !important; left: 12px !important; }
+  /* NOTE: product card rules are in the 749px block below — do NOT add card rules
+     here because this 767px block comes later in the file and would stomp 749px. */
 }
 
 /* Mobile slide img — hidden on desktop, shown on mobile via 767px block */
@@ -1902,7 +1897,8 @@ body {
   justify-content: center;
 }
 
-/* Shop page hover-image swap — primary shown, hover fades in on hover */
+/* Shop page hover-image swap — primary shown, hover fades in on hover.
+   Higher specificity (.class img vs img) keeps these above the base img rule. */
 .kv-pcard-img-wrap .kv-pcard-img-primary,
 .kv-pcard-img-wrap .kv-pcard-img-hover {
   position: absolute;
@@ -1910,7 +1906,7 @@ body {
   height: 100% !important;
   width: 100% !important;
   object-fit: contain;
-  padding: 12px;
+  padding: 16px;
   box-sizing: border-box;
   background: #0a0a0a;
   transition: opacity 0.4s ease;

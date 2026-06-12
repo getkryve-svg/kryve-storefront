@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import { STATIC_PRODUCTS, formatPrice, type ShopifyProduct } from '../lib/shopify'
+import { STATIC_PRODUCTS, formatPrice, getBadgeText, getProductBadgeClass, type ShopifyProduct } from '../lib/shopify'
 import type { CartItem } from '../types'
 
 // ── Hero slides — exact match to live kryve-2.myshopify.com ─────────────────
@@ -536,9 +536,9 @@ export default function HomePage() {
             const compareAt = product.variants.edges[0]?.node.compareAtPrice?.amount
             const handle = product.handle
             const cardCls = handle.includes('greens') ? 'kv-pcard-greens' : handle.includes('collagen') ? 'kv-pcard-collagen' : 'kv-pcard-magnesium'
-            const badgeCls = handle.includes('greens') ? 'badge-greens' : handle.includes('collagen') ? 'badge-collagen' : 'badge-magnesium'
+            const badgeCls = getProductBadgeClass(handle)
             const ctaCls = handle.includes('greens') ? 'cta-greens' : handle.includes('collagen') ? 'cta-collagen' : 'cta-magnesium'
-            const badgeTxt = handle.includes('greens') ? 'BEST SELLER' : handle.includes('collagen') ? 'GRASS-FED' : 'HIGH ABSORPTION'
+            const badgeTxt = getBadgeText(handle)
             const ctaTxt = handle.includes('greens') ? 'Shop Greens →' : handle.includes('collagen') ? 'Shop Collagen →' : 'Shop Magnesium →'
             return (
               <div key={product.id} className={`kv-pcard ${cardCls}`}>
