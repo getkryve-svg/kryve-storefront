@@ -1645,15 +1645,9 @@ body {
   .kv-nav-links { display: none !important; }
   .kv-hamburger { display: flex !important; }
 
-  /* Carousel wrapper: auto height, flex column */
+  /* Carousel wrapper: hidden on mobile — replaced by .kv-hero-mobile */
   .kv-hw {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: visible !important;
-    position: relative !important;
+    display: none !important;
   }
 
   /* Hide ALL slides by default */
