@@ -1641,8 +1641,15 @@ body {
   .kv-gal-large { grid-row: auto !important; }
   .kv-gal-item { height: 260px !important; border-radius: 4px; overflow: hidden; }
   .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center top !important; display: block !important; }
-  /* Carry brightness lift to mobile — same dark scene needs same fix */
-  .kv-gal-grid .kv-gal-item:nth-child(2) img { filter: brightness(1.4) !important; }
+  /* Magnesium tile — brightness lift + object-position fix.
+     Root cause: width-dependent crop. The bottle (lower-right) slides toward/past
+     the right edge as the container narrows (320px worst case). Fix: shift to
+     85% 50% so the right side (bottle + nightstand) is always in frame at every
+     width in the 320–480 range. Position tested at all 7 widths. */
+  .kv-gal-grid .kv-gal-item:nth-child(2) img {
+    filter: brightness(1.4) !important;
+    object-position: 85% 50% !important;
+  }
   /* Greens tile — taller container so the woman's crown has comfortable headroom.
      Image is landscape (3:2) so cover scales by height; 360px gives ~38% more
      rendered pixels above the crown vs 260px. object-position reset to top. */
