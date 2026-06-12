@@ -1,0 +1,218 @@
+[
+  {
+    "text": "SAVE $19.98",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(122, 92, 0)",
+    "color": "rgb(212, 175, 55)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "position": "static",
+    "top": "auto",
+    "left": "auto",
+    "rect": {
+      "top": -134.9375,
+      "left": 135.1875,
+      "width": 111.84375,
+      "height": 27.390625
+    },
+    "parentRect": {
+      "top": -380.625,
+      "left": 40,
+      "width": 660,
+      "height": 900
+    }
+  },
+  {
+    "text": "BEST SELLER",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(6, 78, 59)",
+    "color": "rgb(57, 255, 20)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "position": "static",
+    "top": "auto",
+    "left": "auto",
+    "rect": {
+      "top": -106.140625,
+      "left": 135.1875,
+      "width": 118.046875,
+      "height": 27.390625
+    },
+    "parentRect": {
+      "top": -380.625,
+      "left": 40,
+      "width": 660,
+      "height": 900
+    }
+  },
+  {
+    "text": "GRASS-FED",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(107, 39, 55)",
+    "color": "rgb(244, 194, 200)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "position": "static",
+    "top": "auto",
+    "left": "auto",
+    "rect": {
+      "top": -106.140625,
+      "left": 135.1875,
+      "width": 106.453125,
+      "height": 27.390625
+    },
+    "parentRect": {
+      "top": -380.625,
+      "left": 40,
+      "width": 660,
+      "height": 900
+    }
+  },
+  {
+    "text": "HIGH ABSORPTION",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(59, 31, 107)",
+    "color": "rgb(196, 181, 253)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "position": "static",
+    "top": "auto",
+    "left": "auto",
+    "rect": {
+      "top": -145.8125,
+      "left": 135.1875,
+      "width": 157.765625,
+      "height": 27.390625
+    },
+    "parentRect": {
+      "top": -380.625,
+      "left": 40,
+      "width": 660,
+      "height": 900
+    }
+  },
+  {
+    "text": "SAVE $19.98",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(122, 92, 0)",
+    "color": "rgb(212, 175, 55)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "position": "static",
+    "top": "auto",
+    "left": "auto",
+    "rect": {
+      "top": -106.140625,
+      "left": 135.1875,
+      "width": 111.84375,
+      "height": 27.390625
+    },
+    "parentRect": {
+      "top": -380.625,
+      "left": 40,
+      "width": 660,
+      "height": 900
+    }
+  },
+  {
+    "text": "BEST SELLER",
+    "tag": "SPAN",
+    "className": "kv-pcard-badge badge-greens",
+    "bg": "rgba(57, 255, 20, 0.15)",
+    "color": "rgb(57, 255, 20)",
+    "fontSize": "10px",
+    "fontWeight": "700",
+    "padding": "5px 10px",
+    "borderRadius": "20px",
+    "letterSpacing": "1.5px",
+    "position": "absolute",
+    "top": "23px",
+    "left": "46px",
+    "rect": {
+      "top": 861.6875,
+      "left": 262,
+      "width": 103.28125,
+      "height": 28
+    },
+    "parentRect": {
+      "top": 834.6875,
+      "left": 216,
+      "width": 320,
+      "height": 539.578125
+    }
+  },
+  {
+    "text": "GRASS-FED",
+    "tag": "SPAN",
+    "className": "kv-pcard-badge badge-collagen",
+    "bg": "rgba(183, 110, 121, 0.15)",
+    "color": "rgb(232, 160, 170)",
+    "fontSize": "10px",
+    "fontWeight": "700",
+    "padding": "3px 8px",
+    "borderRadius": "20px",
+    "letterSpacing": "1.5px",
+    "position": "absolute",
+    "top": "25px",
+    "left": "43px",
+    "rect": {
+      "top": 863.6875,
+      "left": 603,
+      "width": 89.828125,
+      "height": 24
+    },
+    "parentRect": {
+      "top": 834.6875,
+      "left": 560,
+      "width": 320,
+      "height": 539.578125
+    }
+  },
+  {
+    "text": "HIGH ABSORPTION",
+    "tag": "SPAN",
+    "className": "kv-pcard-badge badge-magnesium",
+    "bg": "rgba(124, 58, 237, 0.15)",
+    "color": "rgb(165, 126, 240)",
+    "fontSize": "10px",
+    "fontWeight": "700",
+    "padding": "5px 10px",
+    "borderRadius": "20px",
+    "letterSpacing": "1.5px",
+    "position": "absolute",
+    "top": "23px",
+    "left": "46px",
+    "rect": {
+      "top": 861.6875,
+      "left": 950,
+      "width": 138.328125,
+      "height": 28
+    },
+    "parentRect": {
+      "top": 834.6875,
+      "left": 904,
+      "width": 320,
+      "height": 539.578125
+    }
+  }
+]

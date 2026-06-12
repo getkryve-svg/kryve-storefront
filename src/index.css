@@ -554,25 +554,31 @@ body {
   box-sizing: border-box;
   background: #0a0a0a;
 }
+/* ── PRODUCT CARD BADGE — shared across homepage grid, Shop page, product pages ──
+   Anchored inside .kv-pcard-img-wrap (position:relative) at top:12px / left:12px.
+   Solid opaque fills match the hero badge color scheme — readable on any bg. ── */
 .kv-pcard-badge {
   position: absolute;
-  top: 24px; left: 16px;
+  top: 12px;
+  left: 12px;
   z-index: 10;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  padding: 5px 10px;
+  padding: 5px 12px;
   border-radius: 20px;
   text-transform: uppercase;
   white-space: nowrap;
-  max-width: calc(100% - 24px);
-  overflow: hidden;
-  text-overflow: ellipsis;
+  pointer-events: none;
+  border: none;
 }
-.badge-greens  { background:rgba(57,255,20,0.15);color:#39FF14;border:1px solid rgba(57,255,20,0.4); }
-.badge-collagen { background:rgba(183,110,121,0.15);color:#e8a0aa;border:1px solid rgba(200,60,80,0.9); }
-.badge-magnesium { background:rgba(124,58,237,0.15);color:#a57ef0;border:1px solid rgba(124,58,237,0.4); }
-.badge-stack   { background:rgba(212,175,55,0.15);color:#D4AF37;border:1px solid rgba(212,175,55,0.4); }
+/* Solid fills — match hero badge palette exactly */
+.badge-greens    { background: #064E3B; color: #39FF14; }
+.badge-collagen  { background: #6B2737; color: #F4C2C8; }
+.badge-magnesium { background: #3B1F6B; color: #C4B5FD; }
+.badge-stack     { background: #7A5C00; color: #D4AF37; }
+/* PDP: badge is in text flow, not on image — reset absolute positioning */
+.kv-pdp-info .kv-pcard-badge { position: static; display: inline-block; margin-bottom: 12px; }
 
 .kv-pcard-body {
   padding: 20px 22px 24px;
@@ -1492,15 +1498,8 @@ body {
   /* On mobile: hide hover image, reset primary to static flow */
   .kv-pcard-img-hover { display: none !important; }
   .kv-pcard-img-primary { position: static !important; opacity: 1 !important; }
-  /* Badge — positioned inside card bounds */
-  .kv-pcard-badge {
-    font-size: 9px !important;
-    padding: 4px 8px !important;
-    letter-spacing: 0.8px !important;
-    white-space: nowrap !important;
-    top: 16px !important;
-    left: 16px !important;
-  }
+  /* Badge — consistent anchor inside img-wrap */
+  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; letter-spacing: 0.8px !important; top: 12px !important; left: 12px !important; }
   .kv-pcards-end { display: none; }
 
   /* Compare — live site exact mobile */
@@ -1647,17 +1646,8 @@ body {
   /* On mobile: hide hover image, reset primary to static flow */
   .kv-pcard-img-hover { display: none !important; }
   .kv-pcard-img-primary { position: static !important; opacity: 1 !important; }
-  /* Product card badges — moved down+right so they clear card edges */
-  .kv-pcard .kv-pcard-badge {
-    position: absolute !important;
-    top: 20px !important;
-    left: 20px !important;
-    z-index: 10 !important;
-    font-size: 9px !important;
-    padding: 4px 10px !important;
-    margin: 0 !important;
-    white-space: nowrap !important;
-  }
+  /* Product card badges — consistent anchor inside img-wrap */
+  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; top: 12px !important; left: 12px !important; }
 }
 
 /* Mobile slide img — hidden on desktop, shown on mobile via 767px block */

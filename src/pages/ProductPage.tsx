@@ -180,7 +180,7 @@ export default function ProductPage() {
         {/* Info */}
         <div className="kv-pdp-info">
           {detail && (
-            <span className={`kv-pcard-badge ${getProductBadgeClass(product.handle)}`} style={{ marginBottom: 12, display: 'inline-block' }}>
+            <span className={`kv-pcard-badge ${getProductBadgeClass(product.handle)}`}>
               {getBadgeText(product.handle)}
             </span>
           )}

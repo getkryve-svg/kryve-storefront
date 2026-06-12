@@ -1,0 +1,234 @@
+[
+  {
+    "text": "SAVE $19.98",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(122, 92, 0)",
+    "color": "rgb(212, 175, 55)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "border": "0px none rgb(212, 175, 55)",
+    "rect": {
+      "top": -335,
+      "left": 135,
+      "w": 112,
+      "h": 27
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-tx",
+      "rect": {
+        "top": -581,
+        "left": 40,
+        "w": 660,
+        "h": 900
+      }
+    }
+  },
+  {
+    "text": "BEST SELLER",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(6, 78, 59)",
+    "color": "rgb(57, 255, 20)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "border": "0px none rgb(57, 255, 20)",
+    "rect": {
+      "top": -306,
+      "left": 135,
+      "w": 118,
+      "h": 27
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-tx on",
+      "rect": {
+        "top": -581,
+        "left": 40,
+        "w": 660,
+        "h": 900
+      }
+    }
+  },
+  {
+    "text": "GRASS-FED",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(107, 39, 55)",
+    "color": "rgb(244, 194, 200)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "border": "0px none rgb(244, 194, 200)",
+    "rect": {
+      "top": -306,
+      "left": 135,
+      "w": 106,
+      "h": 27
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-tx",
+      "rect": {
+        "top": -581,
+        "left": 40,
+        "w": 660,
+        "h": 900
+      }
+    }
+  },
+  {
+    "text": "HIGH ABSORPTION",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(59, 31, 107)",
+    "color": "rgb(196, 181, 253)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "border": "0px none rgb(196, 181, 253)",
+    "rect": {
+      "top": -346,
+      "left": 135,
+      "w": 158,
+      "h": 27
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-tx",
+      "rect": {
+        "top": -581,
+        "left": 40,
+        "w": 660,
+        "h": 900
+      }
+    }
+  },
+  {
+    "text": "SAVE $19.98",
+    "tag": "DIV",
+    "className": "kv-hbadge",
+    "bg": "rgb(122, 92, 0)",
+    "color": "rgb(212, 175, 55)",
+    "fontSize": "10.88px",
+    "fontWeight": "800",
+    "padding": "5px 14px",
+    "borderRadius": "4px",
+    "letterSpacing": "1.3056px",
+    "border": "0px none rgb(212, 175, 55)",
+    "rect": {
+      "top": -306,
+      "left": 135,
+      "w": 112,
+      "h": 27
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-tx",
+      "rect": {
+        "top": -581,
+        "left": 40,
+        "w": 660,
+        "h": 900
+      }
+    }
+  },
+  {
+    "text": "BEST SELLER",
+    "tag": "SPAN",
+    "className": "kv-pcard-badge badge-greens",
+    "bg": "rgba(57, 255, 20, 0.15)",
+    "color": "rgb(57, 255, 20)",
+    "fontSize": "10px",
+    "fontWeight": "700",
+    "padding": "5px 10px",
+    "borderRadius": "20px",
+    "letterSpacing": "1.5px",
+    "border": "1px solid rgba(57, 255, 20, 0.4)",
+    "rect": {
+      "top": 662,
+      "left": 262,
+      "w": 103,
+      "h": 28
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-pcard kv-pcard-greens",
+      "rect": {
+        "top": 635,
+        "left": 216,
+        "w": 320,
+        "h": 540
+      }
+    }
+  },
+  {
+    "text": "GRASS-FED",
+    "tag": "SPAN",
+    "className": "kv-pcard-badge badge-collagen",
+    "bg": "rgba(183, 110, 121, 0.15)",
+    "color": "rgb(232, 160, 170)",
+    "fontSize": "10px",
+    "fontWeight": "700",
+    "padding": "3px 8px",
+    "borderRadius": "20px",
+    "letterSpacing": "1.5px",
+    "border": "1px solid rgba(200, 60, 80, 0.9)",
+    "rect": {
+      "top": 664,
+      "left": 603,
+      "w": 90,
+      "h": 24
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-pcard kv-pcard-collagen",
+      "rect": {
+        "top": 635,
+        "left": 560,
+        "w": 320,
+        "h": 540
+      }
+    }
+  },
+  {
+    "text": "HIGH ABSORPTION",
+    "tag": "SPAN",
+    "className": "kv-pcard-badge badge-magnesium",
+    "bg": "rgba(124, 58, 237, 0.15)",
+    "color": "rgb(165, 126, 240)",
+    "fontSize": "10px",
+    "fontWeight": "700",
+    "padding": "5px 10px",
+    "borderRadius": "20px",
+    "letterSpacing": "1.5px",
+    "border": "1px solid rgba(124, 58, 237, 0.4)",
+    "rect": {
+      "top": 662,
+      "left": 950,
+      "w": 138,
+      "h": 28
+    },
+    "ancestor": {
+      "tag": "DIV",
+      "className": "kv-pcard kv-pcard-magnesium",
+      "rect": {
+        "top": 635,
+        "left": 904,
+        "w": 320,
+        "h": 540
+      }
+    }
+  }
+]

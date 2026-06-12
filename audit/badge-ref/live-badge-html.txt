@@ -1,0 +1,117 @@
+<header id="shopify-section-sections--22333084532995__header_section" class="shopify-section shopify-section-group-header-group header-section" data-hydrated="true">
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": "Kryve",
+    
+    "url": "https:\/\/kryve-2.myshopify.com"
+  }
+</script>
+
+<header-component id="header-component" class="header" data-theme-color="rgb(10 10 10)" sticky="always" data-skip-node-update="" data-scroll-direction="none" style="
+    --color-scheme-top-row: rgba(10 10 10 / 1.0);
+    --color-scheme-bottom-row: rgba(10 10 10 / 1.0);
+    
+  " data-menu-style="menu" data-sticky-state="inactive">
+  <div class="header__underlay header__underlay-closed"></div>
+  <div class="header__underlay header__underlay-open"></div><h1 class="visually-hidden">Kryve</h1>
+    
+
+    
+
+    
+    
+      <div class="header__row header__row--top color-scheme-1 section section--full-width-margin section--page-width" ref="headerRowTop" style="--border-bottom-width: 0px; --border-bottom-width-mobile: 0px;">
+        <div class="header__columns spacing-style">
+          <div class="header__column header__column--left" data-testid="header-top-left">
+      
+        
+          
+              
+
+
+
+    <div class="header__drawer" ref="headerDrawerContainer" data-hydration-key="header-drawer-mobile">
+      
+
+<script src="//kryve-2.myshopify.com/cdn/shop/t/1/assets/header-drawer.js?v=121243031541024704371780814121" type="module" fetchpriority="low"></script>
+
+<header-drawer class="header-drawer " style="--menu-image-border-radius: 0px; --resource-card-corner-radius: 0px;">
+  <details id="Details-menu-drawer-container" data-skip-node-update="true" class="menu-drawer-container" ref="details" scroll-lock="">
+    <summary class="header__icon header__icon--menu header__icon--summary" aria-label="Menu" on:click="/toggle">
+      <span class="svg-wrapper header-drawer-icon header-drawer-icon--open"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1 3.5H13" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"></path>
+  <path d="M1 10.5H13" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"></path>
+</svg>
+</span>
+      <span class="svg-wrapper header-drawer-icon header-drawer-icon--close"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2L2 12" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M12 12L2 2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</span>
+    </summary>
+    <div ref="menuDrawer" class="
+        menu-drawer
+        color-scheme-1
+      ">
+      <button class="button close-button menu-drawer__close-button" type="button" aria-label="Close" on:click="/close">
+        <span class="svg-wrapper header-drawer-icon header-drawer-icon--close"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2L2 12" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M12 12L2 2" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</span>
+      </button>
+      <nav class="menu-drawer__navigation" style="--menu-top-level-font-family: var(--font-body--family);
+--menu-top-level-font-size-desktop: 0.875rem; --menu-top-level-font-style: var(--font-body--style); --menu-top-level-font-weight: var(--font-body--weight); --menu-top-level-font-case:none;
+
+  --menu-top-level-font-size: var(--menu-font-2xl--size); --menu-top-level-font-line-height:
+  var(--menu-font-2xl--line-height);
+
+--menu-top-level-font-color: var(--color-foreground); --menu-top-level-font-color-rgb: var(--color-foreground-rgb);
+
+--menu-parent-font-family: var(--font-body--family); --menu-parent-font-style:
+var(--font-body--style); --menu-parent-font-weight: var(--font-body--weight); --menu-parent-font-case:
+none;
+
+    --menu-parent-font-size: var(--menu-font-sm--size); --menu-parent-font-line-height:
+    var(--menu-font-sm--line-height); --menu-parent-font-color: rgb(var(--color-foreground-rgb) /
+    var(--opacity-subdued-text)); --menu-parent-active-font-color: var(--color-foreground);
+  
+--menu-child-font-family: var(--font-body--family); --menu-child-font-style:
+var(--font-body--style); --menu-child-font-weight: var(--font-body--weight); --menu-child-font-case:
+none;
+
+    --menu-child-font-size: var(--menu-font-md--size); --menu-child-font-line-height: var(--menu-font-md--line-height);
+    --menu-child-font-color: var(--color-foreground); --menu-child-active-font-color: rgb(var(--color-foreground-rgb) /
+    var(--opacity-subdued-text));
+  
+
+        " aria-label="Primary">
+        <ul class="menu-drawer__menu has-submenu" role="list">
+            
+            
+
+              <li style="--menu-drawer-animation-index: 1;" class="menu-drawer__list-item--flat">
+                
+<a id="HeaderDrawer-home" href="/" class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset" aria-current="page">
+                    <span class="menu-drawer__menu-item-text wrap-text">Home</span>
+                  </a>
+                
+              </li>
+              <li style="--menu-drawer-animation-index: 2;" class="menu-drawer__list-item--flat">
+                
+<a id="HeaderDrawer-shop" href="/collections/supplements" class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset">
+                    <span class="menu-drawer__menu-item-text wrap-text">Shop</span>
+                  </a>
+                
+              </li>

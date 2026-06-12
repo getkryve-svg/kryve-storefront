@@ -1,0 +1,252 @@
+[
+  {
+    "text": "Email",
+    "className": "login-form__email-label",
+    "style": "",
+    "rect": {
+      "x": 1016,
+      "y": 352.171875,
+      "width": 40.0625,
+      "height": 20,
+      "top": 352.171875,
+      "right": 1056.0625,
+      "bottom": 372.171875,
+      "left": 1016
+    },
+    "parentRect": {
+      "x": 1000,
+      "y": 336.171875,
+      "width": 328,
+      "height": 52,
+      "top": 336.171875,
+      "right": 1328,
+      "bottom": 388.171875,
+      "left": 1000
+    }
+  },
+  {
+    "text": "Email me with news and offers",
+    "className": "login-form__marketing-consent-label",
+    "style": "",
+    "rect": {
+      "x": 1026,
+      "y": 400.171875,
+      "width": 201.5,
+      "height": 17,
+      "top": 400.171875,
+      "right": 1227.5,
+      "bottom": 417.171875,
+      "left": 1026
+    },
+    "parentRect": {
+      "x": 1000,
+      "y": 400.171875,
+      "width": 328,
+      "height": 17,
+      "top": 400.171875,
+      "right": 1328,
+      "bottom": 417.171875,
+      "left": 1000
+    }
+  },
+  {
+    "text": "SAVE $19.98",
+    "className": "kv-hbadge",
+    "style": "",
+    "rect": {
+      "x": 135.1875,
+      "y": 365.0625,
+      "width": 111.84375,
+      "height": 27.390625,
+      "top": 365.0625,
+      "right": 247.03125,
+      "bottom": 392.453125,
+      "left": 135.1875
+    },
+    "parentRect": {
+      "x": 40,
+      "y": 119.375,
+      "width": 660,
+      "height": 900,
+      "top": 119.375,
+      "right": 700,
+      "bottom": 1019.375,
+      "left": 40
+    }
+  },
+  {
+    "text": "BEST SELLER",
+    "className": "kv-hbadge",
+    "style": "",
+    "rect": {
+      "x": 135.1875,
+      "y": 393.859375,
+      "width": 118.046875,
+      "height": 27.390625,
+      "top": 393.859375,
+      "right": 253.234375,
+      "bottom": 421.25,
+      "left": 135.1875
+    },
+    "parentRect": {
+      "x": 40,
+      "y": 119.375,
+      "width": 660,
+      "height": 900,
+      "top": 119.375,
+      "right": 700,
+      "bottom": 1019.375,
+      "left": 40
+    }
+  },
+  {
+    "text": "GRASS-FED",
+    "className": "kv-hbadge",
+    "style": "",
+    "rect": {
+      "x": 135.1875,
+      "y": 393.859375,
+      "width": 106.453125,
+      "height": 27.390625,
+      "top": 393.859375,
+      "right": 241.640625,
+      "bottom": 421.25,
+      "left": 135.1875
+    },
+    "parentRect": {
+      "x": 40,
+      "y": 119.375,
+      "width": 660,
+      "height": 900,
+      "top": 119.375,
+      "right": 700,
+      "bottom": 1019.375,
+      "left": 40
+    }
+  },
+  {
+    "text": "HIGH ABSORPTION",
+    "className": "kv-hbadge",
+    "style": "",
+    "rect": {
+      "x": 135.1875,
+      "y": 354.1875,
+      "width": 157.765625,
+      "height": 27.390625,
+      "top": 354.1875,
+      "right": 292.953125,
+      "bottom": 381.578125,
+      "left": 135.1875
+    },
+    "parentRect": {
+      "x": 40,
+      "y": 119.375,
+      "width": 660,
+      "height": 900,
+      "top": 119.375,
+      "right": 700,
+      "bottom": 1019.375,
+      "left": 40
+    }
+  },
+  {
+    "text": "SAVE $19.98",
+    "className": "kv-hbadge",
+    "style": "",
+    "rect": {
+      "x": 135.1875,
+      "y": 393.859375,
+      "width": 111.84375,
+      "height": 27.390625,
+      "top": 393.859375,
+      "right": 247.03125,
+      "bottom": 421.25,
+      "left": 135.1875
+    },
+    "parentRect": {
+      "x": 40,
+      "y": 119.375,
+      "width": 660,
+      "height": 900,
+      "top": 119.375,
+      "right": 700,
+      "bottom": 1019.375,
+      "left": 40
+    }
+  },
+  {
+    "text": "BEST SELLER",
+    "className": "kv-pcard-badge badge-greens",
+    "style": "",
+    "rect": {
+      "x": 262,
+      "y": 1361.6875,
+      "width": 103.28125,
+      "height": 28,
+      "top": 1361.6875,
+      "right": 365.28125,
+      "bottom": 1389.6875,
+      "left": 262
+    },
+    "parentRect": {
+      "x": 216,
+      "y": 1334.6875,
+      "width": 320,
+      "height": 539.578125,
+      "top": 1334.6875,
+      "right": 536,
+      "bottom": 1874.265625,
+      "left": 216
+    }
+  },
+  {
+    "text": "GRASS-FED",
+    "className": "kv-pcard-badge badge-collagen",
+    "style": "",
+    "rect": {
+      "x": 603,
+      "y": 1363.6875,
+      "width": 89.828125,
+      "height": 24,
+      "top": 1363.6875,
+      "right": 692.828125,
+      "bottom": 1387.6875,
+      "left": 603
+    },
+    "parentRect": {
+      "x": 560,
+      "y": 1334.6875,
+      "width": 320,
+      "height": 539.578125,
+      "top": 1334.6875,
+      "right": 880,
+      "bottom": 1874.265625,
+      "left": 560
+    }
+  },
+  {
+    "text": "HIGH ABSORPTION",
+    "className": "kv-pcard-badge badge-magnesium",
+    "style": "",
+    "rect": {
+      "x": 950,
+      "y": 1361.6875,
+      "width": 138.328125,
+      "height": 28,
+      "top": 1361.6875,
+      "right": 1088.328125,
+      "bottom": 1389.6875,
+      "left": 950
+    },
+    "parentRect": {
+      "x": 904,
+      "y": 1334.6875,
+      "width": 320,
+      "height": 539.578125,
+      "top": 1334.6875,
+      "right": 1224,
+      "bottom": 1874.265625,
+      "left": 904
+    }
+  }
+]

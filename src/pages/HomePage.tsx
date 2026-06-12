@@ -493,15 +493,10 @@ export default function HomePage() {
             const ctaCls = handle.includes('greens') ? 'cta-greens' : handle.includes('collagen') ? 'cta-collagen' : 'cta-magnesium'
             const badgeTxt = handle.includes('greens') ? 'BEST SELLER' : handle.includes('collagen') ? 'GRASS-FED' : 'HIGH ABSORPTION'
             const ctaTxt = handle.includes('greens') ? 'Shop Greens →' : handle.includes('collagen') ? 'Shop Collagen →' : 'Shop Magnesium →'
-            // Exact badge positions from live site inline styles
-            const badgeStyle: React.CSSProperties = handle.includes('collagen')
-              ? { position: 'absolute', top: 25, left: 43, zIndex: 10, pointerEvents: 'none', padding: '3px 8px' }
-              : { position: 'absolute', top: 23, left: 46, zIndex: 10, pointerEvents: 'none' }
-
             return (
               <div key={product.id} className={`kv-pcard ${cardCls}`}>
-                <span className={`kv-pcard-badge ${badgeCls}`} style={badgeStyle}>{badgeTxt}</span>
                 <div className="kv-pcard-img-wrap" style={{ position: 'relative' }}>
+                  <span className={`kv-pcard-badge ${badgeCls}`}>{badgeTxt}</span>
                   <img src={img} alt={product.title} loading={handle.includes('greens') ? 'eager' : 'lazy'} />
                 </div>
                 <div className="kv-pcard-body">
