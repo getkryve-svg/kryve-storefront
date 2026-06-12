@@ -1506,12 +1506,12 @@ body {
   }
   .kv-stack-note { font-size: 0.72rem !important; display: block !important; text-align: center !important; margin-top: 8px !important; }
   .kv-stack-right { width: 100% !important; display: flex !important; justify-content: center !important; margin-top: 40px !important; }
-  /* Each bottle column: 30% width, max 100px — live site exact */
-  .kv-stack-col { width: 30% !important; max-width: 100px !important; flex: 0 0 auto !important; }
+  /* Each bottle column: even thirds, no overflow */
+  .kv-stack-row { gap: 8px !important; justify-content: center !important; width: 100% !important; }
+  .kv-stack-col { flex: 1 1 0 !important; max-width: 110px !important; min-width: 0 !important; }
   .kv-stack-col .kv-stack-img-box { width: 100% !important; height: auto !important; min-height: 110px !important; overflow: visible !important; }
-  .kv-stack-img-box img { height: auto !important; width: 100% !important; }
-  .kv-stack-row { gap: 14px !important; justify-content: center !important; }
-  .kv-stack-spot::before { width: 120px !important; height: 120px !important; }
+  .kv-stack-img-box img { height: auto !important; width: 100% !important; object-fit: contain !important; }
+  .kv-stack-spot::before { width: 100px !important; height: 100px !important; }
 
   /* Why — !important overrides inline grid-template-columns */
   .kv-why-stats { grid-template-columns: 1fr 1fr !important; }
@@ -1520,13 +1520,11 @@ body {
   .kv-why-stat-label { font-size: 0.72rem; margin-top: 8px; line-height: 1.4; }
   .kv-why-benefits { grid-template-columns: 1fr; gap: 32px; }
 
-  /* Gallery — live site mobile exact */
+  /* Gallery — all images fully visible, no cropping */
   .kv-gal-grid { grid-template-columns: 1fr !important; height: auto !important; gap: 16px !important; }
   .kv-gal-large { grid-row: auto !important; }
-  .kv-gal-item { height: 320px; border-radius: 4px; overflow: hidden; }
-  .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
-  .kv-gal-item:nth-child(2) img { object-position: center 55% !important; }
-  .kv-gal-item:nth-child(3) img { object-position: center 35% !important; }
+  .kv-gal-item { height: auto !important; border-radius: 4px; overflow: hidden; background: #111; }
+  .kv-gal-item img { width: 100% !important; height: auto !important; object-fit: contain !important; object-position: center center !important; display: block !important; }
   .kv-gallery { padding: 60px 16px; }
 
   /* HIW + 2col/3col — !important overrides inline grid-template-columns */
