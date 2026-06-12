@@ -180,29 +180,78 @@ const HIW_STEPS = [
 // ── Hero component ────────────────────────────────────────────────────────────
 function Hero() {
   const [current, setCurrent] = useState(0)
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  // Once the mobile user interacts, autoplay stops for the session permanently
+  const userControlledRef = useRef(false)
+  const touchRef = useRef<{ x: number; y: number } | null>(null)
 
   function go(n: number) {
     setCurrent((n + HERO_SLIDES.length) % HERO_SLIDES.length)
   }
 
-  function startTimer() {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    intervalRef.current = setInterval(() => {
-      setCurrent(c => (c + 1) % HERO_SLIDES.length)
-    }, 5500)
+  function clearTimer() {
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
   }
 
+  // Desktop: arrow/dot click — always restarts (original desktop behaviour)
+  function startTimer() {
+    clearTimer()
+    timerRef.current = setInterval(() => setCurrent(c => (c + 1) % HERO_SLIDES.length), 5000)
+  }
+
+  // Mobile: any user interaction → permanent stop
+  function mobileTakeControl() {
+    userControlledRef.current = true
+    clearTimer()
+  }
+
+  // Initial autoplay + tab-visibility handling
   useEffect(() => {
-    startTimer()
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
-  }, [])
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    function startAutoplay() {
+      if (userControlledRef.current || prefersReduced) return
+      clearTimer()
+      timerRef.current = setInterval(() => setCurrent(c => (c + 1) % HERO_SLIDES.length), 5000)
+    }
+
+    startAutoplay()
+
+    const onVisibility = () => {
+      if (document.hidden) clearTimer()
+      else startAutoplay()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => { clearTimer(); document.removeEventListener('visibilitychange', onVisibility) }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Touch swipe (mobile only) ─────────────────────────────────────────────
+  function onTouchStart(e: React.TouchEvent) {
+    touchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+  }
+
+  function onTouchMove(e: React.TouchEvent) {
+    if (!touchRef.current) return
+    const dx = Math.abs(e.touches[0].clientX - touchRef.current.x)
+    const dy = Math.abs(e.touches[0].clientY - touchRef.current.y)
+    // Vertical-dominant gesture → abandon so the page can scroll normally
+    if (dy > dx + 5) touchRef.current = null
+  }
+
+  function onTouchEnd(e: React.TouchEvent) {
+    if (!touchRef.current) return
+    const dx = e.changedTouches[0].clientX - touchRef.current.x
+    touchRef.current = null
+    if (Math.abs(dx) < 40) return // too small — not a swipe
+    mobileTakeControl()
+    setCurrent(c => (c + (dx < 0 ? 1 : -1) + HERO_SLIDES.length) % HERO_SLIDES.length)
+  }
 
   const slide = HERO_SLIDES[current]
 
   return (
     <section className="kv-hero-section">
-      {/* Background slides — DESKTOP ONLY (hidden on mobile via CSS) */}
+      {/* Desktop carousel — hidden on mobile via CSS */}
       <div className="kv-hw">
         {HERO_SLIDES.map((s, i) => (
           <div
@@ -214,7 +263,6 @@ function Hero() {
               backgroundSize: 'cover',
             }}
           >
-            {/* Mobile-only img — hidden on desktop via .kv-sl-img { display:none } */}
             <img className="kv-sl-img" src={s.bg} alt="" aria-hidden="true" draggable={false} />
           </div>
         ))}
@@ -224,16 +272,10 @@ function Hero() {
             <div className="kv-hbadge" style={{ background: s.badge.bg, color: s.badge.color }}>
               {s.badge.text}
             </div>
-            <p className="kv-hey" style={{ color: s.eyebrow.color }}>
-              {s.eyebrow.text}
-            </p>
-            <h1 className="kv-hh1">
-              {s.h1[0]}<br />{s.h1[1]}
-            </h1>
+            <p className="kv-hey" style={{ color: s.eyebrow.color }}>{s.eyebrow.text}</p>
+            <h1 className="kv-hh1">{s.h1[0]}<br />{s.h1[1]}</h1>
             <p className="kv-hsub">{s.sub}</p>
-            <Link to={s.btn.to} className={`kv-hbtn ${s.btn.cls}`}>
-              {s.btn.text}
-            </Link>
+            <Link to={s.btn.to} className={`kv-hbtn ${s.btn.cls}`}>{s.btn.text}</Link>
           </div>
         ))}
         <button className="kv-harr kv-hprev" onClick={() => { go(current - 1); startTimer() }} aria-label="Previous slide">←</button>
@@ -245,31 +287,36 @@ function Hero() {
         </div>
       </div>
 
-      {/* Mobile layout — MOBILE ONLY (hidden on desktop via CSS) */}
-      <div className="kv-hero-mobile">
+      {/* Mobile stacked layout — swipe + dots, arrows hidden via CSS */}
+      <div
+        className="kv-hero-mobile"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div className="kv-hero-mobile-img">
           <img src={slide.bg} alt="" draggable={false} />
-          <button className="kv-hero-mobile-prev" onClick={() => { go(current - 1); startTimer() }} aria-label="Previous">←</button>
-          <button className="kv-hero-mobile-next" onClick={() => { go(current + 1); startTimer() }} aria-label="Next">→</button>
+          {/* Arrow buttons kept in markup (desktop fallback); hidden on mobile by CSS */}
+          <button className="kv-hero-mobile-prev" onClick={() => { go(current - 1); mobileTakeControl() }} aria-label="Previous">←</button>
+          <button className="kv-hero-mobile-next" onClick={() => { go(current + 1); mobileTakeControl() }} aria-label="Next">→</button>
         </div>
         <div className="kv-hero-mobile-text">
           <div className="kv-hbadge" style={{ background: slide.badge.bg, color: slide.badge.color }}>
             {slide.badge.text}
           </div>
-          <p className="kv-hey" style={{ color: slide.eyebrow.color }}>
-            {slide.eyebrow.text}
-          </p>
-          <h1 className="kv-hh1">
-            {slide.h1[0]}<br />{slide.h1[1]}
-          </h1>
+          <p className="kv-hey" style={{ color: slide.eyebrow.color }}>{slide.eyebrow.text}</p>
+          <h1 className="kv-hh1">{slide.h1[0]}<br />{slide.h1[1]}</h1>
           <p className="kv-hsub">{slide.sub}</p>
-          <Link to={slide.btn.to} className={`kv-hbtn ${slide.btn.cls}`}>
-            {slide.btn.text}
-          </Link>
+          <Link to={slide.btn.to} className={`kv-hbtn ${slide.btn.cls}`}>{slide.btn.text}</Link>
         </div>
         <div className="kv-hero-mobile-dots">
           {HERO_SLIDES.map((_, i) => (
-            <button key={i} className={`kv-hdot${i === current ? ' on' : ''}`} onClick={() => { go(i); startTimer() }} aria-label={`Go to slide ${i + 1}`} />
+            <button
+              key={i}
+              className={`kv-hdot${i === current ? ' on' : ''}`}
+              onClick={() => { go(i); mobileTakeControl() }}
+              aria-label={`Go to slide ${i + 1}`}
+            />
           ))}
         </div>
       </div>
