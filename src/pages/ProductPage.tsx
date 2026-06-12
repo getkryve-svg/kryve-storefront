@@ -81,9 +81,11 @@ const PRODUCT_DETAIL: Record<string, {
       'Formulated for long-term daily use — no laxative effect',
     ],
     supplement: {
-      servings: '60 servings',
-      serving: '2 capsules',
-      callouts: ['Magnesium Glycinate 400mg elemental', 'Bisgylcinate chelate for absorption'],
+      servings: '60 servings per container',
+      serving: '2 capsules per serving · 120 capsules total — a full 2-month supply',
+      keyIngredients: [
+        { name: 'Magnesium Glycinate (as Bisglycinate Chelate)', dose: '400mg elemental', purpose: 'Highly bioavailable form for sleep, muscle recovery, and stress support*' },
+      ],
     },
     faqItems: [
       { q: 'When should I take KRYVE Magnesium?', a: 'Take 2 capsules 30–60 minutes before bed for optimal sleep support and overnight muscle recovery.' },
