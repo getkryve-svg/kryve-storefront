@@ -81,13 +81,9 @@ export default function Navbar() {
           </button>
         </div>
         <nav className="kv-mobile-nav-links">
-          <Link to="/">Home</Link>
-          <Link to="/shop">Shop All</Link>
-          <Link to="/products/the-kryve-stack" className="nav-green">The Stack</Link>
+          <Link to="/shop">Shop</Link>
+          <Link to="/products/the-kryve-stack">The Stack</Link>
           <Link to="/science">Our Science</Link>
-          <Link to="/faq">FAQ</Link>
-          <Link to="/about">About KRYVE</Link>
-          <Link to="/contact">Contact</Link>
         </nav>
       </div>
     </>
