@@ -354,6 +354,126 @@ body {
   padding: 0;
 }
 .kv-hdot.on { background: #fff; transform: scale(1.3); }
+
+/* ── Hero section wrapper ───────────────────────────────────────────────────── */
+.kv-hero-section { position: relative; }
+
+/* Mobile hero — hidden on desktop */
+.kv-hero-mobile { display: none; }
+
+@media (max-width: 767px) {
+  /* Hide desktop carousel on mobile */
+  .kv-hero-section .kv-hw { display: none !important; }
+
+  /* Show mobile layout */
+  .kv-hero-mobile {
+    display: flex;
+    flex-direction: column;
+    background: #0a0a0a;
+  }
+
+  .kv-hero-mobile-img {
+    position: relative;
+    width: 100%;
+    background: #0a0a0a;
+    line-height: 0;
+  }
+
+  .kv-hero-mobile-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 70vw;
+    object-fit: contain;
+    background: #0a0a0a;
+  }
+
+  .kv-hero-mobile-prev,
+  .kv-hero-mobile-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .kv-hero-mobile-prev { left: 10px; }
+  .kv-hero-mobile-next { right: 10px; }
+
+  .kv-hero-mobile-text {
+    background: #0a0a0a;
+    padding: 18px 20px 24px;
+    font-family: Montserrat, sans-serif;
+  }
+
+  .kv-hero-mobile-text .kv-hbadge {
+    position: static;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .kv-hero-mobile-text .kv-hey {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin: 0 0 6px;
+    opacity: 1;
+  }
+  .kv-hero-mobile-text .kv-hh1 {
+    font-size: clamp(1.6rem, 7vw, 2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .kv-hero-mobile-text .kv-hsub {
+    color: rgba(255,255,255,0.75);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0 0 16px;
+    white-space: pre-line;
+    opacity: 1;
+  }
+  .kv-hero-mobile-text .kv-hbtn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    box-sizing: border-box;
+    opacity: 1;
+  }
+
+  .kv-hero-mobile-dots {
+    background: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 0 16px;
+  }
+  .kv-hero-mobile-dots .kv-hdot {
+    width: 8px;
+    height: 8px;
+  }
+  .kv-hero-mobile-dots .kv-hdot.on {
+    width: 20px;
+    border-radius: 4px;
+  }
+}
+
 .kv-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
