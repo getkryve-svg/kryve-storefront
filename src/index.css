@@ -1633,6 +1633,23 @@ body {
   .kv-2col { grid-template-columns: 1fr !important; gap: 32px !important; }
   .kv-3col { grid-template-columns: 1fr !important; gap: 0 !important; }
 
+  /* WHY KRYVE image — hero-stack-v4 has bottles right-biased with dark left void.
+     On mobile: fixed height container + object-fit:cover anchored right to crop
+     the dark void and show only the bottle region. Equal gutters via parent grid. */
+  .kv-why-img {
+    overflow: hidden !important;
+    border-radius: 12px !important;
+  }
+  .kv-why-img img {
+    width: 100% !important;
+    height: 220px !important;
+    object-fit: cover !important;
+    /* Anchor right: crops dark left area, keeps bottles (right ~65%) centred in view */
+    object-position: right center !important;
+    border-radius: 0 !important;
+    display: block !important;
+  }
+
   /* Newsletter */
   .kv-nl-form { flex-direction: column; max-width: 100%; }
   .kv-nl-form input { border-right: 1px solid #333; border-radius: 2px; margin-bottom: 8px; font-size: 16px; }

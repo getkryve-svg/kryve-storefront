@@ -701,7 +701,7 @@ export default function HomePage() {
                 Our Science →
               </Link>
             </div>
-            <div className="kv-fade" style={{ transitionDelay: '0.15s' }}>
+            <div className="kv-fade kv-why-img" style={{ transitionDelay: '0.15s' }}>
               <img
                 src={CF + 'hero-stack-v4-AaFoRVQvMorhuG9icoJQ6w.webp'}
                 alt="KRYVE Science"
