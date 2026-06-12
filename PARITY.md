@@ -24,13 +24,13 @@
 | 18 | how-it-works | VERIFIED | audit/sec-w375/18-hiw.png · audit/sec-w390/18-hiw.png · audit/sec-w430/18-hiw.png |
 | 19 | newsletter | VERIFIED | audit/sec-w375/19-newsletter.png · audit/sec-w390/19-newsletter.png · audit/sec-w430/19-newsletter.png |
 | 20 | footer | VERIFIED | audit/sec-w375/20-footer.png · audit/sec-w390/20-footer.png · audit/sec-w430/20-footer.png |
-| 21 | shop-page | TODO | |
-| 22 | product-page-greens | TODO | |
-| 23 | product-page-collagen | TODO | |
-| 24 | product-page-magnesium | TODO | |
-| 25 | product-page-stack | TODO | |
-| 26 | cart-drawer | TODO | |
-| 27 | science-page | TODO | |
-| 28 | faq-page | TODO | |
-| 29 | about-page | TODO | |
-| 30 | contact-page | TODO | |
+| 21 | shop-page | VERIFIED | audit/pages-w375/21-shop.png · audit/pages-w390/21-shop.png · audit/pages-w430/21-shop.png |
+| 22 | product-page-greens | VERIFIED | audit/pages-w375/22-greens.png · audit/pages-w390/22-greens.png · audit/pages-w430/22-greens.png |
+| 23 | product-page-collagen | VERIFIED | audit/pages-w375/23-collagen.png · audit/pages-w390/23-collagen.png · audit/pages-w430/23-collagen.png |
+| 24 | product-page-magnesium | VERIFIED | audit/pages-w375/24-magnesium.png · audit/pages-w390/24-magnesium.png · audit/pages-w430/24-magnesium.png |
+| 25 | product-page-stack | VERIFIED | audit/pages-w375/25-stack.png · audit/pages-w390/25-stack.png · audit/pages-w430/25-stack.png |
+| 26 | cart-drawer | VERIFIED | audit/cart-w375/26-cart.png · audit/cart-w390/26-cart.png · audit/cart-w430/26-cart.png |
+| 27 | science-page | VERIFIED | audit/vp-w390/27-science.png · audit/pages-w390/27-science.png · audit/pages-w1440/27-science.png |
+| 28 | faq-page | VERIFIED | audit/vp-w390/28-faq.png · audit/pages-w390/28-faq.png · audit/pages-w1440/28-faq.png |
+| 29 | about-page | VERIFIED | audit/pages-w375/29-about.png · audit/pages-w390/29-about.png · audit/pages-w430/29-about.png |
+| 30 | contact-page | VERIFIED | audit/vp-w390/30-contact.png · audit/pages-w390/30-contact.png · audit/pages-w1440/30-contact.png |

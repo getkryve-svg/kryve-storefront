@@ -14,7 +14,7 @@ export default function AboutPage() {
       <div className="kv-page-section kv-about-mission">
         <div className="kv-about-img">
           <img
-            src={`${CF}lifestyle-stack-hero-XrPmKqLw8yBnVcZ2FdTs9j.webp`}
+            src="https://kryve-2.myshopify.com/cdn/shop/files/product-stack-card-v2-5M7HZWrzS5KvdiNgzRMQUZ.webp?v=1781072407"
             alt="KRYVE products"
             loading="lazy"
           />
