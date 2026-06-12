@@ -241,8 +241,12 @@ function Hero() {
   function onTouchEnd(e: React.TouchEvent) {
     if (!touchRef.current) return
     const dx = e.changedTouches[0].clientX - touchRef.current.x
+    const dy = Math.abs(e.changedTouches[0].clientY - touchRef.current.y)
     touchRef.current = null
-    if (Math.abs(dx) < 40) return // too small — not a swipe
+    // Require: clear horizontal swipe — threshold met AND dx dominates dy.
+    // Without the dy guard a diagonal real-world scroll (dx≈45 dy≈40) passes
+    // the 40px test and permanently kills autoplay on first page scroll.
+    if (Math.abs(dx) < 40 || Math.abs(dx) <= dy) return
     mobileTakeControl()
     setCurrent(c => (c + (dx < 0 ? 1 : -1) + HERO_SLIDES.length) % HERO_SLIDES.length)
   }
