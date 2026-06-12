@@ -1050,6 +1050,12 @@ body {
   transition: transform 0.5s ease;
 }
 .kv-gal-item:hover img { transform: scale(1.04); }
+/* Magnesium tile (2nd item) is a dark nighttime scene — brightness lift so
+   subject and bottle read clearly against the dark gallery background.
+   Scoped to :nth-child(2) only; no other gallery item is touched. */
+.kv-gal-grid .kv-gal-item:nth-child(2) img {
+  filter: brightness(1.4);
+}
 .kv-gal-large {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -1629,6 +1635,8 @@ body {
   .kv-gal-large { grid-row: auto !important; }
   .kv-gal-item { height: 260px !important; border-radius: 4px; overflow: hidden; }
   .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center top !important; display: block !important; }
+  /* Carry brightness lift to mobile — same dark scene needs same fix */
+  .kv-gal-grid .kv-gal-item:nth-child(2) img { filter: brightness(1.4) !important; }
   .kv-gallery { padding: 60px 16px; }
 
   /* HIW + 2col/3col — !important overrides inline grid-template-columns */
