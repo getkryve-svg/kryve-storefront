@@ -86,10 +86,10 @@ export default function ShopPage() {
                   <Link to={`/products/${product.handle}`}>{product.title}</Link>
                 </h2>
                 <p className="kv-pcard-desc">{product.description}</p>
-                <div className="kv-pcard-price-row">
-                  <span className="kv-pcard-price">{formatPrice(price)}</span>
+                <div className="kv-pcard-price">
+                  <span className="kv-price-current">{formatPrice(price)}</span>
                   {compareAt && parseFloat(compareAt) > parseFloat(price) && (
-                    <span className="kv-pcard-compare">{formatPrice(compareAt)}</span>
+                    <span className="kv-price-compare">{formatPrice(compareAt)}</span>
                   )}
                 </div>
                 <button

@@ -1489,6 +1489,9 @@ body {
   .kv-pcard { flex: 0 0 auto !important; width: 100% !important; scroll-snap-align: none !important; }
   .kv-pcard-img-wrap { height: 228px !important; }
   .kv-pcard-img-wrap img { height: 212px !important; width: 212px !important; }
+  /* On mobile: hide hover image, reset primary to static flow */
+  .kv-pcard-img-hover { display: none !important; }
+  .kv-pcard-img-primary { position: static !important; opacity: 1 !important; }
   /* Badge — positioned inside card bounds */
   .kv-pcard-badge {
     font-size: 9px !important;
@@ -1555,10 +1558,14 @@ body {
   .kv-stack-row { gap: 8px !important; justify-content: center !important; width: 100% !important; }
   .kv-stack-col { flex: 1 1 0 !important; max-width: 110px !important; min-width: 0 !important; }
   .kv-stack-col .kv-stack-img-box { width: 100% !important; height: auto !important; min-height: 120px !important; overflow: visible !important; }
-  /* Remove multiply blend — on small dark mobile containers it turns bottles near-invisible */
-  .kv-stack-img-box img { height: auto !important; width: 100% !important; object-fit: contain !important; mix-blend-mode: normal !important; }
-  /* Keep glow but size it to match the bottle columns */
-  .kv-stack-spot::before { width: 120px !important; height: 120px !important; }
+  /* Restore multiply blend on mobile — but give each box a colored bg so white areas
+     of the PNG multiply against the brand color instead of the dark page background */
+  .kv-stack-img-box img { height: auto !important; width: 100% !important; object-fit: contain !important; mix-blend-mode: multiply !important; }
+  .kv-stack-col-left   .kv-stack-img-box { background: rgba(57,255,20,0.28) !important; border-radius: 8px !important; }
+  .kv-stack-col-center .kv-stack-img-box { background: rgba(201,122,138,0.35) !important; border-radius: 8px !important; }
+  .kv-stack-col-right  .kv-stack-img-box { background: rgba(155,89,232,0.35) !important; border-radius: 8px !important; }
+  /* Glow sized to bottle columns */
+  .kv-stack-spot::before { width: 150px !important; height: 150px !important; }
 
   /* Why — !important overrides inline grid-template-columns */
   .kv-why-stats { grid-template-columns: 1fr 1fr !important; }
@@ -1600,6 +1607,10 @@ body {
   /* Product page */
   .kv-pdp-inner { grid-template-columns: 1fr; gap: 32px; }
 
+  /* Science page — stack grids to single column */
+  .kv-sci-standards-grid { grid-template-columns: 1fr !important; }
+  .kv-sci-formula-grid   { grid-template-columns: 1fr !important; }
+
   /* Cart */
   .kv-cart-drawer { width: 100%; }
 
@@ -1633,6 +1644,9 @@ body {
     padding: 12px !important;
     box-sizing: border-box !important;
   }
+  /* On mobile: hide hover image, reset primary to static flow */
+  .kv-pcard-img-hover { display: none !important; }
+  .kv-pcard-img-primary { position: static !important; opacity: 1 !important; }
   /* Product card badges — moved down+right so they clear card edges */
   .kv-pcard .kv-pcard-badge {
     position: absolute !important;
@@ -1863,7 +1877,31 @@ body {
   transition: all 0.2s;
 }
 .kv-shop-filter-btn.active, .kv-shop-filter-btn:hover { background: #39FF14; color: #0a0a0a; border-color: #39FF14; }
-.kv-shop-grid { max-width: 1200px; margin: 0 auto; }
+.kv-shop-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+
+/* Shop page hover-image swap — primary shown, hover fades in on hover */
+.kv-pcard-img-wrap .kv-pcard-img-primary,
+.kv-pcard-img-wrap .kv-pcard-img-hover {
+  position: absolute;
+  inset: 0;
+  height: 100% !important;
+  width: 100% !important;
+  object-fit: contain;
+  padding: 12px;
+  box-sizing: border-box;
+  background: #0a0a0a;
+  transition: opacity 0.4s ease;
+}
+.kv-pcard-img-wrap .kv-pcard-img-hover { opacity: 0; }
+.kv-pcard-img-wrap:hover .kv-pcard-img-primary { opacity: 0; }
+.kv-pcard-img-wrap:hover .kv-pcard-img-hover   { opacity: 1; }
 .kv-shop-guarantee {
   display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;
   margin-top: 60px; padding-top: 40px; border-top: 1px solid #1a1a1a;
