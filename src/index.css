@@ -1573,11 +1573,13 @@ body {
   .kv-hamburger { display: flex !important; }
 
   /* Product cards */
+  .kv-pcard { position: relative !important; }
   .kv-pcard-img-wrap {
     height: 220px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    position: relative !important;
   }
   .kv-pcard-img-wrap img {
     height: 200px !important;
@@ -1586,11 +1588,16 @@ body {
     padding: 12px !important;
     box-sizing: border-box !important;
   }
-  .kv-pcard-badge {
+  /* Product card badges — inside image area, top-left, 12px from edges */
+  .kv-pcard .kv-pcard-badge {
     position: absolute !important;
+    top: 12px !important;
+    left: 12px !important;
+    z-index: 10 !important;
     font-size: 9px !important;
-    padding: 4px 8px !important;
-    letter-spacing: 1px !important;
+    padding: 4px 10px !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
   }
 }
 
