@@ -225,7 +225,7 @@ function Hero() {
             alt=""
             aria-hidden="true"
             draggable={false}
-            style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'contain', background: '#0a0a0a' }}
+            style={{ display: 'block', width: '100%', height: 'auto', maxHeight: '70vh', objectFit: 'contain', background: '#0a0a0a' }}
           />
           {/* Prev / Next arrows over the image */}
           <button

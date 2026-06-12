@@ -473,6 +473,10 @@ body {
   padding: 5px 10px;
   border-radius: 20px;
   text-transform: uppercase;
+  white-space: nowrap;
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .badge-greens  { background:rgba(57,255,20,0.15);color:#39FF14;border:1px solid rgba(57,255,20,0.4); }
 .badge-collagen { background:rgba(183,110,121,0.15);color:#e8a0aa;border:1px solid rgba(200,60,80,0.9); }
@@ -1394,10 +1398,7 @@ body {
   .kv-pcard-img-wrap { height: 228px !important; }
   .kv-pcard-img-wrap img { height: 212px !important; width: 212px !important; }
   /* Per-badge mobile positions (live site exact) */
-  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; letter-spacing: 1px !important; }
-  .badge-greens   { top: 16px !important; left: 32px !important; }
-  .badge-collagen { top: 17px !important; left: 30px !important; }
-  .badge-magnesium { top: 16px !important; left: 32px !important; }
+  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; letter-spacing: 0.8px !important; top: 12px !important; left: 12px !important; }
   .kv-pcards-end { flex: 0 0 16px; display: block; }
 
   /* Compare — live site exact mobile */
@@ -1676,7 +1677,7 @@ body {
 
 /* Mobile hamburger button (hidden on desktop) */
 .kv-hamburger {
-  display: none;
+  display: flex; /* visible by default; hidden on desktop below */
   background: none;
   border: none;
   color: #fff;
@@ -1688,6 +1689,9 @@ body {
   justify-content: center;
   width: 32px;
   height: 32px;
+}
+@media (min-width: 768px) {
+  .kv-hamburger { display: none; }
 }
 .kv-hamburger span {
   display: block;
