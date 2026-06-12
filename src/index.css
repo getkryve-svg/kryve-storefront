@@ -448,7 +448,7 @@ body {
   .kv-hh1 { font-size: 28px !important; line-height: 1.1 !important; }
   .kv-hey { font-size: 12px !important; }
   .kv-hsub { font-size: 13px !important; max-width: 260px !important; }
-  .kv-hbtn { font-size: 13px !important; padding: 12px 20px !important; max-width: 260px !important; }
+  .kv-hbtn { font-size: 11px !important; padding: 10px 16px !important; white-space: nowrap !important; max-width: fit-content !important; }
 
   /* Hero badge */
   .kv-hbadge {
