@@ -362,8 +362,8 @@ body {
 .kv-hero-mobile { display: none !important; }
 
 @media (max-width: 767px) {
-  /* Hero: full viewport height */
-  .kv-hero-section { height: 100svh !important; min-height: 600px !important; }
+  /* Hero: 85vh on mobile */
+  .kv-hero-section { height: 85vh !important; min-height: 560px !important; }
   .kv-hw { height: 100% !important; }
 
   /* Shift background-position right so people/products on right are visible */
@@ -380,7 +380,7 @@ body {
     width: 100% !important;
     max-width: 100% !important;
     padding: 80px 24px 40px !important;
-    background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 55%, transparent 100%) !important;
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, transparent 80%) !important;
     height: 100% !important;
     box-sizing: border-box !important;
     justify-content: center !important;
@@ -1520,11 +1520,11 @@ body {
   .kv-why-stat-label { font-size: 0.72rem; margin-top: 8px; line-height: 1.4; }
   .kv-why-benefits { grid-template-columns: 1fr; gap: 32px; }
 
-  /* Gallery — all images fully visible, no cropping */
+  /* Gallery — show full product bottle, cover with right-shifted position */
   .kv-gal-grid { grid-template-columns: 1fr !important; height: auto !important; gap: 16px !important; }
   .kv-gal-large { grid-row: auto !important; }
-  .kv-gal-item { height: auto !important; border-radius: 4px; overflow: hidden; background: #111; }
-  .kv-gal-item img { width: 100% !important; height: auto !important; object-fit: contain !important; object-position: center center !important; display: block !important; }
+  .kv-gal-item { height: 260px !important; border-radius: 4px; overflow: hidden; }
+  .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: 70% center !important; display: block !important; }
   .kv-gallery { padding: 60px 16px; }
 
   /* HIW + 2col/3col — !important overrides inline grid-template-columns */
@@ -1586,11 +1586,11 @@ body {
     padding: 12px !important;
     box-sizing: border-box !important;
   }
-  /* Product card badges — top-left of image area */
+  /* Product card badges — moved down+right so they clear card edges */
   .kv-pcard .kv-pcard-badge {
     position: absolute !important;
-    top: 12px !important;
-    left: 12px !important;
+    top: 20px !important;
+    left: 20px !important;
     z-index: 10 !important;
     font-size: 9px !important;
     padding: 4px 10px !important;
