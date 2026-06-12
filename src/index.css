@@ -361,27 +361,60 @@ body {
 /* .kv-hero-mobile unused — desktop carousel used on all sizes */
 .kv-hero-mobile { display: none !important; }
 
+/* ══════════════════════════════════════════════════════════════
+   MOBILE HERO — img-based contain approach (max-width 767px)
+   Desktop uses background-image + full-bleed. Mobile uses <img
+   class="kv-sl-img"> with object-fit:contain so the full product
+   is always visible — no background-size:cover cropping.
+   Desktop is untouched — all rules here are mobile-only.
+══════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Hero: 85vh on mobile */
-  .kv-hero-section { height: 85vh !important; min-height: 560px !important; }
-  .kv-hw { height: 100% !important; }
+  /* Section: auto height — no fixed vh that forces cropping */
+  .kv-hero-section { height: auto !important; min-height: 0 !important; }
+  .kv-hw { height: auto !important; min-height: 0 !important; position: relative !important; background: #0A0A0A !important; overflow: visible !important; }
 
-  /* Shift background-position right so people/products on right are visible */
-  .kv-sl { background-position: 70% center !important; background-size: cover !important; }
-  /* Slide 5 (Stack bottles) — centered lower */
-  .kv-sl:nth-child(5) { background-position: 65% bottom !important; }
+  /* Only the active slide is shown; non-active hidden (prevents stacking) */
+  .kv-sl {
+    display: none !important;
+    position: relative !important;
+    height: 400px !important;
+    background-image: none !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .kv-sl.on { display: block !important; }
 
-  /* Hide global overlay — text panel has its own gradient */
+  /* Product image: visible in full — img fills slide with contain (no cropping) */
+  .kv-sl-img {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: #0A0A0A !important;
+  }
+
+  /* Global overlay hidden — text panel provides its own gradient */
   .kv-ov { display: none !important; }
 
-  /* Text panel: gradient covers left side so text is readable, right side shows photo */
+  /* Text panel: heavier left-side gradient so text stays readable and
+     product labels in the image don't bleed into the copy area */
   .kv-tx {
+    position: absolute !important;
     inset: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    padding: 80px 24px 40px !important;
-    background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, transparent 80%) !important;
     height: 100% !important;
+    padding: 24px 24px !important;
+    background: linear-gradient(
+      to right,
+      rgba(0,0,0,0.94) 0%,
+      rgba(0,0,0,0.80) 38%,
+      rgba(0,0,0,0.35) 58%,
+      transparent 72%
+    ) !important;
     box-sizing: border-box !important;
     justify-content: center !important;
     align-items: flex-start !important;
@@ -389,23 +422,27 @@ body {
   }
 
   /* Typography */
-  .kv-hh1 { font-size: 32px !important; line-height: 1.1 !important; }
-  .kv-hey { font-size: 14px !important; }
-  .kv-hsub { font-size: 14px !important; max-width: 240px !important; }
-  .kv-hbtn { font-size: 14px !important; padding: 14px 28px !important; max-width: 280px !important; }
+  .kv-hh1 { font-size: 28px !important; line-height: 1.1 !important; }
+  .kv-hey { font-size: 12px !important; }
+  .kv-hsub { font-size: 13px !important; max-width: 185px !important; }
+  .kv-hbtn { font-size: 13px !important; padding: 12px 20px !important; max-width: 230px !important; }
 
-  /* Badge: 24px from edge (matches text padding), proper spacing below */
+  /* Badge */
   .kv-hbadge {
     margin-top: 0 !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 10px !important;
     margin-left: 0 !important;
     margin-right: auto !important;
     font-size: 10px !important;
-    padding: 6px 12px !important;
+    padding: 5px 10px !important;
     display: inline-block !important;
     max-width: fit-content !important;
     align-self: flex-start !important;
   }
+
+  /* Dots + arrows must sit above the text overlay (z-index:10) so they receive clicks */
+  .kv-hdots { z-index: 20 !important; }
+  .kv-harr  { z-index: 20 !important; }
 }
 
 .kv-dot {
@@ -1418,7 +1455,9 @@ body {
   /* Global — disable fade animation on mobile so inline-opacity never hides content */
   .kv-fade { opacity: 1 !important; transform: none !important; }
 
-  .kv-announcement { font-size: 11px; white-space: normal; text-align: center; padding: 6px 16px; }
+  /* Announcement bar — keep marquee single-line, just smaller text */
+  .kv-announcement { font-size: 11px; padding: 6px 0; }
+  .kv-announcement .marquee-track { white-space: nowrap; }
 
   /* Nav */
   .kv-nav-links { display: none; }
@@ -1426,8 +1465,8 @@ body {
   .kv-nav-logo { font-size: 22px; }
   .kv-hamburger { display: flex; }
 
-  /* Hero — base (overridden fully by 767px block below) */
-  .kv-hw { height: 100dvh !important; }
+  /* Hero — height now driven by the 767px img-contain block; remove dvh override */
+  /* .kv-hw { height: 100dvh !important; } — intentionally removed */
 
   /* Trust — !important overrides inline grid-template-columns */
   .kv-trust-grid { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
@@ -1435,25 +1474,31 @@ body {
   .kv-trust-label { font-size: 0.78rem; }
   .kv-trust-sub { font-size: 0.65rem; line-height: 1.4; }
 
-  /* Products */
-  .kv-products { padding: 50px 0 50px 16px; }
-  .kv-products-title { padding-right: 16px; font-size: clamp(1.4rem,5vw,2rem); }
-  .kv-products-sub { padding-right: 16px; }
+  /* Products — full-width stacked single-column cards */
+  .kv-products { padding: 50px 16px; }
+  .kv-products-title { font-size: clamp(1.4rem,5vw,2rem); }
   .kv-pcards {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 16px;
-    justify-content: flex-start;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 14px;
+    flex-direction: column !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    scroll-snap-type: none !important;
+    padding-bottom: 0 !important;
+    gap: 16px !important;
+    align-items: stretch !important;
   }
-  .kv-pcard { flex: 0 0 260px !important; width: 260px !important; scroll-snap-align: start; }
+  .kv-pcard { flex: 0 0 auto !important; width: 100% !important; scroll-snap-align: none !important; }
   .kv-pcard-img-wrap { height: 228px !important; }
   .kv-pcard-img-wrap img { height: 212px !important; width: 212px !important; }
-  /* Badge — match desktop positioning exactly */
-  .kv-pcard-badge { font-size: 9px !important; padding: 4px 8px !important; letter-spacing: 0.8px !important; }
-  .kv-pcards-end { flex: 0 0 16px; display: block; }
+  /* Badge — positioned inside card bounds */
+  .kv-pcard-badge {
+    font-size: 9px !important;
+    padding: 4px 8px !important;
+    letter-spacing: 0.8px !important;
+    white-space: nowrap !important;
+    top: 16px !important;
+    left: 16px !important;
+  }
+  .kv-pcards-end { display: none; }
 
   /* Compare — live site exact mobile */
   .kv-cmp-wrap { padding: 50px 0 50px 0 !important; overflow: hidden; }
@@ -1509,9 +1554,11 @@ body {
   /* Each bottle column: even thirds, no overflow */
   .kv-stack-row { gap: 8px !important; justify-content: center !important; width: 100% !important; }
   .kv-stack-col { flex: 1 1 0 !important; max-width: 110px !important; min-width: 0 !important; }
-  .kv-stack-col .kv-stack-img-box { width: 100% !important; height: auto !important; min-height: 110px !important; overflow: visible !important; }
-  .kv-stack-img-box img { height: auto !important; width: 100% !important; object-fit: contain !important; }
-  .kv-stack-spot::before { width: 100px !important; height: 100px !important; }
+  .kv-stack-col .kv-stack-img-box { width: 100% !important; height: auto !important; min-height: 120px !important; overflow: visible !important; }
+  /* Remove multiply blend — on small dark mobile containers it turns bottles near-invisible */
+  .kv-stack-img-box img { height: auto !important; width: 100% !important; object-fit: contain !important; mix-blend-mode: normal !important; }
+  /* Keep glow but size it to match the bottle columns */
+  .kv-stack-spot::before { width: 120px !important; height: 120px !important; }
 
   /* Why — !important overrides inline grid-template-columns */
   .kv-why-stats { grid-template-columns: 1fr 1fr !important; }

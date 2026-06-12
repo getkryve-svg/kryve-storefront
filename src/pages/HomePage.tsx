@@ -213,7 +213,10 @@ function Hero() {
               backgroundPosition: s.bgPos,
               backgroundSize: 'cover',
             }}
-          />
+          >
+            {/* Mobile-only img — hidden on desktop via .kv-sl-img { display:none } */}
+            <img className="kv-sl-img" src={s.bg} alt="" aria-hidden="true" draggable={false} />
+          </div>
         ))}
         <div className="kv-ov" />
         {HERO_SLIDES.map((s, i) => (

@@ -1,7 +1,12 @@
+const MSG = '🎉 Use code WELCOME10 for 10% off your first order  ·  Free shipping on orders $75+  ·  Science-backed formulas  ·  Made in the USA       '
+
 export default function AnnouncementBar() {
   return (
     <div className="kv-announcement">
-      <p>🎉 Use code WELCOME10 for 10% off your first order &nbsp;·&nbsp; Free shipping on orders $75+ &nbsp;·&nbsp; Science-backed formulas &nbsp;·&nbsp; Made in the USA</p>
+      <div className="marquee-track">
+        <span>{MSG}</span>
+        <span aria-hidden="true">{MSG}</span>
+      </div>
     </div>
   )
 }
