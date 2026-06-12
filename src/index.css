@@ -377,6 +377,10 @@ body {
   .kv-hero-mobile {
     display: flex !important;
     flex-direction: column !important;
+    /* 28px gap between every flex child (text→image, image→dots).
+       This is the primary breathing-room mechanism — real flow spacing,
+       not absolute nudging. Applies equally to all 5 slides. */
+    gap: 28px !important;
     background: #0A0A0A !important;
     width: 100% !important;
     touch-action: pan-y !important;    /* vertical scroll allowed; horizontal → our JS */
@@ -390,7 +394,9 @@ body {
   /* TEXT BLOCK — top (order: 1) */
   .kv-hero-mobile-text {
     order: 1 !important;
-    padding: 24px 24px 16px !important;
+    /* Bottom padding reduced to 8px — the gap between text block and image
+       is provided by the container's 28px flex gap, not padding duplication */
+    padding: 24px 24px 8px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
