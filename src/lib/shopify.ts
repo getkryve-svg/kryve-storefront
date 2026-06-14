@@ -17,7 +17,6 @@ export const PRODUCT_HANDLES = {
 } as const
 
 // ── Fallback static data — exact match to live kryve-2.myshopify.com ──────
-const CDN = 'https://cdn.shopify.com/s/files/1/0824/2108/8515/t/1/assets/'
 export const STATIC_PRODUCTS = [
   {
     id: 'gid://shopify/Product/9473700036867',
@@ -28,7 +27,7 @@ export const STATIC_PRODUCTS = [
     priceRange: { minVariantPrice: { amount: '49.99', currencyCode: 'USD' } },
     compareAtPriceRange: { maxVariantPrice: { amount: '64.99', currencyCode: 'USD' } },
     images: { edges: [
-      { node: { url: CDN + 'kryve-greens-real.jpg', altText: 'KRYVE Greens Superfood Powder' } },
+      { node: { url: '/images/product-greens-themed.png', altText: 'KRYVE Greens Superfood Powder' } },
       { node: { url: 'https://cdn.shopify.com/s/files/1/0824/2108/8515/files/product-greens-hover-Lj85wqwdkdZHkj4istPPyn.webp', altText: 'KRYVE Greens lifestyle' } },
     ]},
     variants: { edges: [{ node: { id: 'gid://shopify/ProductVariant/48355256336643', title: 'Default Title', availableForSale: true, price: { amount: '49.99', currencyCode: 'USD' }, compareAtPrice: { amount: '64.99', currencyCode: 'USD' } } }] },
@@ -42,7 +41,7 @@ export const STATIC_PRODUCTS = [
     priceRange: { minVariantPrice: { amount: '54.99', currencyCode: 'USD' } },
     compareAtPriceRange: { maxVariantPrice: { amount: '59.99', currencyCode: 'USD' } },
     images: { edges: [
-      { node: { url: CDN + 'kryve-collagen-real.jpg', altText: 'KRYVE Hydrolyzed Collagen Peptides' } },
+      { node: { url: '/images/product-collagen-themed.png', altText: 'KRYVE Hydrolyzed Collagen Peptides' } },
       { node: { url: 'https://cdn.shopify.com/s/files/1/0824/2108/8515/files/lifestyle-collagen-v3-kTUV8zu9u3UFBdzmhguU7N.png', altText: 'KRYVE Collagen lifestyle' } },
     ]},
     variants: { edges: [{ node: { id: 'gid://shopify/ProductVariant/48355257483523', title: 'Default Title', availableForSale: true, price: { amount: '54.99', currencyCode: 'USD' }, compareAtPrice: { amount: '59.99', currencyCode: 'USD' } } }] },
@@ -56,7 +55,7 @@ export const STATIC_PRODUCTS = [
     priceRange: { minVariantPrice: { amount: '39.99', currencyCode: 'USD' } },
     compareAtPriceRange: { maxVariantPrice: { amount: '54.99', currencyCode: 'USD' } },
     images: { edges: [
-      { node: { url: CDN + 'kryve-magnesium-real.jpg', altText: 'KRYVE Magnesium Glycinate' } },
+      { node: { url: '/images/product-magnesium-real-studio.png', altText: 'KRYVE Magnesium Glycinate' } },
       { node: { url: 'https://cdn.shopify.com/s/files/1/0824/2108/8515/files/product-magnesium-hover-7Z3S9KuA7Dspk5wRSTC4vx.webp', altText: 'KRYVE Magnesium lifestyle' } },
     ]},
     variants: { edges: [{ node: { id: 'gid://shopify/ProductVariant/48355258401027', title: 'Default Title', availableForSale: true, price: { amount: '39.99', currencyCode: 'USD' }, compareAtPrice: { amount: '54.99', currencyCode: 'USD' } } }] },

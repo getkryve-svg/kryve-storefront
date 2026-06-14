@@ -6,7 +6,6 @@ import type { CartItem } from '../types'
 
 // ── Hero slides — exact match to live kryve-2.myshopify.com ─────────────────
 const CF = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663745291897/2HBFBRwReVdUcKECHB8taa/'
-const CDN_ASSETS = 'https://cdn.shopify.com/s/files/1/0824/2108/8515/t/1/assets/'
 
 const HERO_SLIDES = [
   {
@@ -652,21 +651,21 @@ export default function HomePage() {
               <div className="kv-stack-col kv-stack-col-left">
                 <div className="kv-stack-spot">
                   <div className="kv-stack-img-box">
-                    <img src={CDN_ASSETS + 'kryve-greens-real.jpg'} alt="KRYVE Greens" />
+                    <img src="/images/product-greens-themed.png" alt="KRYVE Greens" />
                   </div>
                 </div>
               </div>
               <div className="kv-stack-col kv-stack-col-center">
                 <div className="kv-stack-spot">
                   <div className="kv-stack-img-box">
-                    <img src={CDN_ASSETS + 'kryve-collagen-real.jpg'} alt="KRYVE Collagen" />
+                    <img src="/images/product-collagen-themed.png" alt="KRYVE Collagen" />
                   </div>
                 </div>
               </div>
               <div className="kv-stack-col kv-stack-col-right">
                 <div className="kv-stack-spot">
                   <div className="kv-stack-img-box">
-                    <img src={CDN_ASSETS + 'kryve-magnesium-real.jpg'} alt="KRYVE Magnesium" />
+                    <img src="/images/product-magnesium-real-studio.png" alt="KRYVE Magnesium" />
                   </div>
                 </div>
               </div>
