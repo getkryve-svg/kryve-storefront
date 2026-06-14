@@ -34,6 +34,11 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  /* Disable iOS Safari auto text inflation — it balloons small on-image labels
+     (e.g. badge text in narrow cards) so they spill outside the card. No-op on
+     desktop, which never inflates text. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
