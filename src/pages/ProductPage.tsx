@@ -228,14 +228,16 @@ export default function ProductPage() {
             </ul>
           )}
 
-          {/* Subscribe & Save toggle */}
-          <div style={{ margin: '18px 0', border: '1px solid #E5E0D8', borderRadius: 10, overflow: 'hidden' }}>
+          {/* Subscribe & Save toggle — dark branded; selected state = accent ring + tint */}
+          <div style={{ margin: '18px 0', border: '1px solid #222', borderRadius: 10, overflow: 'hidden', background: '#111' }}>
+            {/* One-time purchase */}
             <label
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '12px 16px', cursor: 'pointer', gap: 12,
-                background: purchaseType === 'one-time' ? '#fff' : 'transparent',
-                borderBottom: '1px solid #E5E0D8',
+                background: purchaseType === 'one-time' ? accent + '22' : 'transparent',
+                boxShadow: purchaseType === 'one-time' ? `inset 0 0 0 1.5px ${accent}` : 'none',
+                borderBottom: '1px solid #222',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -245,19 +247,21 @@ export default function ProductPage() {
                   onChange={() => setPurchaseType('one-time')}
                   style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
                 />
-                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem' }}>
+                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem', color: '#fff' }}>
                   One-time purchase
                 </span>
               </div>
-              <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem' }}>
+              <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#fff' }}>
                 {formatPrice(price)}
               </span>
             </label>
+            {/* Subscribe & Save */}
             <label
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '12px 16px', cursor: 'pointer', gap: 12,
-                background: purchaseType === 'subscribe' ? '#F0FDF4' : 'transparent',
+                background: purchaseType === 'subscribe' ? accent + '22' : 'transparent',
+                boxShadow: purchaseType === 'subscribe' ? `inset 0 0 0 1.5px ${accent}` : 'none',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -268,19 +272,19 @@ export default function ProductPage() {
                   style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
                 />
                 <div>
-                  <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem' }}>
+                  <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem', color: '#fff' }}>
                     Subscribe &amp; Save 15%
                   </span>
-                  <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.72rem', color: '#16A34A', fontWeight: 600 }}>
+                  <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.72rem', color: '#22C55E', fontWeight: 600 }}>
                     Delivered monthly · Cancel anytime
                   </span>
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#16A34A' }}>
+                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#22C55E' }}>
                   {formatPrice(discountedPrice)}
                 </span>
-                <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.7rem', color: '#AAA', textDecoration: 'line-through' }}>
+                <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.7rem', color: '#777', textDecoration: 'line-through' }}>
                   {formatPrice(price)}
                 </span>
               </div>

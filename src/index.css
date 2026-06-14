@@ -597,6 +597,20 @@ body {
   box-sizing: border-box;
   background: #0a0a0a;
 }
+
+/* ── INTERIM: blend the white-background single-product photos into the dark site ──
+   Greens / Collagen / Magnesium primary shots are *-real.jpg on a WHITE field, so
+   on the black site they read as bright squares — cheaper-looking than the Stack's
+   dark studio image. Mask their hard edges to transparent so the white box dissolves
+   into the page background and the three read as a set with the Stack. Color-agnostic
+   (alpha falloff only) so it never muddies the product the way multiply would.
+   PROPER FIX = replace these 3 assets with dark-studio versions (bg removed, black
+   backdrop, per-product green/rose/violet under-glow). Do not target the Stack
+   (.webp) or lifestyle (*-hover / lifestyle-*) photos. */
+img[src*="-real.jpg"] {
+  -webkit-mask-image: radial-gradient(ellipse 80% 82% at 50% 47%, #000 52%, rgba(0,0,0,0) 90%);
+          mask-image: radial-gradient(ellipse 80% 82% at 50% 47%, #000 52%, rgba(0,0,0,0) 90%);
+}
 /* ── PRODUCT CARD BADGE — shared across homepage grid, Shop page, product pages ──
    Anchored inside .kv-pcard-img-wrap (position:relative) at top:12px / left:12px.
    Solid opaque fills match the hero badge color scheme — readable on any bg. ── */
