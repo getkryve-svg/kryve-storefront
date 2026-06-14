@@ -602,13 +602,18 @@ body {
    Solid opaque fills match the hero badge color scheme — readable on any bg. ── */
 .kv-pcard-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  /* Inset to match the card body's content gutter (.kv-pcard-body padding: 22px)
+     so the badge's left edge lines up with the title/description below it, with
+     even top/left clearance and well clear of the rounded border. */
+  top: 16px;
+  left: 22px;
+  right: auto;             /* never anchor to the right edge */
   z-index: 10;
   display: inline-flex;
+  justify-content: flex-start;  /* any overflow extends right only, never left */
   align-items: center;
   /* Never overflow the image container regardless of label length */
-  max-width: calc(100% - 24px);
+  max-width: calc(100% - 44px);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -1559,14 +1564,17 @@ body {
   /* On mobile: hide hover image; keep primary absolute (absolute fill still applies) */
   .kv-pcard-img-hover { display: none !important; }
   .kv-pcard-img-primary { position: absolute !important; opacity: 1 !important; }
-  /* Badge — anchored to image corner, fits all label lengths including HIGH ABSORPTION */
+  /* Badge — inset to the content gutter so its left aligns with the title/desc
+     below it (same 22px as .kv-pcard-body), even top/left clearance, fully clear
+     of the rounded purple border. Fits all labels including HIGH ABSORPTION. */
   .kv-pcard-badge {
     font-size: 9px !important;
     padding: 4px 8px !important;
     letter-spacing: 0.8px !important;
-    top: 12px !important;
-    left: 12px !important;
-    max-width: calc(100% - 24px) !important;
+    top: 16px !important;
+    left: 22px !important;
+    right: auto !important;
+    max-width: calc(100% - 44px) !important;
   }
   .kv-pcards-end { display: none; }
 
