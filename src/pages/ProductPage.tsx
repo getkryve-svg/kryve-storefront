@@ -108,13 +108,6 @@ const PRODUCT_DETAIL: Record<string, {
   },
 }
 
-const SUPPLEMENT_HANDLES = new Set([
-  'kryve-greens-superfood-powder',
-  'kryve-hydrolyzed-collagen-peptides',
-  'kryve-magnesium-glycinate',
-  'the-kryve-stack',
-])
-
 export default function ProductPage() {
   const { handle } = useParams<{ handle: string }>()
   const { addItem } = useCart()
@@ -142,12 +135,8 @@ export default function ProductPage() {
   )
 
   const detail = PRODUCT_DETAIL[product.handle]
-  const isSupplementProduct = SUPPLEMENT_HANDLES.has(product.handle)
-  // Build image list — add supplement facts placeholder slot for supplement products
-  const baseImages = product.images.edges.map(e => e.node)
-  const images = isSupplementProduct
-    ? [...baseImages, { url: '__supplement_facts__', altText: 'Supplement Facts' }]
-    : baseImages
+  // Gallery renders only the real product images that exist
+  const images = product.images.edges.map(e => e.node)
   const variant = product.variants.edges[0]?.node
   const price = variant?.price.amount || product.priceRange.minVariantPrice.amount
   const compareAt = variant?.compareAtPrice?.amount
@@ -190,28 +179,10 @@ export default function ProductPage() {
         {/* Images */}
         <div className="kv-pdp-images">
           <div className="kv-pdp-main-img">
-            {images[imgIdx]?.url === '__supplement_facts__' ? (
-              // Supplement facts placeholder
-              <div style={{
-                width: '100%', height: '100%', minHeight: 360,
-                background: '#F5F1ED', border: '2px dashed #C8BFB4',
-                borderRadius: 12, display: 'flex', flexDirection: 'column',
-                alignItems: 'center', justifyContent: 'center', gap: 12,
-              }}>
-                <span style={{ fontSize: '2.5rem' }}>📋</span>
-                <p style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888' }}>
-                  Supplement Facts
-                </p>
-                <p style={{ fontFamily: 'Montserrat,sans-serif', fontSize: '0.75rem', color: '#AAA' }}>
-                  Label image coming soon
-                </p>
-              </div>
-            ) : (
-              <img
-                src={images[imgIdx]?.url || ''}
-                alt={images[imgIdx]?.altText || product.title}
-              />
-            )}
+            <img
+              src={images[imgIdx]?.url || ''}
+              alt={images[imgIdx]?.altText || product.title}
+            />
           </div>
           {images.length > 1 && (
             <div className="kv-pdp-thumbs">
@@ -221,13 +192,9 @@ export default function ProductPage() {
                   className={`kv-pdp-thumb${i === imgIdx ? ' active' : ''}`}
                   style={i === imgIdx ? { borderColor: accent } : {}}
                   onClick={() => setImgIdx(i)}
-                  aria-label={img.url === '__supplement_facts__' ? 'Supplement Facts' : `View image ${i + 1}`}
+                  aria-label={`View image ${i + 1}`}
                 >
-                  {img.url === '__supplement_facts__' ? (
-                    <div style={{ width: '100%', height: '100%', background: '#F5F1ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>📋</div>
-                  ) : (
-                    <img src={img.url} alt={img.altText || product.title} loading="lazy" />
-                  )}
+                  <img src={img.url} alt={img.altText || product.title} loading="lazy" />
                 </button>
               ))}
             </div>
