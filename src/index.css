@@ -439,7 +439,7 @@ body {
      elbow off the right edge at narrow mobile widths. Shift the focal point right
      so his full right side stays in frame. */
   .kv-hero-mobile-img--mag img {
-    object-position: 72% 0% !important;
+    object-position: 80% 0% !important;
   }
 
   /* ARROWS: hidden on mobile — no styles needed */
@@ -1082,11 +1082,17 @@ body {
 .kv-gal-grid .kv-gal-item:nth-child(2) img {
   filter: brightness(1.4);
 }
-/* Greens tile (1st item, large) — woman's crown sits tight to top at default
-   object-position: center 20%. Shift to 50% 10% for comfortable headroom.
-   Authorized per-tile desktop exception; no other gallery item is touched. */
+/* Greens tile (1st item, large) — landscape source (no vertical overflow under
+   cover), so object-position Y is inert. Use translateY to shift the rendered
+   image down inside the overflow:hidden container, creating visible headroom
+   above the woman's hair. Container bg (#111) fills the exposed gap at top.
+   Authorized per-tile exception for both desktop and mobile. */
 .kv-gal-grid .kv-gal-item:nth-child(1) img {
-  object-position: 50% 10%;
+  object-position: 50% 0%;
+  transform: translateY(5%);
+}
+.kv-gal-grid .kv-gal-item:nth-child(1):hover img {
+  transform: translateY(5%) scale(1.04);
 }
 .kv-gal-large {
   grid-column: 1;
@@ -1689,7 +1695,10 @@ body {
      Image is landscape (3:2) so cover scales by height; 360px gives ~38% more
      rendered pixels above the crown vs 260px. object-position reset to top. */
   .kv-gal-grid .kv-gal-item:nth-child(1) { height: 360px !important; }
-  .kv-gal-grid .kv-gal-item:nth-child(1) img { object-position: center top !important; }
+  .kv-gal-grid .kv-gal-item:nth-child(1) img {
+    object-position: center top !important;
+    transform: translateY(8%) !important;
+  }
   .kv-gallery { padding: 60px 16px; }
 
   /* HIW + 2col/3col — !important overrides inline grid-template-columns */
