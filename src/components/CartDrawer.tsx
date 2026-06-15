@@ -1,10 +1,19 @@
 import { useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { STATIC_PRODUCTS } from '../lib/shopify'
 
 /** Single source of truth for free-shipping threshold.
  *  MUST match Shopify Admin › Settings › Shipping and delivery free-shipping rate.  */
 const FREE_SHIPPING_THRESHOLD = 75   // dollars
+
+/** Resolve the CURRENT primary product image by handle so cart line items always
+ *  match the cards/site — even for items added before the image was updated, or
+ *  added from the PDP (whose live Shopify image may differ). Falls back to the
+ *  image stored on the cart item. */
+function currentImage(handle: string, fallback: string): string {
+  return STATIC_PRODUCTS.find(p => p.handle === handle)?.images.edges[0]?.node.url || fallback
+}
 
 export default function CartDrawer() {
   const { state, dispatch, subtotal, itemCount } = useCart()
@@ -205,9 +214,9 @@ export default function CartDrawer() {
                     style={{ width: 72, height: 72, background: '#1A1A1A', display: 'block' }}
                     aria-label={item.title}
                   >
-                    {item.image ? (
+                    {currentImage(item.handle, item.image) ? (
                       <img
-                        src={item.image}
+                        src={currentImage(item.handle, item.image)}
                         alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-200 hover:scale-105"
                         loading="lazy"

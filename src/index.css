@@ -426,6 +426,15 @@ body {
     object-position: center top !important;
     display: block !important;
   }
+  /* Slide 5 (The Stack — all 3 bottles): cover crops the sides so the rightmost
+     magnesium bottle runs into the edge. Use contain + horizontal padding so all
+     3 bottles sit inside the frame with clear gutters on both sides. */
+  .kv-hero-mobile-img--stack img {
+    object-fit: contain !important;
+    object-position: center center !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+  }
 
   /* ARROWS: hidden on mobile — no styles needed */
 
@@ -887,18 +896,12 @@ body {
   align-items: center;
   justify-content: center;
 }
-.kv-stack-spot::before {
-  content: '';
-  position: absolute;
-  width: 260px; height: 260px;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0.5;
-  z-index: 0;
-}
-.kv-stack-col-left .kv-stack-spot::before   { background: #39FF14; opacity: 0.55; }
-.kv-stack-col-center .kv-stack-spot::before { background: #C97A8A; opacity: 0.8; }
-.kv-stack-col-right .kv-stack-spot::before  { background: #9B59E8; opacity: 0.8; }
+/* No separate glow circle — the new dark-studio images carry their own baked-in
+   green/rose/violet glow. A bright ::before behind each image made the image's
+   dark square silhouette against it, which is what revealed the box. Removing it
+   lets the dark backdrop sit on the plain dark section (like the product cards,
+   which blend seamlessly) so only the feathered bottle + its glow show. */
+.kv-stack-spot::before { display: none; }
 .kv-stack-img-box {
   width: 220px; height: 260px;
   border-radius: 14px;
@@ -914,7 +917,13 @@ body {
   z-index: 1;
   padding: 8px;
   background: transparent !important;
-  mix-blend-mode: multiply;
+  /* New images already have dark studio backdrops — feather their edges so the
+     backdrop blends into the section (no hard rectangular box) while the bottle,
+     colored glow, and label text stay fully opaque and crisp. -webkit- prefix
+     for iOS Safari. (Replaces the old multiply blend, which was for the former
+     white-background images and would darken these dark ones.) */
+  -webkit-mask-image: radial-gradient(ellipse 72% 84% at 50% 50%, #000 56%, rgba(0,0,0,0) 100%);
+          mask-image: radial-gradient(ellipse 72% 84% at 50% 50%, #000 56%, rgba(0,0,0,0) 100%);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1634,12 +1643,18 @@ body {
   .kv-stack-row { gap: 8px !important; justify-content: center !important; width: 100% !important; }
   .kv-stack-col { flex: 1 1 0 !important; max-width: 110px !important; min-width: 0 !important; }
   .kv-stack-col .kv-stack-img-box { width: 100% !important; height: auto !important; min-height: 120px !important; overflow: visible !important; }
-  /* Restore multiply blend on mobile — but give each box a colored bg so white areas
-     of the PNG multiply against the brand color instead of the dark page background */
-  .kv-stack-img-box img { height: auto !important; width: 100% !important; object-fit: contain !important; mix-blend-mode: multiply !important; }
-  .kv-stack-col-left   .kv-stack-img-box { background: rgba(57,255,20,0.28) !important; border-radius: 8px !important; }
-  .kv-stack-col-center .kv-stack-img-box { background: rgba(201,122,138,0.35) !important; border-radius: 8px !important; }
-  .kv-stack-col-right  .kv-stack-img-box { background: rgba(155,89,232,0.35) !important; border-radius: 8px !important; }
+  /* New dark images: no blend, no colored box backgrounds (those created the
+     visible rectangle). Feathered edge mask blends each dark backdrop into the
+     section; bottle + glow + text stay crisp. -webkit- prefix for iOS Safari. */
+  .kv-stack-img-box img {
+    height: auto !important; width: 100% !important; object-fit: contain !important;
+    mix-blend-mode: normal !important;
+    -webkit-mask-image: radial-gradient(ellipse 74% 82% at 50% 50%, #000 54%, rgba(0,0,0,0) 100%) !important;
+            mask-image: radial-gradient(ellipse 74% 82% at 50% 50%, #000 54%, rgba(0,0,0,0) 100%) !important;
+  }
+  .kv-stack-col-left   .kv-stack-img-box,
+  .kv-stack-col-center .kv-stack-img-box,
+  .kv-stack-col-right  .kv-stack-img-box { background: transparent !important; border-radius: 0 !important; }
   /* Glow sized to bottle columns */
   .kv-stack-spot::before { width: 150px !important; height: 150px !important; }
 

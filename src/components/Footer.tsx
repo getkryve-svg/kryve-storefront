@@ -115,7 +115,7 @@ export default function Footer() {
           *These statements have not been evaluated by the Food and Drug Administration. These products are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary. Consult your physician before use if pregnant, nursing, under 18, or have a medical condition.
         </p>
         <p style={{ color: '#444', fontSize: 11, textAlign: 'center', marginTop: 16 }}>
-          © 2025 High Power Society LLC. All rights reserved.
+          © 2025 HPM3 LLC. All rights reserved.
         </p>
       </div>
     </footer>
