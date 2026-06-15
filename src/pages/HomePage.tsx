@@ -297,7 +297,7 @@ function Hero() {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <div className={`kv-hero-mobile-img${current === HERO_SLIDES.length - 1 ? ' kv-hero-mobile-img--stack' : ''}`}>
+        <div className={`kv-hero-mobile-img${current === HERO_SLIDES.length - 1 ? ' kv-hero-mobile-img--stack' : ''}${current === 3 ? ' kv-hero-mobile-img--mag' : ''}`}>
           <img src={slide.bg} alt="" draggable={false} />
           {/* Arrow buttons kept in markup (desktop fallback); hidden on mobile by CSS */}
           <button className="kv-hero-mobile-prev" onClick={() => { go(current - 1); mobileTakeControl() }} aria-label="Previous">←</button>

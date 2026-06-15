@@ -435,6 +435,12 @@ body {
     padding: 0 20px !important;
     box-sizing: border-box !important;
   }
+  /* Slide 4 (Magnesium lifestyle): centered cover slices the model's right arm/
+     elbow off the right edge at narrow mobile widths. Shift the focal point right
+     so his full right side stays in frame. */
+  .kv-hero-mobile-img--mag img {
+    object-position: 72% 0% !important;
+  }
 
   /* ARROWS: hidden on mobile — no styles needed */
 
