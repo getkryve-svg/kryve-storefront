@@ -255,7 +255,8 @@ export default function ProductPage() {
                 {formatPrice(price)}
               </span>
             </label>
-            {/* Subscribe & Save */}
+            {/* Subscribe & Save — hidden until a Shopify subscription app is installed (pricing was display-only) */}
+            {false && (
             <label
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -289,6 +290,7 @@ export default function ProductPage() {
                 </span>
               </div>
             </label>
+            )}
           </div>
 
           <button

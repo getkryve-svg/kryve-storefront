@@ -2,7 +2,8 @@
 // Zero write operations to Shopify Admin API.
 
 const STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || 'kryve-2.myshopify.com'
-const API_TOKEN    = import.meta.env.VITE_SHOPIFY_STOREFRONT_API_TOKEN || ''
+// Public Storefront API token (Headless channel "Kryve Headless") — public by design, safe client-side
+const API_TOKEN    = import.meta.env.VITE_SHOPIFY_STOREFRONT_API_TOKEN || '35967892ecc81f9435316e842465eef8'
 const API_URL      = `https://${STORE_DOMAIN}/api/2024-01/graphql.json`
 
 export const isConfigured =

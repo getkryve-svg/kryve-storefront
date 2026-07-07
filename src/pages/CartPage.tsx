@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext'
 import { PRODUCTS } from '../data/products'
 import { validateCode, applyDiscount, calcShipping } from '../lib/discounts'
 import { trackInitiateCheckout } from '../components/Analytics'
+import { createCheckout } from '../lib/shopify'
 import type { DiscountCode } from '../types'
 
 export default function CartPage() {
@@ -43,27 +44,12 @@ export default function CartPage() {
     trackInitiateCheckout(subtotal, itemCount)
 
     try {
-      const origin = window.location.origin
-      const res = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: state.items.map(item => ({
-            id: item.productId,
-            title: item.title,
-            price: item.price,
-            quantity: item.quantity,
-            size: item.variantTitle,
-            image: item.image || undefined,
-          })),
-          successUrl: `${origin}/order-success?session_id={CHECKOUT_SESSION_ID}`,
-          cancelUrl: `${origin}/cart`,
-        }),
-      })
-
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Checkout failed')
-      window.location.href = data.url
+      // Shopify-hosted checkout: cart lines map to Shopify variant GIDs.
+      // Orders land in Shopify (fulfillment, analytics, Shopify Payments).
+      const url = await createCheckout(
+        state.items.map(item => ({ merchandiseId: item.variantId, quantity: item.quantity }))
+      )
+      window.location.href = url
     } catch (err) {
       console.error(err)
       setCheckoutError('Unable to start checkout. Please try again.')
@@ -238,7 +224,7 @@ export default function CartPage() {
                 disabled={checkoutLoading}
                 className="w-full mt-6 font-display font-bold text-sm tracking-widest uppercase py-4 bg-[#1A1A1A] text-white rounded-sm hover:bg-[#333] active:scale-[0.98] transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {checkoutLoading ? 'Redirecting to Stripe...' : 'Proceed to Checkout →'}
+                {checkoutLoading ? 'Redirecting to Secure Checkout...' : 'Proceed to Checkout →'}
               </button>
               {checkoutError && (
                 <p className="font-body text-xs text-red-500 mt-2 text-center">{checkoutError}</p>
@@ -254,7 +240,7 @@ export default function CartPage() {
               {/* Trust signals */}
               <div className="mt-6 pt-5 border-t border-[#E5E0D8] flex flex-col gap-2">
                 {[
-                  { icon: '🔒', text: 'Secure checkout powered by Stripe' },
+                  { icon: '🔒', text: 'Secure checkout powered by Shopify' },
                   { icon: '↩️', text: '30-day returns, no questions asked' },
                   { icon: '🚚', text: 'Free shipping on orders over $75' },
                 ].map(({ icon, text }) => (
