@@ -9,7 +9,8 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import type { CartItem, Order } from '../types'
 
-const PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID as string | undefined
+// Kryve Meta Pixel — created 2026-07-07 in Events Manager (ad account 1844377862783580)
+const PIXEL_ID = (import.meta.env.VITE_META_PIXEL_ID as string | undefined) || '2633405263720752'
 const GA4_ID   = import.meta.env.VITE_GA4_ID   as string | undefined
 
 // ── Type helpers ──────────────────────────────────────────────────────────────

@@ -47,7 +47,7 @@ export default function CartPage() {
       // Shopify-hosted checkout: cart lines map to Shopify variant GIDs.
       // Orders land in Shopify (fulfillment, analytics, Shopify Payments).
       const url = await createCheckout(
-        state.items.map(item => ({ merchandiseId: item.variantId, quantity: item.quantity }))
+        state.items.map(item => ({ merchandiseId: item.variantId, quantity: item.quantity, ...(item.sellingPlanId ? { sellingPlanId: item.sellingPlanId } : {}) }))
       )
       window.location.href = url
     } catch (err) {

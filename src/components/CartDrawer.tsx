@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { createCheckout } from '../lib/shopify'
 import { STATIC_PRODUCTS } from '../lib/shopify'
 
 /** Single source of truth for free-shipping threshold.
@@ -41,9 +42,18 @@ export default function CartDrawer() {
     return () => window.removeEventListener('keydown', onKey)
   }, [state.isOpen, dispatch])
 
-  function handleCheckout() {
-    dispatch({ type: 'CLOSE_CART' })
-    navigate('/cart')
+  async function handleCheckout() {
+    // Straight to Shopify checkout — fewer steps, higher conversion.
+    try {
+      const url = await createCheckout(
+        state.items.map(item => ({ merchandiseId: item.variantId, quantity: item.quantity, ...(item.sellingPlanId ? { sellingPlanId: item.sellingPlanId } : {}) }))
+      )
+      window.location.href = url
+    } catch {
+      // Fallback: full cart page (also handles discount codes)
+      dispatch({ type: 'CLOSE_CART' })
+      navigate('/cart')
+    }
   }
 
   return (

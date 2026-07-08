@@ -25,6 +25,8 @@ export interface Product {
 }
 
 export interface CartItem {
+  sellingPlanId?: string
+  subscriptionLabel?: string
   variantId: string
   productId: string
   title: string

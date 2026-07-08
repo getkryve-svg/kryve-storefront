@@ -141,7 +141,11 @@ export default function ProductPage() {
   const price = variant?.price.amount || product.priceRange.minVariantPrice.amount
   const compareAt = variant?.compareAtPrice?.amount
   const accent = getProductAccent(product.handle)
-  const discountedPrice = (parseFloat(price) * 0.85).toFixed(2)
+  // Real selling plan from Shopify (The Ritual Membership) — first monthly plan
+  const sellingPlan = product.sellingPlanGroups?.edges?.[0]?.node?.sellingPlans?.edges?.[0]?.node
+  const sellingPlanId = sellingPlan?.id
+  const subPct = sellingPlan?.priceAdjustments?.[0]?.adjustmentValue?.adjustmentPercentage ?? 15
+  const discountedPrice = (parseFloat(price) * (1 - subPct / 100)).toFixed(2)
   const displayPrice = purchaseType === 'subscribe' ? discountedPrice : price
 
   function handleAddToCart() {
@@ -158,6 +162,9 @@ export default function ProductPage() {
       quantity: 1,
       image: images[0]?.url || '',
       handle: product!.handle,
+      ...(purchaseType === 'subscribe' && sellingPlanId
+        ? { sellingPlanId, subscriptionLabel: `Ritual Membership — ${subPct}% off`, price: parseFloat(discountedPrice) }
+        : {}),
     }
     addItem(item)
     setAdded(true)
@@ -255,8 +262,8 @@ export default function ProductPage() {
                 {formatPrice(price)}
               </span>
             </label>
-            {/* Subscribe & Save — hidden until a Shopify subscription app is installed (pricing was display-only) */}
-            {false && (
+            {/* Subscribe & Save — wired to The Ritual Membership selling plan */}
+            {!!sellingPlanId && (
             <label
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -277,7 +284,7 @@ export default function ProductPage() {
                     Subscribe &amp; Save 15%
                   </span>
                   <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.72rem', color: '#22C55E', fontWeight: 600 }}>
-                    Delivered monthly · Cancel anytime
+                    Renews monthly at this price · Skip, pause, or cancel anytime
                   </span>
                 </div>
               </div>

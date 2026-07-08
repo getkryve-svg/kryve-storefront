@@ -6,12 +6,12 @@ const CART_KEY = 'kryve_cart'
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
-      const existing = state.items.find(i => i.variantId === action.payload.variantId)
+      const existing = state.items.find(i => i.variantId === action.payload.variantId && i.sellingPlanId === action.payload.sellingPlanId)
       if (existing) {
         return {
           ...state,
           items: state.items.map(i =>
-            i.variantId === action.payload.variantId
+            i.variantId === action.payload.variantId && i.sellingPlanId === action.payload.sellingPlanId
               ? { ...i, quantity: i.quantity + action.payload.quantity }
               : i
           ),

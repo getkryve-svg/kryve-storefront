@@ -107,6 +107,7 @@ export interface ShopifyProduct {
   compareAtPriceRange?: { maxVariantPrice: { amount: string; currencyCode: string } }
   images: { edges: Array<{ node: { url: string; altText: string | null } }> }
   variants: { edges: Array<{ node: { id: string; title: string; availableForSale: boolean; price: { amount: string; currencyCode: string }; compareAtPrice?: { amount: string; currencyCode: string } | null } }> }
+  sellingPlanGroups?: { edges: Array<{ node: { name: string; sellingPlans: { edges: Array<{ node: { id: string; name: string; priceAdjustments: Array<{ adjustmentValue: { adjustmentPercentage?: number } }> } }> } } }> }
 }
 
 // ── Queries ────────────────────────────────────────────────────────────────
@@ -136,6 +137,12 @@ const PRODUCT_BY_HANDLE_QUERY = `
   query KryveProductByHandle($handle: String!) {
     productByHandle(handle: $handle) {
       id handle title description tags
+      sellingPlanGroups(first: 2) {
+        edges { node { name sellingPlans(first: 5) { edges { node {
+          id name
+          priceAdjustments { adjustmentValue { ... on SellingPlanPercentagePriceAdjustment { adjustmentPercentage } } }
+        }}}}}
+      }
       priceRange { minVariantPrice { amount currencyCode } }
       compareAtPriceRange { maxVariantPrice { amount currencyCode } }
       images(first: 5) { edges { node { url altText } } }
@@ -182,7 +189,7 @@ const CREATE_CART_MUTATION = `
 `
 
 export async function createCheckout(
-  items: { merchandiseId: string; quantity: number }[]
+  items: { merchandiseId: string; quantity: number; sellingPlanId?: string }[]
 ): Promise<string> {
   if (!isConfigured) throw new Error('Configure VITE_SHOPIFY_STOREFRONT_API_TOKEN to enable checkout')
   const data = await shopifyFetch<{ cartCreate: { cart: { checkoutUrl: string }; userErrors: Array<{ message: string }> } }>(
