@@ -20,12 +20,12 @@ export default function ReturnsPage() {
               <h2 className="font-display font-bold text-xl tracking-tight">30-Day Returns</h2>
             </div>
             <p className="font-body text-sm text-[#555] leading-relaxed mb-3">
-              Return any KRYVE product within <strong>30 days of delivery</strong> for a full refund. No questions asked — your satisfaction is 100% guaranteed.
+              Return any KRYVE product within <strong>30 days of delivery</strong> for a full refund — your satisfaction is 100% guaranteed. Ritual Membership subscribers get an extended <strong>60-day</strong> guarantee on their first subscription order. For multi-unit orders we may ask that unused items be returned (we cover the label), and we reserve the right to decline refunds where the guarantee is being abused.
             </p>
             <div className="bg-[#F5F1ED] rounded-md p-4">
               <p className="font-body text-xs font-semibold text-[#888] uppercase tracking-wider mb-2">Eligible returns:</p>
               <ul className="space-y-1">
-                {['Unopened / factory-sealed products', 'Opened products within 30 days', 'Any reason — no questions asked', 'No return shipment required'].map(item => (
+                {['Unopened / factory-sealed products', 'Opened products within 30 days (first purchase of that product)', 'Single-item orders: refunds are typically issued without requiring a return shipment', 'Limit: one opened-product guarantee claim per product, per customer'].map(item => (
                   <li key={item} className="flex items-center gap-2 font-body text-sm text-[#555]">
                     <span className="text-[#10B981] font-bold">✓</span> {item}
                   </li>

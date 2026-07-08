@@ -92,12 +92,13 @@ export default function ShopPage() {
                     <span className="kv-price-compare">{formatPrice(compareAt)}</span>
                   )}
                 </div>
-                <button
+                <Link
+                  to={`/products/${product.handle}`}
                   className={`kv-pcard-cta ${getProductCtaClass(product.handle)}`}
-                  onClick={() => handleAddToCart(product as unknown as typeof STATIC_PRODUCTS[number])}
+                  style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}
                 >
-                  ADD TO CART
-                </button>
+                  SUBSCRIBE &amp; SAVE →
+                </Link>
               </div>
             </div>
           )

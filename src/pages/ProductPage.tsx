@@ -114,7 +114,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<ShopifyProduct | null>(null)
   const [imgIdx, setImgIdx] = useState(0)
   const [added, setAdded] = useState(false)
-  const [purchaseType, setPurchaseType] = useState<'one-time' | 'subscribe'>('one-time')
+  const [purchaseType, setPurchaseType] = useState<'one-time' | 'subscribe'>('subscribe')
 
   useEffect(() => {
     if (!handle) return
@@ -144,6 +144,10 @@ export default function ProductPage() {
   // Real selling plan from Shopify (The Ritual Membership) — first monthly plan
   const sellingPlan = product.sellingPlanGroups?.edges?.[0]?.node?.sellingPlans?.edges?.[0]?.node
   const sellingPlanId = sellingPlan?.id
+  // If this product has no subscription plan, never sit on the 'subscribe' default.
+  useEffect(() => {
+    if (product && !sellingPlanId && purchaseType === 'subscribe') setPurchaseType('one-time')
+  }, [product, sellingPlanId])
   const subPct = sellingPlan?.priceAdjustments?.[0]?.adjustmentValue?.adjustmentPercentage ?? 15
   const discountedPrice = (parseFloat(price) * (1 - subPct / 100)).toFixed(2)
   const displayPrice = purchaseType === 'subscribe' ? discountedPrice : price
@@ -235,16 +239,59 @@ export default function ProductPage() {
             </ul>
           )}
 
-          {/* Subscribe & Save toggle — dark branded; selected state = accent ring + tint */}
+          {/* Purchase options — subscription-first (AG1/IM8 pattern): Subscribe leads with a BEST VALUE badge, one-time below */}
           <div style={{ margin: '18px 0', border: '1px solid #222', borderRadius: 10, overflow: 'hidden', background: '#111' }}>
-            {/* One-time purchase */}
+            {/* Subscribe & Save — DEFAULT hero option */}
+            {!!sellingPlanId && (
+            <label
+              style={{
+                position: 'relative',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '18px 16px 14px', cursor: 'pointer', gap: 12,
+                background: purchaseType === 'subscribe' ? accent + '22' : 'transparent',
+                boxShadow: purchaseType === 'subscribe' ? `inset 0 0 0 2px ${accent}` : 'none',
+                borderBottom: '1px solid #222',
+              }}
+            >
+              <span style={{
+                position: 'absolute', top: 0, right: 14, transform: 'translateY(-50%)',
+                background: accent, color: '#0A0A0A', fontFamily: 'Montserrat,sans-serif',
+                fontWeight: 800, fontSize: '0.58rem', letterSpacing: '0.08em',
+                padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase',
+              }}>Best Value · Most Popular</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input
+                  type="radio" name="purchase-type" value="subscribe"
+                  checked={purchaseType === 'subscribe'}
+                  onChange={() => setPurchaseType('subscribe')}
+                  style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
+                />
+                <div>
+                  <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#fff' }}>
+                    Subscribe &amp; Save 15%
+                  </span>
+                  <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.72rem', color: '#22C55E', fontWeight: 600 }}>
+                    Free shipping · 60-day guarantee · Skip, pause or cancel anytime
+                  </span>
+                </div>
+              </div>
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 800, fontSize: '1rem', color: '#22C55E' }}>
+                  {formatPrice(discountedPrice)}
+                </span>
+                <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.7rem', color: '#777', textDecoration: 'line-through' }}>
+                  {formatPrice(price)}
+                </span>
+              </div>
+            </label>
+            )}
+            {/* One-time purchase — secondary */}
             <label
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '12px 16px', cursor: 'pointer', gap: 12,
                 background: purchaseType === 'one-time' ? accent + '22' : 'transparent',
                 boxShadow: purchaseType === 'one-time' ? `inset 0 0 0 1.5px ${accent}` : 'none',
-                borderBottom: '1px solid #222',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -254,50 +301,14 @@ export default function ProductPage() {
                   onChange={() => setPurchaseType('one-time')}
                   style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
                 />
-                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem', color: '#fff' }}>
+                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem', color: '#bbb' }}>
                   One-time purchase
                 </span>
               </div>
-              <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#fff' }}>
+              <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#bbb' }}>
                 {formatPrice(price)}
               </span>
             </label>
-            {/* Subscribe & Save — wired to The Ritual Membership selling plan */}
-            {!!sellingPlanId && (
-            <label
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '12px 16px', cursor: 'pointer', gap: 12,
-                background: purchaseType === 'subscribe' ? accent + '22' : 'transparent',
-                boxShadow: purchaseType === 'subscribe' ? `inset 0 0 0 1.5px ${accent}` : 'none',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <input
-                  type="radio" name="purchase-type" value="subscribe"
-                  checked={purchaseType === 'subscribe'}
-                  onChange={() => setPurchaseType('subscribe')}
-                  style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
-                />
-                <div>
-                  <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 600, fontSize: '0.85rem', color: '#fff' }}>
-                    Subscribe &amp; Save 15%
-                  </span>
-                  <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.72rem', color: '#22C55E', fontWeight: 600 }}>
-                    Renews monthly at this price · Skip, pause, or cancel anytime
-                  </span>
-                </div>
-              </div>
-              <div style={{ textAlign: 'right' }}>
-                <span style={{ fontFamily: 'Montserrat,sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#22C55E' }}>
-                  {formatPrice(discountedPrice)}
-                </span>
-                <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.7rem', color: '#777', textDecoration: 'line-through' }}>
-                  {formatPrice(price)}
-                </span>
-              </div>
-            </label>
-            )}
           </div>
 
           <button
