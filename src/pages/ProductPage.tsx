@@ -144,13 +144,12 @@ export default function ProductPage() {
   // Real selling plan from Shopify (The Ritual Membership) — first monthly plan
   const sellingPlan = product.sellingPlanGroups?.edges?.[0]?.node?.sellingPlans?.edges?.[0]?.node
   const sellingPlanId = sellingPlan?.id
-  // If this product has no subscription plan, never sit on the 'subscribe' default.
-  useEffect(() => {
-    if (product && !sellingPlanId && purchaseType === 'subscribe') setPurchaseType('one-time')
-  }, [product, sellingPlanId])
+  // Derive the effective option WITHOUT a hook (avoids rules-of-hooks crash after early returns):
+  // if a product has no subscription plan, treat the default 'subscribe' as one-time.
+  const effectiveType: 'one-time' | 'subscribe' = (purchaseType === 'subscribe' && !sellingPlanId) ? 'one-time' : purchaseType
   const subPct = sellingPlan?.priceAdjustments?.[0]?.adjustmentValue?.adjustmentPercentage ?? 15
   const discountedPrice = (parseFloat(price) * (1 - subPct / 100)).toFixed(2)
-  const displayPrice = purchaseType === 'subscribe' ? discountedPrice : price
+  const displayPrice = effectiveType === 'subscribe' ? discountedPrice : price
 
   function handleAddToCart() {
     if (!variant) return
@@ -166,7 +165,7 @@ export default function ProductPage() {
       quantity: 1,
       image: images[0]?.url || '',
       handle: product!.handle,
-      ...(purchaseType === 'subscribe' && sellingPlanId
+      ...(effectiveType === 'subscribe' && sellingPlanId
         ? { sellingPlanId, subscriptionLabel: `Ritual Membership — ${subPct}% off`, price: parseFloat(discountedPrice) }
         : {}),
     }
@@ -224,7 +223,7 @@ export default function ProductPage() {
 
           <div className="kv-pdp-price-row">
             <span className="kv-pdp-price">{formatPrice(displayPrice)}</span>
-            {purchaseType === 'subscribe' ? (
+            {effectiveType === 'subscribe' ? (
               <span className="kv-pdp-compare">{formatPrice(price)}</span>
             ) : compareAt && parseFloat(compareAt) > parseFloat(price) ? (
               <span className="kv-pdp-compare">{formatPrice(compareAt)}</span>
@@ -248,8 +247,8 @@ export default function ProductPage() {
                 position: 'relative',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '18px 16px 14px', cursor: 'pointer', gap: 12,
-                background: purchaseType === 'subscribe' ? accent + '22' : 'transparent',
-                boxShadow: purchaseType === 'subscribe' ? `inset 0 0 0 2px ${accent}` : 'none',
+                background: effectiveType === 'subscribe' ? accent + '22' : 'transparent',
+                boxShadow: effectiveType === 'subscribe' ? `inset 0 0 0 2px ${accent}` : 'none',
                 borderBottom: '1px solid #222',
               }}
             >
@@ -262,7 +261,7 @@ export default function ProductPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <input
                   type="radio" name="purchase-type" value="subscribe"
-                  checked={purchaseType === 'subscribe'}
+                  checked={effectiveType === 'subscribe'}
                   onChange={() => setPurchaseType('subscribe')}
                   style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
                 />
@@ -293,14 +292,14 @@ export default function ProductPage() {
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '12px 16px', cursor: 'pointer', gap: 12,
-                background: purchaseType === 'one-time' ? accent + '22' : 'transparent',
-                boxShadow: purchaseType === 'one-time' ? `inset 0 0 0 1.5px ${accent}` : 'none',
+                background: effectiveType === 'one-time' ? accent + '22' : 'transparent',
+                boxShadow: effectiveType === 'one-time' ? `inset 0 0 0 1.5px ${accent}` : 'none',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <input
                   type="radio" name="purchase-type" value="one-time"
-                  checked={purchaseType === 'one-time'}
+                  checked={effectiveType === 'one-time'}
                   onChange={() => setPurchaseType('one-time')}
                   style={{ accentColor: accent, width: 16, height: 16, flexShrink: 0 }}
                 />
@@ -319,7 +318,7 @@ export default function ProductPage() {
             style={added ? { backgroundColor: accent, color: '#000' } : {}}
             onClick={handleAddToCart}
           >
-            {added ? '✓ ADDED TO CART' : purchaseType === 'subscribe' ? 'SUBSCRIBE & SAVE 15%' : 'ADD TO CART'}
+            {added ? '✓ ADDED TO CART' : effectiveType === 'subscribe' ? 'SUBSCRIBE & SAVE 15%' : 'ADD TO CART'}
           </button>
 
           <p className="kv-pdp-guarantee">🔒 30-Day Money-Back Guarantee · Free shipping $75+</p>
