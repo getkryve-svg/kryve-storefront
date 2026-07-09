@@ -308,13 +308,9 @@ body {
   border: none;
 }
 .kv-hbtn:hover { transform: translateY(-2px); }
-.kv-hbtn-g  { background: #39FF14; color: #000; box-shadow: 0 4px 20px rgba(57,255,20,0.3); }
-.kv-hbtn-g:hover  { box-shadow: 0 8px 32px rgba(57,255,20,0.5); }
-.kv-hbtn-r  { background: #B76E79; color: #fff; box-shadow: 0 4px 20px rgba(183,110,121,0.3); }
-.kv-hbtn-r:hover  { box-shadow: 0 8px 32px rgba(183,110,121,0.5); }
-.kv-hbtn-v  { background: #7C3AED; color: #fff; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
-.kv-hbtn-v:hover  { box-shadow: 0 8px 32px rgba(124,58,237,0.5); }
-.kv-hbtn-gd { background: #D4AF37; color: #000; box-shadow: 0 4px 20px rgba(212,175,55,0.3); }
+/* Unified brand CTA — hero slide buttons all use one consistent neon-green button */
+.kv-hbtn-g, .kv-hbtn-r, .kv-hbtn-v, .kv-hbtn-gd  { background: #39FF14; color: #000; box-shadow: 0 4px 20px rgba(57,255,20,0.3); }
+.kv-hbtn-g:hover, .kv-hbtn-r:hover, .kv-hbtn-v:hover, .kv-hbtn-gd:hover  { box-shadow: 0 8px 32px rgba(57,255,20,0.5); }
 .kv-hbtn-gd:hover { box-shadow: 0 8px 32px rgba(212,175,55,0.5); }
 
 /* Arrows */
@@ -683,10 +679,11 @@ body {
   transition: opacity 0.2s, transform 0.2s;
   font-family: 'Montserrat', sans-serif;
 }
-.cta-greens   { background: #39FF14; color: #0a0a0a; }
-.cta-collagen { background: #B76E79; color: #fff; }
-.cta-magnesium { background: #7C3AED; color: #fff; }
-.cta-stack    { background: #D4AF37; color: #0a0a0a; }
+/* Unified brand CTA — one consistent button everywhere (AG1/IM8 pattern) */
+.cta-greens,
+.cta-collagen,
+.cta-magnesium,
+.cta-stack    { background: #39FF14; color: #0a0a0a; text-transform: uppercase; letter-spacing: 0.08em; }
 .kv-pcard-cta:hover { opacity: 0.85; transform: scale(1.02); }
 
 /* ══════════════════════════════════════════════════════════════
