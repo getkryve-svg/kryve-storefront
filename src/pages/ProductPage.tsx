@@ -271,7 +271,10 @@ export default function ProductPage() {
                     Subscribe &amp; Save 15%
                   </span>
                   <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.72rem', color: '#22C55E', fontWeight: 600 }}>
-                    Free shipping · 60-day guarantee · Skip, pause or cancel anytime
+                    Free shipping · 60-day guarantee
+                  </span>
+                  <span style={{ display: 'block', fontFamily: 'Montserrat,sans-serif', fontSize: '0.68rem', color: '#999', marginTop: 2 }}>
+                    Auto-renews every month at {formatPrice(discountedPrice)}. Skip, pause, or cancel anytime — no fees.
                   </span>
                 </div>
               </div>

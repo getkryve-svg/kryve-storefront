@@ -49,7 +49,19 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">5. Returns and Refunds</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">5. Subscriptions &amp; Auto-Renewal (The Ritual Membership)</h2>
+            <p>When you choose a subscription ("Ritual Membership") option at checkout, you authorize KRYVE to automatically charge your payment method on a recurring basis until you cancel. By subscribing, you acknowledge and agree to the following:</p>
+            <ul className="mt-2 space-y-1">
+              <li>• <strong>Recurring billing:</strong> Your subscription automatically renews at the interval you select (monthly, or every 3 months for the quarterly plan) at the discounted subscription price shown at the time of purchase.</li>
+              <li>• <strong>Billing continues until cancelled:</strong> Charges recur automatically until you cancel, skip, or pause your subscription.</li>
+              <li>• <strong>Cancel anytime, no fees:</strong> You may skip, pause, or cancel at any time before your next billing date from your account or by contacting us — there are no cancellation fees or long-term commitments.</li>
+              <li>• <strong>Price changes:</strong> We will notify you by email before any change to your subscription price takes effect.</li>
+              <li>• <strong>Shipping:</strong> Every subscription order ships free.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">6. Returns and Refunds</h2>
             <p className="mb-3">Please see our <Link to="/returns" className="text-[#8B6F47] underline">Returns Policy</Link> for full details. In summary:</p>
             <ul className="space-y-2 ml-4">
               <li>• We accept returns within 30 days of delivery.</li>
@@ -59,12 +71,12 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">6. Intellectual Property</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">7. Intellectual Property</h2>
             <p>All content on KRYVE, including but not limited to text, graphics, logos, images, product designs, and software, is the property of KRYVE and protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.</p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">7. Discount Codes and Promotions</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">8. Discount Codes and Promotions</h2>
             <ul className="space-y-2 ml-4">
               <li>• Discount codes are single-use unless otherwise stated and cannot be combined with other offers.</li>
               <li>• We reserve the right to cancel or modify promotions at any time.</li>
@@ -73,7 +85,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">8. User Accounts</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">9. User Accounts</h2>
             <ul className="space-y-2 ml-4">
               <li>• You are responsible for maintaining the confidentiality of your account credentials.</li>
               <li>• You agree to notify us immediately of any unauthorized use of your account.</li>
@@ -82,22 +94,22 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">9. Limitation of Liability</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">10. Limitation of Liability</h2>
             <p>To the maximum extent permitted by law, KRYVE shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Store or products purchased through the Store. Our liability is limited to the amount you paid for the specific product in question.</p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">10. Governing Law</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">11. Governing Law</h2>
             <p>These Terms of Service are governed by the laws of the United States. Any disputes shall be resolved in courts of competent jurisdiction.</p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">11. Changes to Terms</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">12. Changes to Terms</h2>
             <p>We reserve the right to update these terms at any time. Continued use of the Store after changes constitutes acceptance of the new terms.</p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">12. Contact</h2>
+            <h2 className="font-display font-bold text-lg text-[#1A1A1A] mb-3">13. Contact</h2>
             <div className="p-4 bg-white border border-[#E5E0D8] rounded-sm">
               <p>Questions? Contact us at <a href="mailto:getkryve@gmail.com" className="text-[#8B6F47] underline">getkryve@gmail.com</a></p>
               <p className="mt-2"><Link to="/contact" className="font-display font-bold text-sm text-[#1A1A1A] underline">Contact Form →</Link></p>
