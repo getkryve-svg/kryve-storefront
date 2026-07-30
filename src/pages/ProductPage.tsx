@@ -264,14 +264,17 @@ export default function ProductPage() {
               style={{
                 position: 'relative',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '18px 16px 14px', cursor: 'pointer', gap: 12,
+                // top padding leaves headroom for the "Best Value" badge, which sits
+                // INSIDE the card — the wrapper has overflow:hidden for its rounded
+                // corners, so anything overhanging the top edge gets clipped off.
+                padding: '30px 16px 14px', cursor: 'pointer', gap: 12,
                 background: effectiveType === 'subscribe' ? accent + '22' : 'transparent',
                 boxShadow: effectiveType === 'subscribe' ? `inset 0 0 0 2px ${accent}` : 'none',
                 borderBottom: '1px solid #222',
               }}
             >
               <span style={{
-                position: 'absolute', top: 0, right: 14, transform: 'translateY(-50%)',
+                position: 'absolute', top: 8, right: 14,
                 background: accent, color: '#0A0A0A', fontFamily: 'Montserrat,sans-serif',
                 fontWeight: 800, fontSize: '0.58rem', letterSpacing: '0.08em',
                 padding: '3px 8px', borderRadius: 4, textTransform: 'uppercase',
