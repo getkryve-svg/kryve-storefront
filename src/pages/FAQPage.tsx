@@ -48,12 +48,12 @@ const FAQS = [
     category: 'Products & Supplements',
     items: [
       {
-        q: 'Are KRYVE supplements third-party tested?',
-        a: 'Yes. Every batch of KRYVE Greens, Collagen, and Magnesium is third-party tested for purity and potency. Certificates of analysis are available on request.',
+        q: 'What is actually in KRYVE supplements?',
+        a: 'The complete ingredient list for every formula is published on its product page — no proprietary blends, no hidden ingredients. All three formulas are non-GMO and free from artificial additives.',
       },
       {
         q: 'Where are KRYVE supplements manufactured?',
-        a: 'All KRYVE formulas are manufactured in the USA in a GMP-certified (Good Manufacturing Practice) facility, meeting the highest standards for quality and safety.',
+        a: 'All KRYVE formulas are manufactured in the United States.',
       },
       {
         q: 'Are KRYVE products safe to take together?',

@@ -53,48 +53,52 @@ const PRODUCT_DETAIL: Record<string, {
     ],
   },
   'kryve-hydrolyzed-collagen-peptides': {
-    tagline: 'Grass-fed hydrolyzed collagen peptides for skin elasticity, joint comfort, and connective tissue support.',
+    // Verified against the supplier spec (Supliful RLC8COLL). Single-ingredient
+    // formula: bovine hide collagen peptides. No vitamin C, no disclosed gram
+    // dose, no third-party testing claim. Do not reintroduce any of those.
+    tagline: 'Grass-fed hydrolyzed collagen peptides — a single clean ingredient for skin, hair, nails, and joints.',
     bullets: [
-      '20g grass-fed, pasture-raised collagen peptides per serving',
-      'Types I and III collagen for skin, hair, and nails',
-      'Unflavored — mixes into any liquid or food',
-      'Sourced from certified grass-fed bovine hide',
-      'Third-party tested for heavy metals and purity',
+      'Hydrolyzed collagen peptides from grass-fed bovine hide',
+      'Types I and III collagen — the types in skin, hair, and connective tissue*',
+      'One ingredient only — no additives, no flavoring',
+      'Unflavored — mixes into any chilled beverage',
+      'Gluten-free, lactose-free, corn-free · Made in the USA',
     ],
     supplement: {
-      servings: '30 servings per container',
-      serving: '1 scoop (22g) · Unflavored — mix into any hot or cold liquid, smoothie, or food',
+      servings: '28 servings per container · 9.88oz (280g)',
+      serving: '1 level scoop · Mix into 8–10 oz of chilled water or your preferred beverage',
       keyIngredients: [
-        { name: 'Hydrolyzed Collagen Peptides', dose: '20g',      purpose: 'Bioavailable collagen to support skin elasticity, hair, and nails*' },
-        { name: 'Type I Collagen',              dose: 'Included', purpose: 'Most abundant collagen in skin and connective tissue*' },
-        { name: 'Type III Collagen',            dose: 'Included', purpose: 'Supports skin firmness and vascular structure*' },
-        { name: 'Vitamin C',                    dose: 'Included', purpose: 'Supports natural collagen synthesis*' },
+        { name: 'Bovine Hide Collagen Peptides', dose: 'Single ingredient', purpose: 'Hydrolyzed for easier absorption; rich in glycine, proline, hydroxyproline and alanine*' },
+        { name: 'Type I & III Collagen',         dose: 'Included',          purpose: 'The collagen types found in skin, hair, nails, muscles and bones*' },
       ],
     },
     faqItems: [
-      { q: 'What\'s the best way to take it?', a: 'Mix one scoop into coffee, tea, smoothies, soups, or baked goods. It dissolves completely and is tasteless.' },
-      { q: 'How long until I see results?', a: 'Most users notice improvements in skin hydration within 4–6 weeks, joint comfort within 8–12 weeks.' },
+      { q: 'What\'s the best way to take it?', a: 'Add one level scoop to 8–10 oz of chilled water or your preferred beverage in a shaker cup and mix for about five seconds. It is unflavored, so it also stirs into coffee, smoothies or food.' },
+      { q: 'What is actually in it?', a: 'One ingredient: grass-fed bovine hide collagen peptides. No sweeteners, no flavoring, no fillers.' },
     ],
   },
   'kryve-magnesium-glycinate': {
-    tagline: 'Highly bioavailable magnesium glycinate for deep sleep, muscle recovery, and stress management.',
+    // Verified against the supplier spec (Supliful VOX4MGNE): 275mg elemental
+    // magnesium from 2,500mg magnesium glycinate, 3 capsules per serving,
+    // 90 capsules per bottle = 30 servings. Do not restore 400mg / 2 caps / 120.
+    tagline: 'One of the most bioavailable forms of magnesium — for relaxation, muscle support, and healthy sleep.*',
     bullets: [
-      '400mg elemental magnesium glycinate per serving',
-      'Glycinate form for maximum absorption and gentleness',
-      'Supports deep, restful sleep and relaxation',
-      'Reduces muscle cramps and exercise recovery time',
-      'Formulated for long-term daily use — no laxative effect',
+      '275mg elemental magnesium from 2,500mg magnesium glycinate',
+      'Glycinate — a gentle, well-tolerated form',
+      'Supports muscle relaxation and the nervous system*',
+      'Supports healthy sleep patterns*',
+      'Gluten-free, non-GMO, vegan-friendly · Made in the USA',
     ],
     supplement: {
-      servings: '60 servings per container',
-      serving: '2 capsules per serving · 120 capsules total — a full 2-month supply',
+      servings: '30 servings per container · 90 capsules',
+      serving: '3 capsules once daily, or as directed by your healthcare professional',
       keyIngredients: [
-        { name: 'Magnesium Glycinate (as Bisglycinate Chelate)', dose: '400mg elemental', purpose: 'Highly bioavailable form for sleep, muscle recovery, and stress support*' },
+        { name: 'Magnesium (from 2,500mg Magnesium Glycinate)', dose: '275mg elemental', purpose: 'A highly bioavailable form supporting nerve function, muscle health and energy production*' },
       ],
     },
     faqItems: [
-      { q: 'When should I take KRYVE Magnesium?', a: 'Take 2 capsules 30–60 minutes before bed for optimal sleep support and overnight muscle recovery.' },
-      { q: 'Is magnesium glycinate safe for daily use?', a: 'Yes. Glycinate is one of the most well-tolerated forms of magnesium and is safe for long-term daily supplementation.' },
+      { q: 'When should I take KRYVE Magnesium?', a: 'Take 3 capsules once daily. Many people prefer the evening, since magnesium supports muscle relaxation and healthy sleep patterns.*' },
+      { q: 'Why glycinate?', a: 'Glycinate is one of the most bioavailable and well-tolerated forms of magnesium, which is why we chose it for daily use.' },
     ],
   },
   'the-kryve-stack': {
@@ -104,7 +108,7 @@ const PRODUCT_DETAIL: Record<string, {
       'Save $19.98 vs buying individually',
       'Free shipping included — always',
       'Complete morning-to-evening wellness protocol',
-      '90-day supply when used as directed',
+      'About a 30-day supply of each formula',
     ],
     faqItems: [
       { q: 'Is the Stack a subscription?', a: 'No — the KRYVE Stack is a one-time purchase. Subscribe & Save is optional for 15% off recurring orders.' },

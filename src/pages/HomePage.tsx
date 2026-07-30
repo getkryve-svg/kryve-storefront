@@ -88,7 +88,7 @@ const COMPARE_ROWS = [
     womens: { text: '✗', label: 'Not available', yes: false },
   },
   {
-    feature: 'GMP-Certified Facility',
+    feature: 'Made in the USA',
     kryve: { text: '✓ Yes', yes: true },
     leading: { text: '✓', label: 'Yes', yes: true },
     womens: { text: '✓', label: 'Yes', yes: true },
@@ -99,7 +99,7 @@ const COMPARE_ROWS = [
 // ── Why KRYVE stats ───────────────────────────────────────────────────────────
 const WHY_STATS = [
   { target: 21, suffix: '+', label: 'Whole-Food Ingredients', custom: null },
-  { target: 0, suffix: '', label: 'Artificial Fillers', custom: 'Zero' },
+  { target: 0, suffix: '', label: 'Artificial Additives', custom: 'Zero' },
   { target: 3, suffix: '', label: 'Targeted Formulas', custom: null },
   { target: 1, suffix: '', label: 'Daily Ritual', custom: null },
 ]
@@ -111,12 +111,12 @@ const WHY_BENEFITS = [
     body: 'Every ingredient chosen for efficacy, not filler. Backed by research, built for results.',
   },
   {
-    title: 'Third-Party Tested',
-    body: 'Every batch tested for purity and potency. What is on the label is in the bottle.',
+    title: 'No Artificial Additives',
+    body: 'Clean, simple formulas. What is on the label is what is in the tub.',
   },
   {
-    title: 'Manufactured in a GMP-Certified Facility',
-    body: 'Made in USA-based facilities meeting strict GMP quality standards.',
+    title: 'Made in the USA',
+    body: 'Every KRYVE formula is manufactured in the United States.',
   },
 ]
 
@@ -508,8 +508,8 @@ export default function HomePage() {
             },
             {
               svg: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>,
-              title: 'GMP-Certified Facility',
-              sub: 'Manufactured to GMP Standards',
+              title: 'No Artificial Additives',
+              sub: 'Clean, Simple Formulas',
             },
             {
               svg: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#39FF14" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,

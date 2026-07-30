@@ -22,8 +22,8 @@ export default function AboutPage() {
         <div className="kv-about-text">
           <p className="kv-eyebrow">THE MISSION</p>
           <h2>No Fillers. No Shortcuts. No Compromise.</h2>
-          <p>Most supplement brands fill their formulas with cheap binders, artificial flavors, and underdosed ingredients. We don't. Every KRYVE formula is crafted with therapeutic-grade doses of clinically studied ingredients — nothing less.</p>
-          <p>We partner only with FDA-registered facilities, source certified grass-fed and organic raw materials, and third-party test every single batch before it ships.</p>
+          <p>Most supplement brands bulk their formulas out with cheap binders and artificial flavors. We don't. Every KRYVE formula is built from ingredients you can actually read on the label — and we tell you exactly what is in each one.</p>
+          <p>Every KRYVE formula is manufactured in the United States, is non-GMO, and contains no artificial additives. Our full ingredient lists are published on each product page — nothing hidden behind a proprietary blend.</p>
         </div>
       </div>
 

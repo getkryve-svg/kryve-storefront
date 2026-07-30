@@ -17,8 +17,8 @@ const STANDARDS = [
         <path d="M9 9h6M9 12h6M9 15h4" />
       </svg>
     ),
-    title: 'GMP-Certified Manufacturing',
-    body: 'Manufactured in FDA-registered, GMP-certified facilities right here in the USA. Every batch meets strict quality standards.',
+    title: 'Made in the USA',
+    body: 'Every KRYVE formula is manufactured in the United States.',
   },
   {
     icon: (
@@ -27,8 +27,8 @@ const STANDARDS = [
         <polyline points="22 4 12 14.01 9 11.01" />
       </svg>
     ),
-    title: 'Third-Party Tested',
-    body: 'Independent labs verify purity and potency. What is on the label is in the bottle — nothing more, nothing less.',
+    title: 'Full Ingredient Transparency',
+    body: 'Every ingredient is listed on the product page. No proprietary blends, no artificial additives, nothing hidden.'
   },
 ]
 
@@ -80,7 +80,7 @@ export default function SciencePage() {
             lineHeight: 1.0, marginBottom: 20, letterSpacing: '-0.02em', maxWidth: 700,
           }}>Science-Backed.<br />Never Guesswork.</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1.1rem', maxWidth: 560, lineHeight: 1.7 }}>
-            Every KRYVE formula is built on peer-reviewed research and manufactured in GMP-certified facilities in the USA.
+            Every KRYVE formula is manufactured in the USA, with the full ingredient list published on every product page.
           </p>
         </div>
       </section>

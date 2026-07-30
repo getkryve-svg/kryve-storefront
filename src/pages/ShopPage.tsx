@@ -48,7 +48,7 @@ export default function ShopPage() {
       <div className="kv-shop-header">
         <p className="kv-eyebrow">THE LINE</p>
         <h1 className="kv-shop-title">SHOP ALL KRYVE</h1>
-        <p className="kv-shop-sub">Science-backed formulas engineered for performance. Every batch third-party tested.</p>
+        <p className="kv-shop-sub">Science-backed formulas engineered for performance. Full ingredient lists, always published.</p>
       </div>
 
       {/* Filters */}
@@ -115,7 +115,7 @@ export default function ShopPage() {
       <div className="kv-shop-guarantee">
         <span>🔒 30-Day Money-Back Guarantee</span>
         <span>🚚 Free Shipping $75+</span>
-        <span>🔬 Third-Party Tested</span>
+        <span>🔬 Full Ingredient Transparency</span>
         <span>🇺🇸 Made in USA</span>
       </div>
     </div>

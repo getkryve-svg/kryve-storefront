@@ -383,7 +383,7 @@ export default function CartDrawer() {
             >
               {[
                 { icon: '🔒', label: 'Secure Checkout' },
-                { icon: '✓',  label: 'GMP Certified' },
+                { icon: '✓',  label: 'Non-GMO' },
                 { icon: '🇺🇸', label: 'Made in USA' },
               ].map(({ icon, label }) => (
                 <div key={label} className="flex flex-col items-center gap-1">
