@@ -23,7 +23,7 @@ const HERO_SLIDES = [
     badge: { bg: '#064E3B', color: '#39FF14', text: 'BEST SELLER' },
     eyebrow: { color: '#39FF14', text: 'Greens Superfood Powder' },
     h1: ['Fuel Your', 'Foundation.'],
-    sub: '21 plant-based superfoods. Clean energy, antioxidant support, and gut health in every scoop.*',
+    sub: '21+ whole-food ingredients in one scoop. Clean energy, antioxidant support, and gut health.*',
     btn: { text: 'SHOP GREENS $49.99', to: '/products/kryve-greens-superfood-powder', cls: 'kv-hbtn-g' },
   },
   {
@@ -98,7 +98,7 @@ const COMPARE_ROWS = [
 
 // ── Why KRYVE stats ───────────────────────────────────────────────────────────
 const WHY_STATS = [
-  { target: 75, suffix: '+', label: 'Superfoods & Nutrients', custom: null },
+  { target: 21, suffix: '+', label: 'Whole-Food Ingredients', custom: null },
   { target: 0, suffix: '', label: 'Artificial Fillers', custom: 'Zero' },
   { target: 3, suffix: '', label: 'Targeted Formulas', custom: null },
   { target: 1, suffix: '', label: 'Daily Ritual', custom: null },

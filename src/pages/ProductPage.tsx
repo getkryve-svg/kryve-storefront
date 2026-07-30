@@ -28,9 +28,9 @@ const PRODUCT_DETAIL: Record<string, {
     // Copy verified line-by-line against the supplier spec (Supliful JTP0GREE).
     // Every ingredient and claim below appears on the actual label. Do not add
     // ingredient counts, doses, or certifications that the supplier does not state.
-    tagline: 'Your daily foundation. 21 plant-based superfoods, adaptogens, and prebiotic fiber in a single scoop.',
+    tagline: 'Your daily foundation. 21+ whole-food ingredients in one scoop, with adaptogens and prebiotic fiber.',
     bullets: [
-      '21 plant-based superfoods per serving',
+      '21+ whole-food ingredients in one scoop',
       'Prebiotic inulin to support healthy gut flora',
       'Ashwagandha + Panax ginseng for stress resilience',
       'Antioxidant fruits — acai, blueberry, pomegranate, cranberry',
