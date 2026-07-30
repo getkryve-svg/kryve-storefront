@@ -92,23 +92,20 @@ export function trackPageView(path: string) {
  * The Meta catalog feed NEVER contains that string, so sending it produces a 0%
  * catalog match rate and "Product views: Missing" in Commerce Manager.
  *
- * The Shopify → Meta feed uses one of two retailer_id formats depending on how
- * the catalog was created:
- *   a) the bare numeric variant id            → "44123456789"
- *   b) the sales-channel format               → "shopify_US_<productId>_<variantId>"
- * We send both. Meta matches on whichever exists in the catalog and ignores the
- * other, so this works without knowing which format the catalog used.
- * Once confirmed in Commerce Manager → Catalog → Items, drop the unused one.
+ * Verified against catalog 1435348055035560 in Commerce Manager: every Content ID
+ * there is the bare numeric Shopify ProductVariant id. So we strip the GID down
+ * to that number and send it alone.
  */
 function numericId(gid: string): string {
   return gid?.includes('/') ? gid.split('/').pop()! : gid
 }
 
 export function catalogIds(productGid: string, variantGid?: string): string[] {
-  const p = numericId(productGid)
-  const v = variantGid ? numericId(variantGid) : ''
-  const ids = v ? [v, `shopify_US_${p}_${v}`] : [p]
-  return ids.filter(Boolean)
+  // VERIFIED 2026-07-29 against catalog 1435348055035560: Meta's Content IDs are
+  // the bare numeric Shopify ProductVariant id, e.g. Magnesium = 48355258401027
+  // (= gid://shopify/ProductVariant/48355258401027). Send exactly that, nothing else.
+  const id = variantGid ? numericId(variantGid) : numericId(productGid)
+  return id ? [id] : []
 }
 
 export function trackViewContent(product: { id: string; title: string; price: number; drop: string; variantId?: string }) {
