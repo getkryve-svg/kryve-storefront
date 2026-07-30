@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
+import { trackViewContent } from '../components/Analytics'
 import { useCart } from '../context/CartContext'
 import {
   STATIC_PRODUCTS, fetchProductByHandle, formatPrice,
@@ -126,6 +127,23 @@ export default function ProductPage() {
     // Also try live API — will replace static if available
     fetchProductByHandle(handle).then(p => { if (p) setProduct(p) }).catch(() => {})
   }, [handle])
+
+  // Meta ViewContent / GA4 view_item — fires once per product, after the live
+  // product resolves so the variant id (what the Meta catalog matches on) is real.
+  const viewedRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!product) return
+    if (viewedRef.current === product.id) return
+    viewedRef.current = product.id
+    const v = product.variants?.edges?.[0]?.node
+    trackViewContent({
+      id: product.id,
+      variantId: v?.id,
+      title: product.title,
+      price: parseFloat(v?.price?.amount || product.priceRange.minVariantPrice.amount || '0'),
+      drop: product.handle,
+    })
+  }, [product])
 
   if (!handle) return <Navigate to="/shop" replace />
   if (!product) return (

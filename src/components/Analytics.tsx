@@ -26,21 +26,43 @@ declare global {
 
 // ── Pixel loader ─────────────────────────────────────────────────────────────
 
+/**
+ * Meta Pixel base code — this MUST stay byte-faithful to Meta's official snippet.
+ *
+ * History: a hand-rolled version of this stub queued calls onto `fbq.q`, but
+ * fbevents.js drains `fbq.queue`, and the stub never wired up `callMethod`.
+ * Result: fbevents.js loaded successfully, every init/track call went into an
+ * array nothing ever read, and not one request to facebook.com/tr was ever
+ * sent. The pixel read "Not active" in Events Manager because it had genuinely
+ * never received an event. Do not "simplify" this function.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function loadPixel(id: string) {
-  if (window.fbq) return
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const n = function (...args: unknown[]) { ((n as any).q = (n as any).q || []).push(args) } as any
+  const f = window as any
+  if (f.fbq) { f.fbq('init', id); return }
+
+  const n: any = function (...args: unknown[]) {
+    n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args)
+  }
+  f.fbq = n
+  if (!f._fbq) f._fbq = n
+  n.push = n
   n.loaded = true
   n.version = '2.0'
-  n.q = []
-  window.fbq = n
-  window._fbq = n
-  const s = document.createElement('script')
-  s.async = true
-  s.src = 'https://connect.facebook.net/en_US/fbevents.js'
-  document.head.appendChild(s)
-  window.fbq?.('init', id)
+  n.queue = []          // ← fbevents.js drains THIS. Not `.q`.
+
+  const t = document.createElement('script')
+  t.async = true
+  t.src = 'https://connect.facebook.net/en_US/fbevents.js'
+  const s = document.getElementsByTagName('script')[0]
+  s?.parentNode?.insertBefore(t, s) ?? document.head.appendChild(t)
+
+  f.fbq('init', id)
+  // NOTE: no 'track PageView' here on purpose. The route effect below fires
+  // PageView on mount and on every SPA navigation; firing it here too would
+  // double-count the landing page.
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // ── GA4 loader ────────────────────────────────────────────────────────────────
 
@@ -63,9 +85,35 @@ export function trackPageView(path: string) {
   window.gtag?.('event', 'page_view', { page_path: path })
 }
 
-export function trackViewContent(product: { id: string; title: string; price: number; drop: string }) {
+/**
+ * Meta catalog matching.
+ *
+ * Shopify IDs arrive as GIDs — "gid://shopify/ProductVariant/44123456789".
+ * The Meta catalog feed NEVER contains that string, so sending it produces a 0%
+ * catalog match rate and "Product views: Missing" in Commerce Manager.
+ *
+ * The Shopify → Meta feed uses one of two retailer_id formats depending on how
+ * the catalog was created:
+ *   a) the bare numeric variant id            → "44123456789"
+ *   b) the sales-channel format               → "shopify_US_<productId>_<variantId>"
+ * We send both. Meta matches on whichever exists in the catalog and ignores the
+ * other, so this works without knowing which format the catalog used.
+ * Once confirmed in Commerce Manager → Catalog → Items, drop the unused one.
+ */
+function numericId(gid: string): string {
+  return gid?.includes('/') ? gid.split('/').pop()! : gid
+}
+
+export function catalogIds(productGid: string, variantGid?: string): string[] {
+  const p = numericId(productGid)
+  const v = variantGid ? numericId(variantGid) : ''
+  const ids = v ? [v, `shopify_US_${p}_${v}`] : [p]
+  return ids.filter(Boolean)
+}
+
+export function trackViewContent(product: { id: string; title: string; price: number; drop: string; variantId?: string }) {
   window.fbq?.('track', 'ViewContent', {
-    content_ids: [product.id],
+    content_ids: catalogIds(product.id, product.variantId),
     content_name: product.title,
     content_type: 'product',
     value: product.price,
@@ -80,10 +128,11 @@ export function trackViewContent(product: { id: string; title: string; price: nu
 
 export function trackAddToCart(item: CartItem) {
   window.fbq?.('track', 'AddToCart', {
-    content_ids: [item.productId],
+    content_ids: catalogIds(item.productId, item.variantId),
+    contents: [{ id: catalogIds(item.productId, item.variantId)[0], quantity: item.quantity }],
     content_name: item.title,
     content_type: 'product',
-    value: item.price,
+    value: item.price * item.quantity,
     currency: 'USD',
   })
   window.gtag?.('event', 'add_to_cart', {
@@ -93,8 +142,15 @@ export function trackAddToCart(item: CartItem) {
   })
 }
 
-export function trackInitiateCheckout(subtotal: number, itemCount: number) {
-  window.fbq?.('track', 'InitiateCheckout', { value: subtotal, currency: 'USD', num_items: itemCount })
+export function trackInitiateCheckout(subtotal: number, itemCount: number, items: CartItem[] = []) {
+  window.fbq?.('track', 'InitiateCheckout', {
+    value: subtotal,
+    currency: 'USD',
+    num_items: itemCount,
+    content_type: 'product',
+    content_ids: items.flatMap(i => catalogIds(i.productId, i.variantId)),
+    contents: items.map(i => ({ id: catalogIds(i.productId, i.variantId)[0], quantity: i.quantity })),
+  })
   window.gtag?.('event', 'begin_checkout', { currency: 'USD', value: subtotal })
 }
 

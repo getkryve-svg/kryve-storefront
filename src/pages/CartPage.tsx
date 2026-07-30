@@ -41,7 +41,7 @@ export default function CartPage() {
   async function handleCheckout() {
     setCheckoutLoading(true)
     setCheckoutError('')
-    trackInitiateCheckout(subtotal, itemCount)
+    trackInitiateCheckout(subtotal, itemCount, state.items)
 
     try {
       // Shopify-hosted checkout: cart lines map to Shopify variant GIDs.
