@@ -23,7 +23,7 @@ const HERO_SLIDES = [
     badge: { bg: '#064E3B', color: '#39FF14', text: 'BEST SELLER' },
     eyebrow: { color: '#39FF14', text: 'Greens Superfood Powder' },
     h1: ['Fuel Your', 'Foundation.'],
-    sub: '75+ superfoods. Clean energy, immune support, and gut health in every scoop.*',
+    sub: '21 plant-based superfoods. Clean energy, antioxidant support, and gut health in every scoop.*',
     btn: { text: 'SHOP GREENS $49.99', to: '/products/kryve-greens-superfood-powder', cls: 'kv-hbtn-g' },
   },
   {

@@ -25,27 +25,31 @@ const PRODUCT_DETAIL: Record<string, {
   faqItems?: { q: string; a: string }[]
 }> = {
   'kryve-greens-superfood-powder': {
-    tagline: 'Your daily foundation. 75+ organic superfoods, adaptogens, and probiotics in a single scoop.',
+    // Copy verified line-by-line against the supplier spec (Supliful JTP0GREE).
+    // Every ingredient and claim below appears on the actual label. Do not add
+    // ingredient counts, doses, or certifications that the supplier does not state.
+    tagline: 'Your daily foundation. 21 plant-based superfoods, adaptogens, and prebiotic fiber in a single scoop.',
     bullets: [
-      '75+ organic superfoods per serving',
-      'Digestive enzymes + probiotics for gut health',
-      'Adaptogenic herbs for stress resilience',
-      'No artificial flavors, sweeteners, or fillers',
-      'Third-party tested for purity and potency',
+      '21 plant-based superfoods per serving',
+      'Prebiotic inulin to support healthy gut flora',
+      'Ashwagandha + Panax ginseng for stress resilience',
+      'Antioxidant fruits — acai, blueberry, pomegranate, cranberry',
+      'Non-GMO, vegan-friendly, made in the USA',
     ],
     supplement: {
-      servings: '30 servings per container',
-      serving: '1 scoop (10g) · Mix with 8–10 oz of water or your favorite beverage',
+      servings: '30 servings per container · 4.44oz (126g)',
+      serving: '1 scoop · Mix with 6–8 oz of cold water or your favorite beverage, once daily',
       keyIngredients: [
-        { name: 'Organic Spirulina', dose: '2g',     purpose: 'Nutrient-dense algae for energy and antioxidant support*' },
-        { name: 'Ashwagandha (KSM-66®)', dose: '300mg', purpose: 'Adaptogenic herb to support stress resilience*' },
-        { name: 'Lion\'s Mane Mushroom',  dose: '200mg', purpose: 'Cognitive support and mental clarity*' },
-        { name: 'Probiotic Blend',        dose: '5B CFU', purpose: 'Gut health and digestive balance*' },
+        { name: 'Barley Grass, Wheat Grass & Spirulina', dose: 'Included', purpose: 'Chlorophyll-rich greens for foundational vitamins and minerals*' },
+        { name: 'Ashwagandha & Panax Ginseng (root)',    dose: 'Included', purpose: 'Adaptogens traditionally used to support stress response and vitality*' },
+        { name: 'Acai, Blueberry, Pomegranate & Cranberry', dose: 'Included', purpose: 'Antioxidant fruits to help combat oxidative stress*' },
+        { name: 'Inulin (prebiotic fiber)',              dose: 'Included', purpose: 'Prebiotic fiber to support healthy gut flora and digestion*' },
+        { name: 'Turmeric & Black Pepper Extract',       dose: 'Included', purpose: 'Traditional botanicals; black pepper supports absorption*' },
       ],
     },
     faqItems: [
-      { q: 'When should I take KRYVE Greens?', a: 'Take one scoop in the morning — mixed into water, a smoothie, or juice — to start your day with foundational nutrition.' },
-      { q: 'Does it taste good?', a: 'We use natural flavors and a touch of organic stevia. Most customers describe it as a mild, earthy-sweet green taste.' },
+      { q: 'When should I take KRYVE Greens?', a: 'Take one scoop in the morning — mixed into water, a smoothie, or juice — to start your day with foundational nutrition. Consume within 10 minutes of mixing.' },
+      { q: 'What does it taste like?', a: 'It is unsweetened and unflavored, so it tastes green and earthy — barley grass, wheatgrass and spirulina lead, with a little tartness from the berries. Most people prefer it in juice or a smoothie rather than plain water.' },
     ],
   },
   'kryve-hydrolyzed-collagen-peptides': {
