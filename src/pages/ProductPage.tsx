@@ -9,7 +9,6 @@ import {
 } from '../lib/shopify'
 import type { CartItem } from '../types'
 
-const CF = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663745291897/2HBFBRwReVdUcKECHB8taa/'
 
 // Extended product detail copy keyed by handle
 const PRODUCT_DETAIL: Record<string, {

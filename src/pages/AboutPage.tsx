@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 
-const CF = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663745291897/2HBFBRwReVdUcKECHB8taa/'
 
 export default function AboutPage() {
   return (

@@ -1,4 +1,6 @@
-const MANUSCDN = 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663745291897/'
+// files.manuscdn.com session bucket expired (dead) and must never be used.
+// Images now on the store's own Shopify CDN (permanent).
+const SCDN = 'https://cdn.shopify.com/s/files/1/0824/2108/8515/files/'
 
 const STANDARDS = [
   {
@@ -34,19 +36,19 @@ const STANDARDS = [
 
 const FORMULAS = [
   {
-    img: MANUSCDN + 'CqsuQnKkfpxbnepn.jpg',
+    img: SCDN + 'product-greens-card-FUMSNRUdPCvFQJuavyLVW9.webp',
     alt: 'KRYVE Greens Formula',
     label: 'Greens Superfood Powder',
     color: '#39FF14',
   },
   {
-    img: MANUSCDN + 'FdJYDIskmEVewVRm.jpg',
+    img: SCDN + 'product-collagen-glow-PDoaGCQDPMtpKqiSx5Toiw.png',
     alt: 'KRYVE Collagen Formula',
     label: 'Hydrolyzed Collagen Peptides',
     color: '#C4857E',
   },
   {
-    img: MANUSCDN + 'NqtPqnEuRqcbwzfS.jpg',
+    img: SCDN + 'product-magnesium-card-MwVDRNC2zA7rKGNhqwLs75.webp',
     alt: 'KRYVE Magnesium Formula',
     label: 'Magnesium Glycinate',
     color: '#9B8FD4',
@@ -61,7 +63,7 @@ export default function SciencePage() {
       <section style={{ background: '#0A0A0A', position: 'relative', overflow: 'hidden', minHeight: 480, display: 'flex', alignItems: 'center' }}>
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: `url(${MANUSCDN}ESnRYpIJCtdBppnC.png)`,
+          backgroundImage: `url(${SCDN}HprMSWCDYbvCzKZo.png)`,
           backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.4,
         }} />
         <div style={{

@@ -5,7 +5,9 @@ import { STATIC_PRODUCTS, formatPrice, getBadgeText, getProductBadgeClass, type 
 import type { CartItem } from '../types'
 
 // ── Hero slides — exact match to live kryve-2.myshopify.com ─────────────────
-const CF = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663745291897/2HBFBRwReVdUcKECHB8taa/'
+// All images hosted on the store's own Shopify CDN (permanent). The old
+// d2xsxph8kpxj0f.cloudfront.net temp bucket expired (403) and must never be used.
+const SCDN = 'https://cdn.shopify.com/s/files/1/0824/2108/8515/files/'
 
 const HERO_SLIDES = [
   {
@@ -18,7 +20,7 @@ const HERO_SLIDES = [
     btn: { text: 'GET THE STACK $129.99', to: '/products/the-kryve-stack', cls: 'kv-hbtn-gd' },
   },
   {
-    bg: CF + 'hero-greens-v4-FpC5SLDGRGgRaFpT6mgAVm.webp',
+    bg: SCDN + 'product-greens-card-FUMSNRUdPCvFQJuavyLVW9.webp',
     bgPos: 'center top',
     badge: { bg: '#064E3B', color: '#39FF14', text: 'BEST SELLER' },
     eyebrow: { color: '#39FF14', text: 'Greens Superfood Powder' },
@@ -27,7 +29,7 @@ const HERO_SLIDES = [
     btn: { text: 'SHOP GREENS $49.99', to: '/products/kryve-greens-superfood-powder', cls: 'kv-hbtn-g' },
   },
   {
-    bg: CF + 'hero-collagen-v10-A4n7BnVLv8sW9Dc2eJEZkZ.webp',
+    bg: SCDN + 'product-collagen-glow-PDoaGCQDPMtpKqiSx5Toiw.png',
     bgPos: 'center center',
     badge: { bg: '#6B2737', color: '#F4C2C8', text: 'GRASS-FED' },
     eyebrow: { color: '#B76E79', text: 'Collagen Peptides' },
@@ -36,7 +38,7 @@ const HERO_SLIDES = [
     btn: { text: 'SHOP COLLAGEN $54.99', to: '/products/kryve-hydrolyzed-collagen-peptides', cls: 'kv-hbtn-r' },
   },
   {
-    bg: CF + 'hero-magnesium-v4-69X7SALdjYbiafchJLksSj.webp',
+    bg: SCDN + 'product-magnesium-card-MwVDRNC2zA7rKGNhqwLs75.webp',
     bgPos: 'center top',
     badge: { bg: '#3B1F6B', color: '#C4B5FD', text: 'HIGH ABSORPTION' },
     eyebrow: { color: '#7C3AED', text: 'Magnesium Glycinate' },
@@ -45,7 +47,7 @@ const HERO_SLIDES = [
     btn: { text: 'SHOP MAGNESIUM $39.99', to: '/products/kryve-magnesium-glycinate', cls: 'kv-hbtn-v' },
   },
   {
-    bg: CF + 'hero-stack-v4-AaFoRVQvMorhuG9icoJQ6w.webp',
+    bg: SCDN + 'HprMSWCDYbvCzKZo.png',
     bgPos: 'center top',
     badge: { bg: '#7A5C00', color: '#D4AF37', text: 'SAVE $19.98' },
     eyebrow: { color: '#D4AF37', text: 'The Complete Stack' },
@@ -123,17 +125,17 @@ const WHY_BENEFITS = [
 // ── Gallery images ────────────────────────────────────────────────────────────
 const GALLERY_IMGS = [
   {
-    url: CF + 'lifestyle-greens-v3-KfcLMaiaeyYpSLVdVWffMR.png',
+    url: SCDN + 'product-greens-hover-Lj85wqwdkdZHkj4istPPyn.webp',
     alt: 'KRYVE Greens Superfood Powder lifestyle',
     large: true,
   },
   {
-    url: CF + 'lifestyle-magnesium-v5-hVvzLiSqemDZuhQKSsuqqr.webp',
+    url: SCDN + 'product-magnesium-hover-7Z3S9KuA7Dspk5wRSTC4vx.webp',
     alt: 'KRYVE Magnesium Glycinate lifestyle',
     large: false,
   },
   {
-    url: CF + 'lifestyle-collagen-v4-Q9JwTfxrYCUtVv3dWchrir.webp',
+    url: SCDN + 'lifestyle-collagen-v3-kTUV8zu9u3UFBdzmhguU7N.png',
     alt: 'KRYVE Collagen Peptides lifestyle',
     large: false,
   },
@@ -711,7 +713,7 @@ export default function HomePage() {
             </div>
             <div className="kv-fade kv-why-img" style={{ transitionDelay: '0.15s' }}>
               <img
-                src={CF + 'hero-stack-v4-AaFoRVQvMorhuG9icoJQ6w.webp'}
+                src={SCDN + 'HprMSWCDYbvCzKZo.png'}
                 alt="KRYVE Science"
                 loading="lazy"
                 style={{ width: '100%', borderRadius: 12, display: 'block' }}
