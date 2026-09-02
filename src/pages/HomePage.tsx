@@ -154,7 +154,7 @@ const GALLERY_IMGS = [
     large: false,
   },
   {
-    url: SCDN + 'lifestyle-collagen-v3-kTUV8zu9u3UFBdzmhguU7N.png',
+    url: '/images/gallery-collagen-v4.webp',
     alt: 'KRYVE Collagen Peptides lifestyle',
     large: false,
   },
