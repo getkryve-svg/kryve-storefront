@@ -36,8 +36,8 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     bg: '/images/hero-greens-v4.webp',
     bgPos: '100% 15%',
-    bgMobile: '/images/hero-greens-phone.webp',
-    bgPosMobile: 'center 10%',
+    bgMobile: '/images/hero-greens-v4.webp',
+    bgPosMobile: '100% center',
     badge: { bg: '#064E3B', color: '#39FF14', text: 'BEST SELLER' },
     eyebrow: { color: '#39FF14', text: 'Greens Superfood Powder' },
     h1: ['Fuel Your', 'Foundation.'],
