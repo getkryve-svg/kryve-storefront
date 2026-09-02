@@ -419,7 +419,8 @@ body {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    object-position: center top !important;
+    /* Per-slide focal point: HomePage sets --kv-hero-pos inline from slide.bgPos */
+    object-position: var(--kv-hero-pos, center top) !important;
     display: block !important;
   }
   /* Slide 5 (The Stack — all 3 bottles): cover crops the sides so the rightmost
@@ -1051,49 +1052,40 @@ body {
   color: #fff;
   letter-spacing: -0.5px;
 }
+/* All three gallery sources are 16:9. The tile is 16:9 too, so object-fit:cover
+   scales 1:1 and crops NOTHING - head and product are always fully in frame at
+   every viewport width. No fixed pixel heights, no translateY nudges. */
 .kv-gal-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  height: 620px;
 }
 .kv-gal-item {
   overflow: hidden;
   border-radius: 14px;
   background: #111;
   position: relative;
+  aspect-ratio: 16 / 9;
+  height: auto;
 }
 .kv-gal-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center center;
   display: block;
   transition: transform 0.5s ease;
 }
 .kv-gal-item:hover img { transform: scale(1.04); }
-/* Magnesium tile (2nd item) is a dark nighttime scene — brightness lift so
-   subject and bottle read clearly against the dark gallery background.
-   Scoped to :nth-child(2) only; no other gallery item is touched. */
+/* Magnesium tile (2nd item) is a dark gym scene - small brightness lift so the
+   subject and bottle read against the #0a0a0a gallery background. */
 .kv-gal-grid .kv-gal-item:nth-child(2) img {
-  filter: brightness(1.4);
+  filter: brightness(1.12);
 }
-/* Greens tile (1st item, large) — landscape source (no vertical overflow under
-   cover), so object-position Y is inert. Use translateY to shift the rendered
-   image down inside the overflow:hidden container, creating visible headroom
-   above the woman's hair. Container bg (#111) fills the exposed gap at top.
-   Authorized per-tile exception for both desktop and mobile. */
-.kv-gal-grid .kv-gal-item:nth-child(1) img {
-  object-position: 50% 0%;
-  transform: translateY(5%);
-}
-.kv-gal-grid .kv-gal-item:nth-child(1):hover img {
-  transform: translateY(5%) scale(1.04);
-}
+/* .kv-gal-large no longer changes the layout - every tile is the same 16:9 box. */
 .kv-gal-large {
-  grid-column: 1;
-  grid-row: 1 / 3;
+  grid-column: auto;
+  grid-row: auto;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1674,27 +1666,14 @@ body {
   .kv-why-stat-label { font-size: 0.72rem; margin-top: 8px; line-height: 1.4; }
   .kv-why-benefits { grid-template-columns: 1fr; gap: 32px; }
 
-  /* Gallery — anchor to top so subject heads are never cropped on portrait images */
+  /* Gallery - single column of 16:9 tiles matching the 16:9 sources, so cover
+     crops nothing at any mobile width: head + product always fully visible. */
   .kv-gal-grid { grid-template-columns: 1fr !important; height: auto !important; gap: 16px !important; }
-  .kv-gal-large { grid-row: auto !important; }
-  .kv-gal-item { height: 260px !important; border-radius: 4px; overflow: hidden; }
-  .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center top !important; display: block !important; }
-  /* Magnesium tile — brightness lift + object-position fix.
-     Root cause: width-dependent crop. The bottle (lower-right) slides toward/past
-     the right edge as the container narrows (320px worst case). Fix: shift to
-     85% 50% so the right side (bottle + nightstand) is always in frame at every
-     width in the 320–480 range. Position tested at all 7 widths. */
+  .kv-gal-large { grid-column: auto !important; grid-row: auto !important; }
+  .kv-gal-item { height: auto !important; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; }
+  .kv-gal-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center center !important; display: block !important; }
   .kv-gal-grid .kv-gal-item:nth-child(2) img {
-    filter: brightness(1.4) !important;
-    object-position: 85% 50% !important;
-  }
-  /* Greens tile — taller container so the woman's crown has comfortable headroom.
-     Image is landscape (3:2) so cover scales by height; 360px gives ~38% more
-     rendered pixels above the crown vs 260px. object-position reset to top. */
-  .kv-gal-grid .kv-gal-item:nth-child(1) { height: 360px !important; }
-  .kv-gal-grid .kv-gal-item:nth-child(1) img {
-    object-position: center top !important;
-    transform: translateY(8%) !important;
+    filter: brightness(1.12) !important;
   }
   .kv-gallery { padding: 60px 16px; }
 

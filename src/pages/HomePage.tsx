@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type FormEvent } from 'react'
+import { useState, useEffect, useRef, type FormEvent, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { STATIC_PRODUCTS, formatPrice, getBadgeText, getProductBadgeClass, type ShopifyProduct } from '../lib/shopify'
@@ -9,10 +9,24 @@ import type { CartItem } from '../types'
 // d2xsxph8kpxj0f.cloudfront.net temp bucket expired (403) and must never be used.
 const SCDN = 'https://cdn.shopify.com/s/files/1/0824/2108/8515/files/'
 
-const HERO_SLIDES = [
+// bgMobile / bgPosMobile are optional per-slide overrides for the stacked mobile
+// hero (<=767px). When absent the mobile <img> falls back to bg / bgPos.
+type HeroSlide = {
+  bg: string
+  bgPos: string
+  bgMobile?: string
+  bgPosMobile?: string
+  badge: { bg: string; color: string; text: string }
+  eyebrow: { color: string; text: string }
+  h1: string[]
+  sub: string
+  btn: { text: string; to: string; cls: string }
+}
+
+const HERO_SLIDES: HeroSlide[] = [
   {
     bg: 'https://cdn.shopify.com/s/files/1/0824/2108/8515/t/1/assets/hero-couple-v6.png',
-    bgPos: 'center top',
+    bgPos: '80% center',
     badge: { bg: '#7A5C00', color: '#D4AF37', text: 'SAVE $19.98' },
     eyebrow: { color: '#D4AF37', text: 'The Complete Stack' },
     h1: ['ONE RITUAL.', 'TOTAL RESULTS.'],
@@ -20,8 +34,10 @@ const HERO_SLIDES = [
     btn: { text: 'GET THE STACK $129.99', to: '/products/the-kryve-stack', cls: 'kv-hbtn-gd' },
   },
   {
-    bg: SCDN + 'product-greens-card-FUMSNRUdPCvFQJuavyLVW9.webp',
-    bgPos: 'center top',
+    bg: '/images/hero-greens-v4.webp',
+    bgPos: '100% 15%',
+    bgMobile: '/images/hero-greens-phone.webp',
+    bgPosMobile: 'center 10%',
     badge: { bg: '#064E3B', color: '#39FF14', text: 'BEST SELLER' },
     eyebrow: { color: '#39FF14', text: 'Greens Superfood Powder' },
     h1: ['Fuel Your', 'Foundation.'],
@@ -29,8 +45,9 @@ const HERO_SLIDES = [
     btn: { text: 'SHOP GREENS $49.99', to: '/products/kryve-greens-superfood-powder', cls: 'kv-hbtn-g' },
   },
   {
-    bg: SCDN + 'product-collagen-glow-PDoaGCQDPMtpKqiSx5Toiw.png',
-    bgPos: 'center center',
+    bg: '/images/hero-collagen-v4.webp',
+    bgPos: '100% center',
+    bgPosMobile: '62% 25%',
     badge: { bg: '#6B2737', color: '#F4C2C8', text: 'GRASS-FED' },
     eyebrow: { color: '#B76E79', text: 'Collagen Peptides' },
     h1: ['Glow From', 'Within.'],
@@ -38,8 +55,10 @@ const HERO_SLIDES = [
     btn: { text: 'SHOP COLLAGEN $54.99', to: '/products/kryve-hydrolyzed-collagen-peptides', cls: 'kv-hbtn-r' },
   },
   {
-    bg: SCDN + 'product-magnesium-card-MwVDRNC2zA7rKGNhqwLs75.webp',
-    bgPos: 'center top',
+    bg: '/images/hero-magnesium-v5.webp',
+    bgPos: '100% top',
+    bgMobile: '/images/hero-magnesium-closeup-v6.webp',
+    bgPosMobile: '65% center',
     badge: { bg: '#3B1F6B', color: '#C4B5FD', text: 'HIGH ABSORPTION' },
     eyebrow: { color: '#7C3AED', text: 'Magnesium Glycinate' },
     h1: ['Rest. Recover.', 'Rise.'],
@@ -47,8 +66,8 @@ const HERO_SLIDES = [
     btn: { text: 'SHOP MAGNESIUM $39.99', to: '/products/kryve-magnesium-glycinate', cls: 'kv-hbtn-v' },
   },
   {
-    bg: SCDN + 'HprMSWCDYbvCzKZo.png',
-    bgPos: 'center top',
+    bg: '/images/hero-stack-v5.webp',
+    bgPos: 'center center',
     badge: { bg: '#7A5C00', color: '#D4AF37', text: 'SAVE $19.98' },
     eyebrow: { color: '#D4AF37', text: 'The Complete Stack' },
     h1: ['The KRYVE', 'Stack.'],
@@ -125,13 +144,13 @@ const WHY_BENEFITS = [
 // ── Gallery images ────────────────────────────────────────────────────────────
 const GALLERY_IMGS = [
   {
-    url: SCDN + 'product-greens-hover-Lj85wqwdkdZHkj4istPPyn.webp',
-    alt: 'KRYVE Greens Superfood Powder lifestyle',
+    url: '/images/gallery-greens-v4.webp',
+    alt: 'Woman blending a green smoothie with KRYVE Greens Superfood Powder',
     large: true,
   },
   {
-    url: SCDN + 'product-magnesium-hover-7Z3S9KuA7Dspk5wRSTC4vx.webp',
-    alt: 'KRYVE Magnesium Glycinate lifestyle',
+    url: '/images/gallery-magnesium-v6.webp',
+    alt: 'Man in a gym holding a bottle of KRYVE Magnesium Glycinate',
     large: false,
   },
   {
@@ -268,7 +287,7 @@ function Hero() {
               backgroundSize: 'cover',
             }}
           >
-            <img className="kv-sl-img" src={s.bg} alt="" aria-hidden="true" draggable={false} />
+            <img className="kv-sl-img" src={s.bg} alt="" aria-hidden="true" draggable={false} style={{ objectPosition: s.bgPos }} />
           </div>
         ))}
         <div className="kv-ov" />
@@ -299,8 +318,8 @@ function Hero() {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <div className={`kv-hero-mobile-img${current === HERO_SLIDES.length - 1 ? ' kv-hero-mobile-img--stack' : ''}${current === 3 ? ' kv-hero-mobile-img--mag' : ''}`}>
-          <img src={slide.bg} alt="" draggable={false} />
+        <div className={`kv-hero-mobile-img${current === HERO_SLIDES.length - 1 ? ' kv-hero-mobile-img--stack' : ''}`}>
+          <img src={slide.bgMobile ?? slide.bg} alt="" draggable={false} style={{ '--kv-hero-pos': slide.bgPosMobile ?? slide.bgPos } as CSSProperties} />
           {/* Arrow buttons kept in markup (desktop fallback); hidden on mobile by CSS */}
           <button className="kv-hero-mobile-prev" onClick={() => { go(current - 1); mobileTakeControl() }} aria-label="Previous">←</button>
           <button className="kv-hero-mobile-next" onClick={() => { go(current + 1); mobileTakeControl() }} aria-label="Next">→</button>
